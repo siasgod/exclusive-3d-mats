@@ -59,6 +59,20 @@ const init = () => {
     initCarSelector();
     initEventListeners();
     initMasks();
+    initHeroSlider();
+};
+
+const initHeroSlider = () => {
+    const slides = document.querySelectorAll('#hero-carousel img');
+    let currentSlide = 0;
+
+    if (slides.length > 0) {
+        setInterval(() => {
+            slides[currentSlide].style.opacity = '0';
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].style.opacity = '1';
+        }, 5000); // Switch every 5 seconds
+    }
 };
 
 // --- Checkout Logic (New) ---
