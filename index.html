@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusive 3D - Tapetes Automotivos de Luxo</title>
+    <meta name="description"
+        content="Proteção total contra líquidos, ajuste milimétrico e design de luxo para o seu veículo.">
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            black: '#0a0a0a',
+                            orange: '#FF4500', // Laranja Performance
+                            white: '#f8f9fa',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-orange': 'pulse-orange 2s infinite',
+                        'glow': 'glow 2s infinite alternate',
+                    },
+                    keyframes: {
+                        'pulse-orange': {
+                            '0%': { transform: 'scale(0.95)', boxShadow: '0 0 0 0 rgba(255, 69, 0, 0.7)' },
+                            '70%': { transform: 'scale(1)', boxShadow: '0 0 0 10px rgba(255, 69, 0, 0)' },
+                            '100%': { transform: 'scale(0.95)', boxShadow: '0 0 0 0 rgba(255, 69, 0, 0)' },
+                        },
+                        'glow': {
+                            '0%': { boxShadow: '0 0 5px rgba(255, 69, 0, 0.2)' },
+                            '100%': { boxShadow: '0 0 20px rgba(255, 69, 0, 0.6)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #f8f9fa;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Custom Select Styles */
+        .custom-select-container {
+            position: relative;
+        }
+
+        .custom-select-trigger {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 12px;
+            background: #0a0a0a;
+            border: 1px solid #374151;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .custom-select-trigger:hover {
+            border-color: #FF4500;
+        }
+
+        .custom-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #0a0a0a;
+            border: 1px solid #374151;
+            border-top: none;
+            border-radius: 0 0 0.5rem 0.5rem;
+            z-index: 50;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .custom-options.open {
+            display: block;
+        }
+
+        .custom-option {
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .custom-option:hover {
+            background: rgba(255, 69, 0, 0.1);
+            color: #FF4500;
+        }
+
+        .custom-option.selected {
+            background: #FF4500;
+            color: black;
+        }
+
+        .parallax-hero {
+            background-image: url('./assets/hero_bg.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+    <!-- Facebook Pixel Code (Base) -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', 'YOUR_PIXEL_ID_HERE'); // Replace with actual Pixel ID
+        fbq('track', 'PageView');
+
+        /*
+           [NOTE FROM DEVELOPER]: The provided Facebook Pixel code snippet was truncated in the prompt.
+           We've included the standard setup above. If you have custom tracking logic in the provided block,
+           please replace the code above with your full script.
+        */
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1" /></noscript>
+    <!-- End Facebook Pixel Code -->
+</head>
+
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Urgency Bar -->
+    <div
+        class="bg-brand-orange text-brand-black text-center py-2 font-bold text-sm sticky top-0 z-50 shadow-lg shadow-orange-500/20">
+        <span id="viewer-count">12</span> pessoas estão vendo este modelo agora! | Oferta encerra em <span
+            id="timer">15:00</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+        class="flex items-center justify-between px-6 py-4 glass sticky top-10 z-40 mx-4 mt-4 rounded-xl border-t border-white/10">
+        <div class="text-xl font-bold text-brand-orange tracking-widest flex items-center gap-2">
+            <i class="fas fa-layer-group"></i> EXCLUSIVE 3D
+        </div>
+        <button id="menu-btn" class="md:hidden text-brand-white focus:outline-none">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
+        <div class="hidden md:flex space-x-8 text-sm font-medium">
+            <a href="#beneficios" class="hover:text-brand-orange transition">Benefícios</a>
+            <a href="#comparativo" class="hover:text-brand-orange transition">Comparativo</a>
+            <a href="#depoimentos" class="hover:text-brand-orange transition">Depoimentos</a>
+            <a href="#comprar"
+                class="text-brand-orange font-bold border border-brand-orange px-4 py-2 rounded hover:bg-brand-orange hover:text-black transition">Comprar
+                Agora</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+        class="hidden fixed inset-0 bg-brand-black z-30 pt-24 px-6 space-y-6 text-center text-lg transition-transform duration-300">
+        <a href="#beneficios" class="block hover:text-brand-orange" onclick="toggleMenu()">Benefícios</a>
+        <a href="#comparativo" class="block hover:text-brand-orange" onclick="toggleMenu()">Comparativo</a>
+        <a href="#depoimentos" class="block hover:text-brand-orange" onclick="toggleMenu()">Depoimentos</a>
+        <a href="#comprar" class="block text-brand-orange font-bold" onclick="toggleMenu()">Comprar Agora</a>
+        <button class="absolute top-6 right-6 text-brand-white" onclick="toggleMenu()">
+            <i class="fas fa-times text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- Parallax Hero Section -->
+    <section class="relative pt-32 pb-48 px-6 text-center max-w-7xl mx-auto overflow-hidden parallax-hero">
+        <div class="absolute inset-0 bg-black/60 z-0"></div> <!-- Overlay -->
+
+        <div class="relative z-10 animate-fade-in-up">
+            <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6 drop-shadow-2xl">
+                A Revolução do Interior Automotivo: <span class="text-brand-orange">Tapetes 3D Sob Medida</span>
+            </h1>
+            <p class="text-gray-200 text-lg md:text-xl mb-10 max-w-2xl mx-auto drop-shadow-md">
+                Proteção total contra líquidos, ajuste milimétrico e design de luxo para o seu veículo.
+            </p>
+            <a href="#comprar"
+                class="inline-block bg-brand-orange text-brand-black px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide animate-pulse-orange hover:bg-orange-600 transition shadow-lg shadow-orange-500/40">
+                Quero Meu Kit Exclusive
+            </a>
+        </div>
+    </section>
+
+    <!-- Filter Widget (Custom Select) -->
+    <section id="comprar" class="px-6 -mt-20 mb-20 relative z-20">
+        <div class="glass max-w-4xl mx-auto p-8 rounded-2xl shadow-2xl border border-gray-700">
+            <h2 class="text-2xl font-bold mb-6 text-center text-brand-orange"> <i class="fas fa-check-circle"></i>
+                Verifique a Disponibilidade</h2>
+            <form id="filter-form" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <!-- Custom Brand Select -->
+                <div class="custom-select-container" id="brand-container">
+                    <label class="block text-sm text-gray-400 mb-2">Selecione a Marca</label>
+                    <div class="custom-select-trigger" onclick="toggleCustomSelect('brand')">
+                        <span id="brand-trigger-text">Marca...</span>
+                        <i class="fas fa-chevron-down text-gray-500"></i>
+                    </div>
+                    <div class="custom-options" id="brand-options">
+                        <div class="custom-option" data-value="toyota"
+                            onclick="selectBrand('toyota', 'Toyota', 'fas fa-car')"><i class="fas fa-car"></i> Toyota
+                        </div>
+                        <div class="custom-option" data-value="honda"
+                            onclick="selectBrand('honda', 'Honda', 'fas fa-car-side')"><i class="fas fa-car-side"></i>
+                            Honda</div>
+                        <div class="custom-option" data-value="bmw" onclick="selectBrand('bmw', 'BMW', 'fas fa-gem')"><i
+                                class="fas fa-gem"></i> BMW</div>
+                        <div class="custom-option" data-value="mercedes"
+                            onclick="selectBrand('mercedes', 'Mercedes-Benz', 'fas fa-star')"><i
+                                class="fas fa-star"></i> Mercedes-Benz</div>
+                        <div class="custom-option" data-value="audi"
+                            onclick="selectBrand('audi', 'Audi', 'fas fa-circle-notch')"><i
+                                class="fas fa-circle-notch"></i> Audi</div>
+                    </div>
+                    <input type="hidden" id="brand-input" required>
+                </div>
+
+                <!-- Model Select (Standard for simplicity as options are dynamic, or Custom logic if needed) -->
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Selecione o Modelo</label>
+                    <select id="model-select"
+                        class="w-full bg-brand-black border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange focus:ring-1 focus:ring-brand-orange outline-none transition h-[48px]"
+                        disabled>
+                        <option value="">Aguardando Marca...</option>
+                    </select>
+                </div>
+
+                <div class="flex items-end">
+                    <button type="submit"
+                        class="w-full bg-brand-white text-brand-black font-bold p-3 rounded-lg hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed h-[48px]"
+                        id="check-btn" disabled>
+                        Ver Disponibilidade
+                    </button>
+                </div>
+            </form>
+            <div id="availability-message"
+                class="hidden mt-4 text-center p-3 bg-green-500/20 text-green-300 rounded border border-green-500/30">
+                <!-- Js will populate -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Grid -->
+    <section id="beneficios" class="px-6 py-20 max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-16">Por que escolher o <span class="text-brand-orange">Exclusive
+                3D</span>?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Benefit 1 -->
+            <div
+                class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange">
+                <div
+                    class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange">
+                    <i class="fas fa-tint text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Impermeabilidade 100%</h3>
+                <p class="text-gray-400 text-sm">Protege o carpete original contra qualquer líquido ou sujeira.</p>
+            </div>
+            <!-- Benefit 2 -->
+            <div
+                class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange">
+                <div
+                    class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange">
+                    <i class="fas fa-lock text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Fixação Segura</h3>
+                <p class="text-gray-400 text-sm">Velcro de alta aderência e clipes originais para total segurança.</p>
+            </div>
+            <!-- Benefit 3 -->
+            <div
+                class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange">
+                <div
+                    class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange">
+                    <i class="fas fa-leaf text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Inodoro e Ecológico</h3>
+                <p class="text-gray-400 text-sm">Material XPE premium que não deixa cheiro e é reciclável.</p>
+            </div>
+            <!-- Benefit 4 -->
+            <div
+                class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange">
+                <div
+                    class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange">
+                    <i class="fas fa-clock text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Limpeza Rápida</h3>
+                <p class="text-gray-400 text-sm">Basta passar um pano úmido e está novo em 30 segundos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table (Glow Effect) -->
+    <section id="comparativo" class="py-20 bg-black/40">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Compare e Decida</h2>
+            <div class="overflow-x-auto rounded-xl shadow-2xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="p-4 border-b border-gray-700 text-gray-400 font-medium">Característica</th>
+                            <th class="p-4 border-b border-gray-700 font-bold text-gray-500">Tapete Borracha Comum</th>
+                            <th
+                                class="p-4 border-b-2 border-brand-orange bg-brand-orange/5 text-brand-orange font-bold text-lg animate-glow relative overflow-hidden">
+                                <span class="relative z-10">Tapete Exclusive 3D</span>
+                                <div class="absolute inset-0 bg-brand-orange/10 blur-xl -z-0"></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr>
+                            <td class="p-4 border-b border-gray-800">Proteção do Carpete</td>
+                            <td class="p-4 border-b border-gray-800 text-red-500"><i class="fas fa-times"></i> Parcial
+                                (Sujeira Vaza)</td>
+                            <td class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold"><i
+                                    class="fas fa-check"></i> Total (Abas Altas)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 border-b border-gray-800">Fixação</td>
+                            <td class="p-4 border-b border-gray-800 text-red-500"><i class="fas fa-times"></i> Escorrega
+                                nos Pedais</td>
+                            <td class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold"><i
+                                    class="fas fa-check"></i> Travas Originais</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 border-b border-gray-800">Estética</td>
+                            <td class="p-4 border-b border-gray-800 text-gray-500">Industrial / Básico</td>
+                            <td class="p-4 border-b border-gray-800 bg-brand-orange/5 text-brand-orange font-bold"><i
+                                    class="fas fa-star"></i> Luxo / Couro Eco</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 border-b border-gray-800">Odor</td>
+                            <td class="p-4 border-b border-gray-800 text-red-500"><i class="fas fa-skull"></i> Cheiro de
+                                Borracha</td>
+                            <td class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold"><i
+                                    class="fas fa-check"></i> Sem Odor</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout / Lead Form (Hidden initially) -->
+    <div id="checkout-modal"
+        class="fixed inset-0 z-50 bg-black/95 hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-brand-black border border-brand-orange/30 p-8 rounded-2xl max-w-md w-full relative shadow-2xl shadow-orange-900/20">
+            <button onclick="closeCheckout()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i
+                    class="fas fa-times"></i></button>
+            <h3 class="text-2xl font-bold text-brand-orange mb-2">Finalizar Pedido</h3>
+            <p class="text-sm text-gray-400 mb-6">Seu modelo: <span id="modal-model-name"
+                    class="font-bold text-white"></span></p>
+
+            <form id="checkout-form" class="space-y-4">
+                <div>
+                    <label class="text-xs text-gray-400">Nome Completo</label>
+                    <input type="text" id="name" required
+                        class="w-full bg-gray-900 border border-gray-700 rounded p-3 text-white focus:border-brand-orange outline-none transition">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">E-mail</label>
+                    <input type="email" id="email" required
+                        class="w-full bg-gray-900 border border-gray-700 rounded p-3 text-white focus:border-brand-orange outline-none transition">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">WhatsApp</label>
+                    <input type="tel" id="phone" placeholder="(11) 99999-9999" required
+                        class="w-full bg-gray-900 border border-gray-700 rounded p-3 text-white focus:border-brand-orange outline-none transition">
+                </div>
+                <!-- Logic Upgrade: Abandonment trigger on email/phone input -->
+
+                <button type="submit"
+                    class="w-full bg-brand-orange text-brand-black font-bold py-4 rounded-lg hover:bg-orange-600 transition mt-4 flex justify-center items-center gap-2 transform hover:scale-[1.02]">
+                    <i class="fas fa-lock"></i> IR PARA PAGAMENTO SEGURO
+                </button>
+                <div class="text-center text-xs text-gray-500 flex items-center justify-center gap-2 mt-2">
+                    <i class="fas fa-shield-alt text-green-500"></i> Ambiente 100% Criptografado
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <section id="depoimentos" class="px-6 py-20 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">O que dizem nossos clientes</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass p-6 rounded-xl border-t border-brand-orange/20">
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="./assets/avatar1.jpg" alt="Ricardo S."
+                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover">
+                    <div>
+                        <p class="font-bold text-sm">Ricardo S.</p>
+                        <p class="text-xs text-brand-orange">BMW 320i</p>
+                    </div>
+                </div>
+                <div class="text-yellow-400 text-xs mb-2">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-sm text-gray-300 italic">"Acabamento impecável. Encaixou perfeitamente e mudou a cara do
+                    carro."</p>
+            </div>
+            <div class="glass p-6 rounded-xl border-t border-brand-orange/20">
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="./assets/avatar2.jpg" alt="Fernanda L."
+                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover">
+                    <div>
+                        <p class="font-bold text-sm">Fernanda L.</p>
+                        <p class="text-xs text-brand-orange">Jeep Compass</p>
+                    </div>
+                </div>
+                <div class="text-yellow-400 text-xs mb-2">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-sm text-gray-300 italic">"Muito fácil de limpar, realmente. Derrubaram café e não manchou
+                    nada."</p>
+            </div>
+            <div class="glass p-6 rounded-xl border-t border-brand-orange/20">
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="./assets/avatar3.jpg" alt="Carlos M."
+                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover">
+                    <div>
+                        <p class="font-bold text-sm">Carlos M.</p>
+                        <p class="text-xs text-brand-orange">Toyota Corolla</p>
+                    </div>
+                </div>
+                <div class="text-yellow-400 text-xs mb-2">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-sm text-gray-300 italic">"Valeu cada centavo. O material é muito superior aos
+                    baratinhos."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-10 text-center text-gray-600 text-sm border-t border-gray-900">
+        <p>&copy; 2026 Exclusive 3D. Todos os direitos reservados.</p>
+        <div class="mt-4 flex justify-center gap-4">
+            <i class="fab fa-instagram hover:text-white cursor-pointer"></i>
+            <i class="fab fa-facebook hover:text-white cursor-pointer"></i>
+            <i class="fab fa-whatsapp hover:text-white cursor-pointer"></i>
+        </div>
+        <p class="mt-4 text-xs">Políticas de Privacidade | Termos de Uso</p>
+    </footer>
+
+    <!-- Logic Script (Modified to ES6 Arrow Functions) -->
+    <script>
+        // --- Urgency System ---
+        const updateUrgency = () => {
+            const viewerCount = document.getElementById('viewer-count');
+            let viewers = 12;
+            setInterval(() => {
+                const change = Math.floor(Math.random() * 3) - 1;
+                viewers = Math.max(8, Math.min(25, viewers + change));
+                viewerCount.innerText = viewers;
+            }, 5000);
+
+            const timerEl = document.getElementById('timer');
+            let endTime = sessionStorage.getItem('offerEndTime');
+
+            if (!endTime) {
+                endTime = new Date().getTime() + 15 * 60 * 1000;
+                sessionStorage.setItem('offerEndTime', endTime);
+            }
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+
+                if (distance < 0) {
+                    endTime = new Date().getTime() + 15 * 60 * 1000;
+                    sessionStorage.setItem('offerEndTime', endTime);
+                }
+
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                timerEl.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        };
+
+        // --- Cleaned up & Arrow Function Logic ---
+        const carData = {
+            'toyota': ['Corolla', 'Hilux', 'Yaris', 'RAV4'],
+            'honda': ['Civic', 'HR-V', 'City', 'CR-V'],
+            'bmw': ['320i', 'X1', 'X3', 'X5'],
+            'mercedes': ['C180', 'GLA', 'A200'],
+            'audi': ['A3', 'A4', 'Q3', 'Q5']
+        };
+
+        const elements = {
+            brandInput: document.getElementById('brand-input'),
+            brandTriggerText: document.getElementById('brand-trigger-text'),
+            brandOptions: document.getElementById('brand-options'),
+            brandContainer: document.getElementById('brand-container'),
+            modelSelect: document.getElementById('model-select'),
+            checkBtn: document.getElementById('check-btn'),
+            availMsg: document.getElementById('availability-message'),
+            modalModelName: document.getElementById('modal-model-name'),
+            checkoutModal: document.getElementById('checkout-modal'),
+            checkoutForm: document.getElementById('checkout-form'),
+            mobileMenu: document.getElementById('mobile-menu'),
+            emailInput: document.getElementById('email'),
+            phoneInput: document.getElementById('phone')
+        };
+
+        // Custom Select Logic
+        const toggleCustomSelect = (id) => {
+            const options = document.getElementById(`${id}-options`);
+            options.classList.toggle('open');
+            // Close others if any (not needed here but good practice)
+        };
+
+        const selectBrand = (value, name, iconClass) => {
+            elements.brandInput.value = value;
+            elements.brandTriggerText.innerHTML = `<i class="${iconClass}"></i> ${name}`;
+            elements.brandOptions.classList.remove('open');
+            localStorage.setItem('selectedBrand', value);
+            updateModels(value);
+        };
+
+        // Close custom select when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!elements.brandContainer.contains(e.target)) {
+                elements.brandOptions.classList.remove('open');
+            }
+        });
+
+        const updateModels = (brand) => {
+            elements.modelSelect.innerHTML = '<option value="">Selecione o Modelo</option>';
+            elements.checkBtn.disabled = true;
+            elements.modelSelect.disabled = !brand;
+
+            if (brand && carData[brand]) {
+                carData[brand].forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    elements.modelSelect.appendChild(option);
+                });
+            }
+        };
+
+        // Model Change
+        elements.modelSelect.addEventListener('change', (e) => {
+            if (e.target.value) {
+                localStorage.setItem('selectedModel', e.target.value);
+                elements.checkBtn.disabled = false;
+            } else {
+                elements.checkBtn.disabled = true;
+            }
+        });
+
+        // Check Availability
+        document.getElementById('filter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            elements.checkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+
+            setTimeout(() => {
+                elements.checkBtn.innerText = 'Ver Disponibilidade';
+
+                // Logic Upgrade: Random stock 2-5
+                const stock = Math.floor(Math.random() * (5 - 2 + 1)) + 2;
+                elements.availMsg.innerHTML = `<i class="fas fa-check"></i> Modelo disponível! Apenas <strong>${stock} unidades</strong> em estoque.`;
+                elements.availMsg.classList.remove('hidden');
+
+                setTimeout(() => {
+                    elements.modalModelName.innerText = `${elements.brandTriggerText.innerText} ${elements.modelSelect.value}`;
+                    elements.checkoutModal.classList.remove('hidden');
+                    elements.checkoutModal.classList.add('flex');
+                }, 1000);
+            }, 800);
+        });
+
+        // Menu Toggle
+        const toggleMenu = () => {
+            if (elements.mobileMenu.classList.contains('hidden')) {
+                elements.mobileMenu.classList.remove('hidden');
+                elements.mobileMenu.classList.add('block');
+            } else {
+                elements.mobileMenu.classList.add('hidden');
+                elements.mobileMenu.classList.remove('block');
+            }
+        };
+        document.getElementById('menu-btn').addEventListener('click', toggleMenu);
+
+        const closeCheckout = () => {
+            elements.checkoutModal.classList.add('hidden');
+            elements.checkoutModal.classList.remove('flex');
+        };
+
+        // Logic Upgrade: Cart Abandonment Simulation
+        elements.emailInput.addEventListener('blur', () => {
+            if (elements.emailInput.value.length > 5) {
+                console.log("⚠️ [WEBHOOK MOCK] Cart Abandonment Triggered for: " + elements.emailInput.value);
+            }
+        });
+
+        // Phone Mask
+        elements.phoneInput.addEventListener('input', (e) => {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+        });
+
+        // Submit Logic (Arrow Function)
+        elements.checkoutForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const data = {
+                brand: elements.brandInput.value,
+                model: elements.modelSelect.value,
+                name: document.getElementById('name').value,
+                email: elements.emailInput.value,
+                phone: elements.phoneInput.value
+            };
+
+            const btn = elements.checkoutForm.querySelector('button');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+            btn.disabled = true;
+
+            // FB Pixel Standard Event
+            if (typeof fbq === 'function') {
+                fbq('track', 'InitiateCheckout', { content_name: data.model, value: 0.00, currency: 'BRL' });
+            }
+
+            console.log("FB Pixel: InitiateCheckout", data);
+
+            setTimeout(() => {
+                alert(`Sucesso! Em um projeto real, você seria redirecionado para o Stripe/MercadoPago.`);
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }, 1500);
+        });
+
+        // Init
+        updateUrgency();
+
+        // Restore State Logic (Simplified for custom select)
+        const savedBrand = localStorage.getItem('selectedBrand');
+        if (savedBrand) {
+            // Very basic restore for custom select
+            const option = document.querySelector(`.custom-option[data-value="${savedBrand}"]`);
+            if (option) option.click();
+        }
+    </script>
+</body>
+
+</html>
