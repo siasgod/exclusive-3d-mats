@@ -154,9 +154,15 @@
         <a href="#comprar" class="block text-brand-orange font-bold">Comprar Agora</a>
     </div>
 
-    <!-- Parallax Hero Section -->
-    <section class="relative pt-32 pb-48 px-6 text-center max-w-7xl mx-auto overflow-hidden parallax-hero">
-        <div class="absolute inset-0 bg-black/70 z-0"></div> <!-- Overlay darker for better text contrast -->
+    <!-- Hero Section with Slider -->
+    <section class="relative pt-32 pb-48 px-6 text-center max-w-7xl mx-auto overflow-hidden">
+        <!-- Hero Background Slider -->
+        <div id="hero-carousel" class="absolute inset-0 z-0">
+            <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-100" alt="Hero 1">
+            <img src="./assets/carousel-4-BpsqPhmo.webp" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0" alt="Hero 2">
+            <img src="./assets/carousel-5-Cm0njbwO.webp" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0" alt="Hero 3">
+        </div>
+        <div class="absolute inset-0 bg-black/70 z-0"></div> <!-- Overlay -->
 
         <div class="relative z-10 animate-slide-up">
             <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6 drop-shadow-2xl">
@@ -236,33 +242,9 @@
         <h2 class="text-3xl font-bold text-center mb-16">Escolha o Seu Kit <span
                 class="text-brand-orange">Exclusive</span></h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <!-- Basic Kit -->
-            <div
-                class="glass p-8 rounded-2xl border border-gray-800 hover:border-brand-orange transition duration-500 group">
-                <div class="h-64 overflow-hidden rounded-xl mb-6 relative">
-                    <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Básico"
-                        class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                    <div class="absolute top-4 right-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full">
-                        BÁSICO</div>
-                </div>
-                <h3 class="text-2xl font-bold mb-2">Kit Essencial</h3>
-                <p class="text-gray-400 mb-6 h-12">Proteção completa para o assoalho dianteiro e traseiro do seu
-                    veículo.</p>
-                <ul class="text-sm text-gray-300 space-y-3 mb-8">
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Tapetes
-                        Dianteiros (Motorista + Passageiro)</li>
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Tapetes Traseiros
-                    </li>
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Fixação Original
-                    </li>
-                </ul>
-                <a href="#comprar"
-                    class="block w-full text-center bg-transparent border border-gray-600 text-white py-3 rounded-lg hover:bg-white hover:text-black transition font-bold">Selecionar
-                    Modelo</a>
-            </div>
-
-            <!-- Complete Kit -->
-            <div class="glass p-8 rounded-2xl border border-brand-orange/50 relative overflow-hidden group">
+            
+            <!-- Complete Kit (Premium) - FIRST POSITION -->
+            <div class="glass p-8 rounded-2xl border-2 border-brand-orange relative overflow-hidden group shadow-[0_0_30px_rgba(255,69,0,0.15)] transform hover:scale-[1.02] transition duration-300">
                 <div
                     class="absolute top-0 right-0 bg-brand-orange text-black text-xs font-bold px-4 py-1 rounded-bl-lg z-10">
                     MAIS VENDIDO</div>
@@ -271,8 +253,16 @@
                         class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
                 </div>
                 <h3 class="text-2xl font-bold mb-2 text-brand-orange">Kit Premium Completo</h3>
-                <p class="text-gray-400 mb-6 h-12">A experiência total. Assoalho completo + Porta-Malas para proteção
+                <p class="text-gray-400 mb-4 h-12">A experiência total. Assoalho completo + Porta-Malas para proteção
                     máxima.</p>
+                
+                <!-- Price Trigger Premium -->
+                <div class="mb-6">
+                    <p class="text-gray-500 text-sm line-through">De R$ 589,90</p>
+                    <p class="text-3xl font-bold text-white">Por R$ 387,90</p>
+                    <p class="text-green-500 text-sm font-bold mt-1"><i class="fas fa-tag"></i> Economize R$ 19,40 no PIX</p>
+                </div>
+
                 <ul class="text-sm text-gray-300 space-y-3 mb-8">
                     <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Tudo do Kit
                         Essencial</li>
@@ -282,9 +272,45 @@
                         Exclusive Grátis</li>
                 </ul>
                 <a href="#comprar"
-                    class="block w-full text-center bg-brand-orange text-black py-3 rounded-lg hover:bg-orange-600 transition font-bold shadow-lg shadow-orange-500/20">Selecionar
-                    Modelo</a>
+                    class="block w-full text-center bg-brand-orange text-black py-4 rounded-lg hover:bg-orange-600 transition font-bold shadow-lg shadow-orange-500/30 text-lg uppercase tracking-wider">
+                    Selecionar Modelo
+                </a>
             </div>
+
+            <!-- Basic Kit - SECOND POSITION -->
+            <div
+                class="glass p-8 rounded-2xl border border-gray-800 hover:border-brand-orange transition duration-500 group">
+                <div class="h-64 overflow-hidden rounded-xl mb-6 relative">
+                    <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Básico"
+                        class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                    <div class="absolute top-4 right-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        BÁSICO</div>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Kit Essencial</h3>
+                <p class="text-gray-400 mb-4 h-12">Proteção completa para o assoalho dianteiro e traseiro do seu
+                    veículo.</p>
+
+                <!-- Price Trigger Basic -->
+                <div class="mb-6">
+                     <p class="text-gray-500 text-sm line-through">De R$ 429,90</p>
+                     <p class="text-2xl font-bold text-white">Por R$ 297,90</p>
+                     <p class="text-green-500 text-sm font-bold mt-1"><i class="fas fa-tag"></i> Economize R$ 14,90 no PIX</p>
+                </div>
+
+                <ul class="text-sm text-gray-300 space-y-3 mb-8">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Tapetes
+                        Dianteiros (Motorista + Passageiro)</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Tapetes Traseiros
+                    </li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Fixação Original
+                    </li>
+                </ul>
+                <a href="#comprar"
+                    class="block w-full text-center bg-transparent border border-gray-600 text-white py-4 rounded-lg hover:bg-white hover:text-black transition font-bold">
+                    Selecionar Modelo
+                </a>
+            </div>
+
         </div>
     </section>
 

@@ -67,10 +67,21 @@ const initHeroSlider = () => {
     let currentSlide = 0;
 
     if (slides.length > 0) {
+        // Ensure first slide is visible
+        slides[0].classList.remove('opacity-0');
+        slides[0].classList.add('opacity-100');
+
         setInterval(() => {
-            slides[currentSlide].style.opacity = '0';
+            // Hide current
+            slides[currentSlide].classList.remove('opacity-100');
+            slides[currentSlide].classList.add('opacity-0');
+
+            // Move to next
             currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].style.opacity = '1';
+
+            // Show next
+            slides[currentSlide].classList.remove('opacity-0');
+            slides[currentSlide].classList.add('opacity-100');
         }, 5000); // Switch every 5 seconds
     }
 };
@@ -281,11 +292,18 @@ const updateModels = (brand) => {
 
 const initEventListeners = () => {
     elements.brandSearchInput.addEventListener('input', (e) => {
-        const val = e.target.value;
-        if (carDatabase[val]) {
-            state.selectedBrand = val;
-            localStorage.setItem('selectedBrand', val);
-            updateModels(val);
+        const val = e.target.value.trim();
+        if (!val) return;
+
+        // Case insensitive search for brand key
+        const brandKey = Object.keys(carDatabase).find(key => key.toLowerCase() === val.toLowerCase());
+
+        if (brandKey) {
+            state.selectedBrand = brandKey;
+            localStorage.setItem('selectedBrand', brandKey);
+            // Update input to match case correctly if desired, or just use the key for logic
+            // e.target.value = brandKey; 
+            updateModels(brandKey);
         }
     });
 
