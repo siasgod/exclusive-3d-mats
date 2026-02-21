@@ -68,15 +68,20 @@ const initHeroSlider = () => {
 };
 
 // ============================================================
-// 3-DROPDOWN CAR SELECTOR
+// ELITE CAR SELECTOR (Searchable Pop-over)
 // ============================================================
 const initCarSelector = () => {
     const brandSel = $('sel-brand');
-    const modelSel = $('sel-model');
+    const modelTrigger = $('model-trigger');
+    const modelPopover = $('model-popover');
+    const modelSearch = $('model-search');
+    const modelResults = $('model-results');
     const yearSel = $('sel-year');
+    const modelText = $('model-selected-text');
+
     if (!brandSel) return;
 
-    // Populate brands
+    // Populate Brands
     const brands = Object.keys(carDatabase).sort();
     brands.forEach(b => {
         const opt = document.createElement('option');
@@ -85,57 +90,100 @@ const initCarSelector = () => {
         brandSel.appendChild(opt);
     });
 
+    // Populate Versions in Pop-over
+    const renderVersions = (filter = '') => {
+        if (!state.selectedBrand) return;
+        modelResults.innerHTML = '';
+
+        const versions = carDatabase[state.selectedBrand] || [];
+        const filtered = versions.filter(v =>
+            v.name.toLowerCase().includes(filter.toLowerCase())
+        );
+
+        if (filtered.length === 0) {
+            modelResults.innerHTML = '<p style="padding:15px;color:#666;font-size:12px;text-align:center">Nenhuma versão encontrada...</p>';
+            return;
+        }
+
+        filtered.forEach(v => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = v.name;
+            btn.onclick = () => selectVersion(v);
+            modelResults.appendChild(btn);
+        });
+    };
+
+    const selectVersion = (v) => {
+        state.selectedModel = v.name;
+        state.selectedYear = '';
+        state.vehicleConfirmed = true; // Confirm immediately for feedback
+
+        modelText.textContent = v.name;
+        modelText.style.color = '#fff';
+        modelPopover.classList.remove('show');
+
+        // Show confirmation box with the selected version immediately
+        const confText = $('conf-vehicle-text');
+        if (confText) confText.textContent = v.name;
+        const box = $('confirm-box');
+        if (box) box.classList.remove('hidden');
+
+        // Populate Years
+        yearSel.innerHTML = '<option value="">Agora selecione o ano...</option>';
+        yearSel.disabled = false;
+        [...v.years].reverse().forEach(y => {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = y;
+            yearSel.appendChild(opt);
+        });
+
+        updateStickyPrice();
+    };
+
+    // Events
     brandSel.addEventListener('change', () => {
         const brand = brandSel.value;
         state.selectedBrand = brand;
         state.selectedModel = '';
         state.selectedYear = '';
         state.vehicleConfirmed = false;
-        hideConfirmBox();
 
-        // Reset downstream
-        modelSel.innerHTML = '<option value="">Selecione o modelo</option>';
-        modelSel.disabled = !brand;
+        modelTrigger.disabled = !brand;
+        modelText.textContent = brand ? '2. Selecione a versão técnica' : 'Aguardando marca...';
+        modelText.style.color = brand ? '#fff' : '#888';
+
         yearSel.innerHTML = '<option value="">Selecione o ano</option>';
         yearSel.disabled = true;
-
-        if (!brand) return;
-        const models = Object.keys(carDatabase[brand]).sort();
-        models.forEach(m => {
-            const opt = document.createElement('option');
-            opt.value = m;
-            opt.textContent = m;
-            modelSel.appendChild(opt);
-        });
+        hideConfirmBox();
+        renderVersions();
     });
 
-    modelSel.addEventListener('change', () => {
-        const model = modelSel.value;
-        state.selectedModel = model;
-        state.selectedYear = '';
-        state.vehicleConfirmed = false;
-        hideConfirmBox();
+    modelTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        modelPopover.classList.toggle('show');
+        if (modelPopover.classList.contains('show')) {
+            modelSearch.focus();
+            renderVersions(modelSearch.value);
+        }
+    });
 
-        yearSel.innerHTML = '<option value="">Selecione o ano</option>';
-        yearSel.disabled = !model;
+    modelSearch.addEventListener('input', (e) => {
+        renderVersions(e.target.value);
+    });
 
-        if (!model) return;
-        const years = carDatabase[state.selectedBrand][model];
-        // Show newest first
-        [...years].reverse().forEach(y => {
-            const opt = document.createElement('option');
-            opt.value = y;
-            opt.textContent = y;
-            yearSel.appendChild(opt);
-        });
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+        if (!modelPopover.contains(e.target) && e.target !== modelTrigger) {
+            modelPopover.classList.remove('show');
+        }
     });
 
     yearSel.addEventListener('change', () => {
-        const year = yearSel.value;
-        state.selectedYear = year;
-        state.vehicleConfirmed = false;
-        hideConfirmBox();
-        if (year) confirmVehicle();
+        state.selectedYear = yearSel.value;
+        if (state.selectedYear) confirmVehicle();
+        else hideConfirmBox();
     });
 };
 
@@ -143,17 +191,12 @@ const confirmVehicle = () => {
     state.vehicleConfirmed = true;
     const { selectedBrand: b, selectedModel: m, selectedYear: y } = state;
 
-    // Update confirmation box text
     const confText = $('conf-vehicle-text');
     if (confText) confText.textContent = `${b} ${m} ${y}`;
 
     const box = $('confirm-box');
-    if (box) {
-        box.classList.remove('hidden');
-        box.classList.add('animate-bounce-in');
-    }
+    if (box) box.classList.remove('hidden');
 
-    // Update sticky button price to reflect selected kit or default
     updateStickyPrice();
 };
 

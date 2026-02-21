@@ -73,27 +73,126 @@
         }
 
         /* Hero Carousel */
-        #hero-carousel {
+        /* Strict Black */
+        body,
+        html {
+            background-color: #0a0a0a !important;
+            color: #fff
+        }
+
+        /* Pop-over Selector */
+        .popover-container {
+            position: relative;
+            width: 100%
+        }
+
+        .popover-trigger {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
+            text-align: left;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .popover-trigger:disabled {
+            opacity: 0.4;
+            cursor: not-allowed
+        }
+
+        .popover-trigger:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2)
+        }
+
+        .popover-content {
             position: absolute;
-            inset: 0;
-            overflow: hidden
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: #151515;
+            border: 1px solid #333;
+            border-radius: 14px;
+            z-index: 100;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            padding: 12px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            animation: popIn 0.2s ease-out;
         }
 
-        .hero-slide {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 1.2s ease
+        .popover-content.show {
+            display: flex
         }
 
-        .hero-slide.active {
-            opacity: 1
+        .search-input {
+            width: 100%;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
         }
 
-        .hero-slide img {
+        .search-input:focus {
+            border-color: #FF4500
+        }
+
+        .results-list {
+            max-height: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .results-list button {
+            width: 100%;
+            text-align: left;
+            padding: 12px 14px;
+            background: transparent;
+            border: none;
+            color: #ccc;
+            font-size: 13.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all .1s;
+        }
+
+        .results-list button:hover {
+            background: rgba(255, 69, 0, 0.1);
+            color: #fff
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* Hero containment */
+        #hero-carousel img {
             width: 100%;
             height: 100%;
-            object-fit: cover
+            object-fit: contain;
+            background-color: #0a0a0a;
         }
 
         .hero-overlay {
@@ -540,56 +639,76 @@
             <p style="color:#888;font-size:14px">Temos o molde exato para mais de 500 modelos nacionais e importados</p>
         </div>
 
-        <div class="glass" style="border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:14px">
-            <!-- Marca -->
+        <div class="glass" style="border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:20px">
+            <!-- MARCA -->
             <div>
                 <label
-                    style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px"><i
-                        class="fas fa-car" style="color:#FF4500;margin-right:6px"></i>Marca</label>
-                <select id="sel-brand" class="sel">
+                    style="font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:10px">1.
+                    Marca do Veículo</label>
+                <select id="sel-brand" class="sel"
+                    style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);height:50px">
                     <option value="">Selecione a marca</option>
                 </select>
             </div>
-            <!-- Modelo -->
-            <div>
+
+            <!-- MODELO / VERSÃO (Pop-over) -->
+            <div class="popover-container">
                 <label
-                    style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px"><i
-                        class="fas fa-list" style="color:#FF4500;margin-right:6px"></i>Modelo</label>
-                <select id="sel-model" class="sel" disabled>
-                    <option value="">Selecione o modelo</option>
-                </select>
+                    style="font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:10px">2.
+                    Modelo e Versão Técnica</label>
+                <button id="model-trigger" class="popover-trigger" disabled>
+                    <span id="model-selected-text">Aguardando marca...</span>
+                    <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+
+                <div id="model-popover" class="popover-content">
+                    <input type="text" id="model-search" class="search-input"
+                        placeholder="Digite para filtrar versões (ex: TSI, Adventure)..." autocomplete="off">
+                    <div id="model-results" class="results-list">
+                        <!-- Gerado via JS -->
+                    </div>
+                </div>
             </div>
-            <!-- Ano -->
+
+            <!-- ANO -->
             <div>
                 <label
-                    style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px"><i
-                        class="fas fa-calendar-alt" style="color:#FF4500;margin-right:6px"></i>Ano</label>
-                <select id="sel-year" class="sel" disabled>
+                    style="font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:10px">3.
+                    Ano Fabricação</label>
+                <select id="sel-year" class="sel" disabled
+                    style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);height:50px">
                     <option value="">Selecione o ano</option>
                 </select>
             </div>
 
-            <!-- Confirmation Box -->
-            <div id="confirm-box" class="hidden">
-                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-                    <div style="color:#22c55e;font-size:22px">✓</div>
-                    <div>
-                        <p style="color:#22c55e;font-weight:900;font-size:14px">Veículo selecionado:</p>
-                        <p id="conf-vehicle-text" style="color:#fff;font-weight:700;font-size:16px"></p>
-                    </div>
-                </div>
+            <!-- RESULTADO -->
+            <div id="confirm-box" class="hidden animate-bounce-in">
                 <div
-                    style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.25);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px">
-                    <i class="fas fa-truck" style="color:#22c55e;font-size:18px"></i>
-                    <div>
-                        <p style="font-weight:700;font-size:13px;color:#22c55e">Frete Grátis para todo Brasil</p>
-                        <p style="font-size:12px;color:#999">Entrega em 5 a 7 dias úteis após confirmação</p>
+                    style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:16px;padding:20px;text-align:center">
+                    <div
+                        style="width:40px;height:40px;background:#22c55e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+                        <i class="fas fa-check" style="color:#000;font-size:18px"></i>
                     </div>
+                    <p
+                        style="color:#22c55e;font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">
+                        Veículo Identificado!</p>
+                    <h3 id="conf-vehicle-text" style="color:#fff;font-weight:800;font-size:18px;margin-bottom:16px">Polo
+                        Highline 1.0 TSI Flex Aut.</h3>
+
+                    <div
+                        style="background:rgba(255,255,255,0.03);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;text-align:left">
+                        <i class="fas fa-truck-fast" style="color:#22c55e;font-size:20px"></i>
+                        <div>
+                            <p style="font-weight:800;font-size:14px;color:#fff">Frete Grátis Liberado</p>
+                            <p style="font-size:12px;color:#888">Entrega estimada: 5 a 7 dias úteis</p>
+                        </div>
+                    </div>
+
+                    <a href="#kit-section" class="btn-green"
+                        style="display:block;margin-top:20px;padding:14px;border-radius:12px;font-size:14px;font-weight:900;text-decoration:none">
+                        CONTINUAR PARA OS KITS →
+                    </a>
                 </div>
-                <a href="#kit-section"
-                    style="display:block;text-align:center;margin-top:14px;padding:14px;background:#22c55e;color:#000;font-weight:900;border-radius:11px;text-decoration:none;font-size:14px;text-transform:uppercase;letter-spacing:.05em">
-                    Ver Kits Disponíveis →
-                </a>
             </div>
         </div>
     </section>
