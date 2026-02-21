@@ -7,58 +7,49 @@
     <title>Exclusive 3D - Tapetes Automotivos de Luxo</title>
     <meta name="description"
         content="Proteção total contra líquidos, ajuste milimétrico e design de luxo para o seu veículo.">
-
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="./assets/favicon.png">
-
-    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Montserrat:wght@700;900&display=swap"
+        rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            black: '#0a0a0a',
-                            orange: '#FF4500', // Laranja Performance
-                            white: '#f8f9fa',
-                        }
+                        brand: { black: '#0a0a0a', orange: '#FF4500', white: '#f8f9fa' }
                     },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     animation: {
                         'pulse-orange': 'pulse-orange 2s infinite',
                         'glow': 'glow 2s infinite alternate',
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
                         'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'bounce-in': 'bounceIn 0.6s cubic-bezier(0.36,0.07,0.19,0.97) forwards',
                     },
                     keyframes: {
                         'pulse-orange': {
-                            '0%': { transform: 'scale(0.95)', boxShadow: '0 0 0 0 rgba(255, 69, 0, 0.7)' },
-                            '70%': { transform: 'scale(1)', boxShadow: '0 0 0 10px rgba(255, 69, 0, 0)' },
-                            '100%': { transform: 'scale(0.95)', boxShadow: '0 0 0 0 rgba(255, 69, 0, 0)' },
+                            '0%': { transform: 'scale(0.95)', boxShadow: '0 0 0 0 rgba(255,69,0,0.7)' },
+                            '70%': { transform: 'scale(1)', boxShadow: '0 0 0 10px rgba(255,69,0,0)' },
+                            '100%': { transform: 'scale(0.95)', boxShadow: '0 0 0 0 rgba(255,69,0,0)' },
                         },
                         'glow': {
-                            '0%': { boxShadow: '0 0 5px rgba(255, 69, 0, 0.2)' },
-                            '100%': { boxShadow: '0 0 20px rgba(255, 69, 0, 0.6)' },
+                            '0%': { boxShadow: '0 0 5px rgba(255,69,0,0.2)' },
+                            '100%': { boxShadow: '0 0 20px rgba(255,69,0,0.6)' },
                         },
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        bounceIn: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '60%': { transform: 'scale(1.05)' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
                         }
                     }
                 }
             }
         }
     </script>
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -73,17 +64,8 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .parallax-hero {
-            background-image: url('./assets/carousel-new-2-CTcO_2X9.jpg');
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -92,49 +74,107 @@
 
         ::-webkit-scrollbar-thumb {
             background: #333;
-            border-radius: 5px;
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
             background: #FF4500;
         }
+
+        .neon-green {
+            box-shadow: 0 0 0 2px #22c55e, 0 0 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .step-transition {
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .step-hidden {
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+            position: absolute;
+            inset: 0;
+        }
+
+        .step-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+            position: relative;
+        }
+
+        .brand-btn {
+            transition: all 0.2s;
+        }
+
+        .brand-btn:hover,
+        .brand-btn.active {
+            background: #FF4500;
+            color: #000;
+            border-color: #FF4500;
+            transform: translateY(-2px);
+        }
+
+        .kit-card {
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .kit-card:hover {
+            transform: translateY(-4px);
+        }
+
+        @media (max-width: 640px) {
+            #checkout-modal .modal-inner {
+                border-radius: 0;
+                max-width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #checkout-modal .modal-body {
+                flex: 1;
+                overflow-y: auto;
+                padding-bottom: 5rem;
+            }
+
+            #checkout-modal .modal-footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 1rem;
+                background: #0a0a0a;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                z-index: 60;
+            }
+        }
     </style>
-    <!-- Facebook Pixel Code (Placeholder) -->
     <script>
-        !function (f, b, e, v, n, t, s) {
-            if (f.fbq) return; n = f.fbq = function () {
-                n.callMethod ?
-                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-            n.queue = []; t = b.createElement(e); t.async = !0;
-            t.src = v; s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }(window, document, 'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-        // fbq('init', 'YOUR_PIXEL_ID'); 
+        !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s) }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        // fbq('init', 'YOUR_PIXEL_ID');
         // fbq('track', 'PageView');
     </script>
 </head>
 
 <body class="antialiased overflow-x-hidden">
 
-    <!-- Urgency Bar -->
+    <!-- ======= URGENCY BAR ======= -->
     <div
         class="bg-brand-orange text-brand-black text-center py-2 font-bold text-sm sticky top-0 z-50 shadow-lg shadow-orange-500/20">
         <span id="viewer-count">12</span> pessoas estão vendo este modelo agora! | Oferta encerra em <span
             id="timer">15:00</span>
     </div>
 
-    <!-- Navigation -->
+    <!-- ======= NAV ======= -->
     <nav
         class="flex items-center justify-between px-6 py-4 glass sticky top-10 z-40 mx-4 mt-4 rounded-xl border-t border-white/10">
         <div class="text-xl font-bold text-brand-orange tracking-widest flex items-center gap-2">
             <i class="fas fa-layer-group"></i> EXCLUSIVE 3D
         </div>
-        <button id="menu-btn" class="md:hidden text-brand-white focus:outline-none">
-            <i class="fas fa-bars text-2xl"></i>
-        </button>
+        <button id="menu-btn" class="md:hidden text-brand-white focus:outline-none"><i
+                class="fas fa-bars text-2xl"></i></button>
         <div class="hidden md:flex space-x-8 text-sm font-medium">
             <a href="#beneficios" class="hover:text-brand-orange transition">Benefícios</a>
             <a href="#comparativo" class="hover:text-brand-orange transition">Comparativo</a>
@@ -144,26 +184,27 @@
                 Agora</a>
         </div>
     </nav>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu"
-        class="hidden fixed inset-0 bg-brand-black z-30 pt-24 px-6 space-y-6 text-center text-lg transition-transform duration-300">
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-brand-black z-30 pt-24 px-6 space-y-6 text-center text-lg">
         <a href="#beneficios" class="block hover:text-brand-orange">Benefícios</a>
         <a href="#comparativo" class="block hover:text-brand-orange">Comparativo</a>
         <a href="#depoimentos" class="block hover:text-brand-orange">Depoimentos</a>
         <a href="#comprar" class="block text-brand-orange font-bold">Comprar Agora</a>
     </div>
 
-    <!-- Hero Section with Slider -->
+    <!-- ======= HERO ======= -->
     <section class="relative pt-32 pb-48 px-6 text-center max-w-7xl mx-auto overflow-hidden">
-        <!-- Hero Background Slider -->
         <div id="hero-carousel" class="absolute inset-0 z-0">
-            <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-100" alt="Hero 1">
-            <img src="./assets/carousel-4-BpsqPhmo.webp" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0" alt="Hero 2">
-            <img src="./assets/carousel-5-Cm0njbwO.webp" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0" alt="Hero 3">
+            <img src="./assets/carousel-new-2-CTcO_2X9.jpg"
+                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-100"
+                alt="Hero 1">
+            <img src="./assets/carousel-4-BpsqPhmo.webp"
+                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0"
+                alt="Hero 2">
+            <img src="./assets/carousel-5-Cm0njbwO.webp"
+                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0"
+                alt="Hero 3">
         </div>
-        <div class="absolute inset-0 bg-black/70 z-0"></div> <!-- Overlay -->
-
+        <div class="absolute inset-0 bg-black/70 z-0"></div>
         <div class="relative z-10 animate-slide-up">
             <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6 drop-shadow-2xl">
                 A Revolução do Interior Automotivo: <span class="text-brand-orange">Tapetes 3D Sob Medida</span>
@@ -175,191 +216,318 @@
                 class="inline-block bg-brand-orange text-brand-black px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide animate-pulse-orange hover:bg-orange-600 transition shadow-lg shadow-orange-500/40">
                 Quero Meu Kit Exclusive
             </a>
-
             <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto opacity-80">
-                <img src="./assets/carousel-4-BpsqPhmo.webp" alt="Tapete Luxo Detalhe"
-                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10">
-                <img src="./assets/carousel-5-Cm0njbwO.webp" alt="Tapete Textura"
-                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10">
-                <img src="./assets/product-1-CLmPGSY4.webp" alt="Tapete Instalado"
-                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10">
-                <img src="./assets/product-5-CjEBeeXw.webp" alt="Fácil Limpeza"
-                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10">
+                <img src="./assets/carousel-4-BpsqPhmo.webp"
+                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10" alt="">
+                <img src="./assets/carousel-5-Cm0njbwO.webp"
+                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10" alt="">
+                <img src="./assets/product-1-CLmPGSY4.webp"
+                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10" alt="">
+                <img src="./assets/product-5-CjEBeeXw.webp"
+                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10" alt="">
             </div>
         </div>
     </section>
 
-    <!-- Filter Widget (Available Models) -->
-    <section id="comprar" class="px-6 -mt-20 mb-20 relative z-20">
+    <!-- ======= CONFIGURADOR DE 3 PASSOS ======= -->
+    <section id="comprar" class="px-6 -mt-20 mb-8 relative z-20">
         <div
-            class="glass max-w-4xl mx-auto p-8 rounded-2xl shadow-2xl border border-gray-700 backdrop-blur-xl bg-black/80">
-            <h2 class="text-2xl font-bold mb-6 text-center text-brand-orange flex items-center justify-center gap-2">
-                <i class="fas fa-search"></i> Verifique a Disponibilidade
-            </h2>
-            <p class="text-center text-gray-400 mb-8 text-sm">Selecione a marca e o modelo do seu veículo para verificar
-                o estoque.</p>
+            class="glass max-w-3xl mx-auto p-8 rounded-2xl shadow-2xl border border-gray-700 backdrop-blur-xl bg-black/80">
 
-            <form id="filter-form" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Progress Indicator -->
+            <div id="progress-bar" class="flex items-center justify-center gap-2 mb-6">
+                <div class="flex items-center gap-2">
+                    <div id="dot-1"
+                        class="w-8 h-8 rounded-full bg-brand-orange text-black font-bold text-sm flex items-center justify-center transition-all duration-300">
+                        1</div>
+                    <span class="text-xs text-gray-400 hidden sm:inline">Marca</span>
+                </div>
+                <div class="h-px w-8 bg-gray-700 flex-shrink-0" id="line-1"></div>
+                <div class="flex items-center gap-2">
+                    <div id="dot-2"
+                        class="w-8 h-8 rounded-full bg-gray-700 text-gray-400 font-bold text-sm flex items-center justify-center transition-all duration-300">
+                        2</div>
+                    <span class="text-xs text-gray-400 hidden sm:inline">Modelo</span>
+                </div>
+                <div class="h-px w-8 bg-gray-700 flex-shrink-0" id="line-2"></div>
+                <div class="flex items-center gap-2">
+                    <div id="dot-3"
+                        class="w-8 h-8 rounded-full bg-gray-700 text-gray-400 font-bold text-sm flex items-center justify-center transition-all duration-300">
+                        3</div>
+                    <span class="text-xs text-gray-400 hidden sm:inline">Ano</span>
+                </div>
+            </div>
+            <p id="step-label" class="text-center text-xs text-gray-500 mb-6 uppercase tracking-widest">Passo 1 de 3 —
+                Selecione a Marca</p>
 
-                <!-- Brand Select with Search Datalist -->
+            <!-- STEP 1: BRAND -->
+            <div id="cfg-step-1" class="step-transition step-visible">
+                <h2 class="text-xl font-bold mb-5 text-center text-brand-orange"><i class="fas fa-car mr-2"></i>Qual a
+                    marca do seu veículo?</h2>
+                <!-- Popular Brands Grid -->
+                <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-5">
+                    <button onclick="selectBrand('Fiat')"
+                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">Fiat</button>
+                    <button onclick="selectBrand('Volkswagen')"
+                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">VW</button>
+                    <button onclick="selectBrand('Chevrolet')"
+                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">GM</button>
+                    <button onclick="selectBrand('Toyota')"
+                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">Toyota</button>
+                    <button onclick="selectBrand('Ford')"
+                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">Ford</button>
+                    <button onclick="selectBrand('Honda')"
+                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">Honda</button>
+                </div>
+                <p class="text-xs text-center text-gray-500 mb-3">Ou busque outra marca:</p>
                 <div class="relative">
-                    <label class="block text-xs font-bold text-brand-orange uppercase tracking-wider mb-2">Marca</label>
-                    <div class="relative">
-                        <i class="fas fa-car absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                        <input list="brand-list" id="brand-search" placeholder="Digite ou selecione a marca..."
-                            class="w-full bg-brand-black border border-gray-700 rounded-lg py-3 pl-10 pr-4 text-white focus:border-brand-orange focus:ring-1 focus:ring-brand-orange outline-none transition h-[50px] placeholder-gray-600">
-                        <datalist id="brand-list">
-                            <!-- Populated by JS -->
-                        </datalist>
-                    </div>
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                    <input list="brand-list" id="brand-search" placeholder="Digite a marca..." autocomplete="off"
+                        class="w-full bg-brand-black border border-gray-700 rounded-lg py-3 pl-10 pr-4 text-white focus:border-brand-orange focus:ring-1 focus:ring-brand-orange outline-none transition placeholder-gray-600">
+                    <datalist id="brand-list"></datalist>
                 </div>
+            </div>
 
-                <!-- Model Select -->
-                <div>
-                    <label
-                        class="block text-xs font-bold text-brand-orange uppercase tracking-wider mb-2">Modelo</label>
-                    <select id="model-select"
-                        class="w-full bg-brand-black border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange focus:ring-1 focus:ring-brand-orange outline-none transition h-[50px] disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled>
-                        <option value="">Aguardando Marca...</option>
-                    </select>
+            <!-- STEP 2: MODEL -->
+            <div id="cfg-step-2" class="step-transition step-hidden">
+                <h2 class="text-xl font-bold mb-2 text-center text-brand-orange"><i class="fas fa-list mr-2"></i>Qual o
+                    modelo?</h2>
+                <p id="step2-brand-label" class="text-center text-gray-400 text-sm mb-5"></p>
+                <select id="model-select"
+                    class="w-full bg-brand-black border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange focus:ring-1 focus:ring-brand-orange outline-none transition h-[52px]">
+                    <option value="">Selecione o Modelo</option>
+                </select>
+                <div class="flex gap-3 mt-5">
+                    <button onclick="goToConfigStep(1)"
+                        class="flex-1 border border-gray-700 text-gray-400 py-3 rounded-lg hover:border-gray-500 transition text-sm">←
+                        Voltar</button>
+                    <button id="step2-next" onclick="confirmarModelo()" disabled
+                        class="flex-1 bg-brand-orange text-black font-bold py-3 rounded-lg hover:bg-orange-600 transition disabled:opacity-40 disabled:cursor-not-allowed text-sm">Próximo
+                        →</button>
                 </div>
+            </div>
 
-                <div class="flex items-end">
-                    <button type="submit"
-                        class="w-full bg-brand-white text-brand-black font-bold p-3 rounded-lg hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed h-[50px] shadow-lg shadow-white/10"
-                        id="check-btn" disabled>
-                        Ver Disponibilidade
+            <!-- STEP 3: YEAR -->
+            <div id="cfg-step-3" class="step-transition step-hidden">
+                <h2 class="text-xl font-bold mb-2 text-center text-brand-orange"><i
+                        class="fas fa-calendar-alt mr-2"></i>Ano do veículo?</h2>
+                <p id="step3-model-label" class="text-center text-gray-400 text-sm mb-5"></p>
+                <div id="year-buttons" class="grid grid-cols-4 sm:grid-cols-5 gap-2 mb-5"></div>
+                <button onclick="goToConfigStep(2)"
+                    class="w-full border border-gray-700 text-gray-400 py-2 rounded-lg hover:border-gray-500 transition text-sm">←
+                    Voltar</button>
+            </div>
+
+            <!-- SUCCESS BANNER (hidden, shown after step 3) -->
+            <div id="success-banner" class="hidden mt-4">
+                <div class="bg-green-500/20 border border-green-500 rounded-xl p-5 text-center animate-bounce-in">
+                    <div class="text-green-400 text-2xl font-black mb-1">✓ Configuração Concluída!</div>
+                    <p class="text-white font-semibold text-sm" id="success-text">Molde Premium disponível para seu
+                        veículo</p>
+                    <p class="text-gray-400 text-xs mt-2">Estoque confirmado • Entrega em até 5 dias úteis</p>
+                    <button onclick="scrollToKitSection()"
+                        class="mt-4 w-full bg-green-500 hover:bg-green-400 text-black font-black py-3 rounded-lg transition text-sm uppercase tracking-wide animate-pulse">
+                        Ver Kits Disponíveis →
                     </button>
                 </div>
-            </form>
-            <div id="availability-message" class="hidden"></div>
+            </div>
         </div>
     </section>
 
-    <!-- Kits Showcase -->
-    <section class="px-6 py-20 max-w-7xl mx-auto">
-        <h2 class="text-3xl font-bold text-center mb-16">Escolha o Seu Kit <span
-                class="text-brand-orange">Exclusive</span></h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-            
-            <!-- Complete Kit (Premium) - FIRST POSITION -->
-            <div class="glass p-8 rounded-2xl border-2 border-brand-orange relative overflow-hidden group shadow-[0_0_30px_rgba(255,69,0,0.15)] transform hover:scale-[1.02] transition duration-300">
+    <!-- ======= KIT SELECTION SECTION ======= -->
+    <section id="kit-section" class="px-6 py-12 hidden">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-8">
+                <p class="text-brand-orange text-xs font-bold uppercase tracking-widest mb-2">Escolha seu Kit</p>
+                <h2 class="text-3xl font-black mb-2">Selecione a proteção ideal</h2>
+                <p class="text-gray-400 text-sm">Oferta por tempo limitado — Frete Grátis para todo o Brasil</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Card 1: Kit Premium (destaque) -->
                 <div
-                    class="absolute top-0 right-0 bg-brand-orange text-black text-xs font-bold px-4 py-1 rounded-bl-lg z-10">
-                    MAIS VENDIDO</div>
-                <div class="h-64 overflow-hidden rounded-xl mb-6 relative">
-                    <img src="./assets/kit-complete-BFARBGDS.jpg" alt="Kit Completo"
-                        class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                </div>
-                <h3 class="text-2xl font-bold mb-2 text-brand-orange">Kit Premium Completo</h3>
-                <p class="text-gray-400 mb-4 h-12">A experiência total. Assoalho completo + Porta-Malas para proteção
-                    máxima.</p>
-                
-                <!-- Price Trigger Premium -->
-                <div class="mb-6">
-                    <p class="text-gray-500 text-sm line-through">De R$ 589,90</p>
-                    <p class="text-3xl font-bold text-white">Por R$ 387,90</p>
-                    <p class="text-green-500 text-sm font-bold mt-1"><i class="fas fa-tag"></i> Economize R$ 19,40 no PIX</p>
+                    class="kit-card glass p-6 rounded-2xl border-2 border-green-500 neon-green relative overflow-hidden">
+                    <div
+                        class="absolute top-0 left-0 right-0 bg-green-500 text-black text-xs font-black py-1 text-center tracking-wider">
+                        ⭐ MAIS ESCOLHIDO
+                    </div>
+                    <div class="mt-5 h-48 overflow-hidden rounded-xl mb-4">
+                        <img src="./assets/kit-complete-BFARBGDS.jpg" alt="Kit Completo"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-lg font-extrabold mb-1 text-white uppercase">Kit Interno + Porta Malas</h3>
+                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Proteção total: Cabine completa + porta-malas
+                        com ajuste milimétrico.</p>
+                    <div class="mb-4 bg-black/30 p-3 rounded-lg border border-white/5">
+                        <p class="text-gray-500 text-xs line-through">De R$ 489,90</p>
+                        <div class="flex items-baseline gap-2">
+                            <p class="text-3xl font-black text-green-400">R$ 79,90</p>
+                            <span class="text-xs text-green-400 font-bold">no PIX</span>
+                        </div>
+                        <p class="text-white/50 text-[10px] mt-1 italic">Ou em até 12x no cartão</p>
+                    </div>
+                    <ul class="text-xs text-gray-300 space-y-2 mb-5">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> 3 Tapetes
+                            internos sob medida</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> Traseiro
+                            inteiriço + proteção central</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> Tapete
+                            porta-malas premium</li>
+                        <li
+                            class="flex items-center gap-2 text-amber-400 font-bold animate-pulse border-t border-white/10 pt-2">
+                            <i class="fas fa-gift"></i> BRINDE: Aromatizador Black Premium
+                        </li>
+                    </ul>
+                    <button onclick="selectKit('Kit Interno + Porta Malas', 79.90)"
+                        class="w-full bg-green-500 hover:bg-green-400 text-black font-black py-4 rounded-xl transition text-sm uppercase tracking-wide shadow-lg shadow-green-900/30">
+                        Quero Este Kit →
+                    </button>
+                    <p class="text-center text-[10px] text-gray-500 mt-2">🔒 Compra 100% segura e criptografada</p>
                 </div>
 
-                <ul class="text-sm text-gray-300 space-y-3 mb-8">
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Tudo do Kit
-                        Essencial</li>
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> <strong>Tapete de
-                            Porta-Malas 3D</strong></li>
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Kit de Limpeza
-                        Exclusive Grátis</li>
-                </ul>
-                <a href="#comprar"
-                    class="block w-full text-center bg-brand-orange text-black py-4 rounded-lg hover:bg-orange-600 transition font-bold shadow-lg shadow-orange-500/30 text-lg uppercase tracking-wider">
-                    Selecionar Modelo
-                </a>
+                <!-- Card 2: Kit Essencial -->
+                <div
+                    class="kit-card glass p-6 rounded-2xl border border-gray-700 hover:border-brand-orange transition duration-300 relative">
+                    <div class="h-48 overflow-hidden rounded-xl mb-4">
+                        <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Essencial"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-lg font-extrabold mb-1 text-white uppercase">Kit Essencial</h3>
+                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Proteção completa para o assoalho dianteiro e
+                        traseiro do seu veículo.</p>
+                    <div class="mb-4 bg-black/30 p-3 rounded-lg border border-white/5">
+                        <p class="text-gray-500 text-xs line-through">De R$ 329,90</p>
+                        <div class="flex items-baseline gap-2">
+                            <p class="text-3xl font-black text-white">R$ 59,90</p>
+                            <span class="text-xs text-green-400 font-bold">no PIX</span>
+                        </div>
+                        <p class="text-green-500 text-xs font-bold mt-1"><i class="fas fa-tag mr-1"></i>Economize R$
+                            270,00</p>
+                    </div>
+                    <ul class="text-xs text-gray-300 space-y-2 mb-5">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> 3 Tapetes
+                            internos sob medida</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Traseiro
+                            inteiriço + proteção central</li>
+                    </ul>
+                    <button onclick="selectKit('Kit Essencial', 59.90)"
+                        class="w-full bg-transparent border border-gray-600 hover:bg-white hover:text-black text-white font-bold py-4 rounded-xl transition text-sm uppercase tracking-wide">
+                        Quero Este Kit →
+                    </button>
+                    <p class="text-center text-[10px] text-gray-500 mt-2">🔒 Compra 100% segura e criptografada</p>
+                </div>
+
             </div>
-
-            <!-- Basic Kit - SECOND POSITION -->
-            <div
-                class="glass p-8 rounded-2xl border border-gray-800 hover:border-brand-orange transition duration-500 group">
-                <div class="h-64 overflow-hidden rounded-xl mb-6 relative">
-                    <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Básico"
-                        class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                    <div class="absolute top-4 right-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full">
-                        BÁSICO</div>
-                </div>
-                <h3 class="text-2xl font-bold mb-2">Kit Essencial</h3>
-                <p class="text-gray-400 mb-4 h-12">Proteção completa para o assoalho dianteiro e traseiro do seu
-                    veículo.</p>
-
-                <!-- Price Trigger Basic -->
-                <div class="mb-6">
-                     <p class="text-gray-500 text-sm line-through">De R$ 429,90</p>
-                     <p class="text-2xl font-bold text-white">Por R$ 297,90</p>
-                     <p class="text-green-500 text-sm font-bold mt-1"><i class="fas fa-tag"></i> Economize R$ 14,90 no PIX</p>
-                </div>
-
-                <ul class="text-sm text-gray-300 space-y-3 mb-8">
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Tapetes
-                        Dianteiros (Motorista + Passageiro)</li>
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Tapetes Traseiros
-                    </li>
-                    <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Fixação Original
-                    </li>
-                </ul>
-                <a href="#comprar"
-                    class="block w-full text-center bg-transparent border border-gray-600 text-white py-4 rounded-lg hover:bg-white hover:text-black transition font-bold">
-                    Selecionar Modelo
-                </a>
-            </div>
-
         </div>
     </section>
 
-    <!-- Benefits Grid -->
+    <!-- ======= TECH FEATURES GRID ======= -->
+    <section id="tech-features" class="px-6 py-16 bg-gradient-to-b from-black to-gray-950">
+        <div class="max-w-4xl mx-auto">
+            <p class="text-center text-brand-orange text-xs font-bold uppercase tracking-widest mb-2">Engenharia de
+                Precisão</p>
+            <h2 class="text-3xl font-black text-center mb-10">Tecnologia que <span class="text-brand-orange">você vê e
+                    sente</span></h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div
+                    class="glass p-5 rounded-xl text-center hover:border-brand-orange border border-transparent transition duration-300">
+                    <div
+                        class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-orange text-2xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" class="w-7 h-7">
+                            <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                        </svg>
+                    </div>
+                    <p class="font-black text-lg text-white">7mm</p>
+                    <p class="text-brand-orange text-xs font-bold uppercase">Espessura</p>
+                    <p class="text-gray-500 text-xs mt-1">Borracha de alta densidade</p>
+                </div>
+                <div
+                    class="glass p-5 rounded-xl text-center hover:border-brand-orange border border-transparent transition duration-300">
+                    <div
+                        class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-orange">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" class="w-7 h-7">
+                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                            <path d="M3 9h18M9 21V9" />
+                        </svg>
+                    </div>
+                    <p class="font-black text-lg text-white">5cm</p>
+                    <p class="text-brand-orange text-xs font-bold uppercase">Bordas</p>
+                    <p class="text-gray-500 text-xs mt-1">Proteção contra líquidos</p>
+                </div>
+                <div
+                    class="glass p-5 rounded-xl text-center hover:border-brand-orange border border-transparent transition duration-300">
+                    <div
+                        class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-orange">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" class="w-7 h-7">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+                        </svg>
+                    </div>
+                    <p class="font-black text-lg text-white">Pinado</p>
+                    <p class="text-brand-orange text-xs font-bold uppercase">Base</p>
+                    <p class="text-gray-500 text-xs mt-1">Antiderrapante original</p>
+                </div>
+                <div
+                    class="glass p-5 rounded-xl text-center hover:border-brand-orange border border-transparent transition duration-300">
+                    <div
+                        class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-orange">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" class="w-7 h-7">
+                            <circle cx="12" cy="12" r="4" />
+                            <circle cx="12" cy="12" r="9" />
+                        </svg>
+                    </div>
+                    <p class="font-black text-lg text-white">Metálico</p>
+                    <p class="text-brand-orange text-xs font-bold uppercase">Ilhós</p>
+                    <p class="text-gray-500 text-xs mt-1">Fixação de fábrica</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= BENEFITS GRID ======= -->
     <section id="beneficios" class="px-6 py-20 bg-gradient-to-t from-gray-900 to-black">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-16">Por que escolher o <span
                     class="text-brand-orange">Exclusive 3D</span>?</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Benefit 1 -->
                 <div
                     class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange group">
                     <div
                         class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange group-hover:bg-brand-orange group-hover:text-black transition">
-                        <i class="fas fa-tint text-3xl"></i>
-                    </div>
+                        <i class="fas fa-tint text-3xl"></i></div>
                     <h3 class="font-bold text-lg mb-2">Impermeabilidade 100%</h3>
                     <p class="text-gray-400 text-sm">Protege o carpete original contra qualquer líquido ou sujeira.
                         Derramou? Secou.</p>
                 </div>
-                <!-- Benefit 2 -->
                 <div
                     class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange group">
                     <div
                         class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange group-hover:bg-brand-orange group-hover:text-black transition">
-                        <i class="fas fa-lock text-3xl"></i>
-                    </div>
+                        <i class="fas fa-lock text-3xl"></i></div>
                     <h3 class="font-bold text-lg mb-2">Fixação Segura</h3>
                     <p class="text-gray-400 text-sm">Velcro de alta aderência e clipes originais. Não escorrega e não
                         atrapalha os pedais.</p>
                 </div>
-                <!-- Benefit 3 -->
                 <div
                     class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange group">
                     <div
                         class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange group-hover:bg-brand-orange group-hover:text-black transition">
-                        <i class="fas fa-leaf text-3xl"></i>
-                    </div>
+                        <i class="fas fa-leaf text-3xl"></i></div>
                     <h3 class="font-bold text-lg mb-2">Inodoro e Ecológico</h3>
                     <p class="text-gray-400 text-sm">Material XPE premium que não deixa cheiro ruim no carro, mesmo sob
                         sol forte.</p>
                 </div>
-                <!-- Benefit 4 -->
                 <div
                     class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange group">
                     <div
                         class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange group-hover:bg-brand-orange group-hover:text-black transition">
-                        <i class="fas fa-clock text-3xl"></i>
-                    </div>
+                        <i class="fas fa-clock text-3xl"></i></div>
                     <h3 class="font-bold text-lg mb-2">Limpeza Rápida</h3>
                     <p class="text-gray-400 text-sm">Basta passar um pano úmido e está novo em 30 segundos. Diga adeus à
                         aspiração demorada.</p>
@@ -368,50 +536,72 @@
         </div>
     </section>
 
-    <!-- Comparison Table (Glow Effect) -->
+    <!-- ======= COMPARISON TABLE (6 rows) ======= -->
     <section id="comparativo" class="py-20 bg-black/40">
         <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12">Compare e Decida</h2>
+            <p class="text-center text-brand-orange text-xs font-bold uppercase tracking-widest mb-2">Comparativo</p>
+            <h2 class="text-3xl font-bold text-center mb-12">Nosso Tapete Protect 3D <span
+                    class="text-gray-500">vs</span> Tapete Comum de Borracha</h2>
             <div class="overflow-x-auto rounded-xl shadow-2xl">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr>
-                            <th class="p-4 border-b border-gray-700 text-gray-400 font-medium">Característica</th>
-                            <th class="p-4 border-b border-gray-700 font-bold text-gray-500">Tapete Borracha Comum</th>
+                            <th class="p-4 border-b border-gray-700 text-gray-400 font-medium">Critério</th>
+                            <th class="p-4 border-b border-gray-700 font-bold text-gray-500 text-center">Tapete Borracha
+                                Comum</th>
                             <th
-                                class="p-4 border-b-2 border-brand-orange bg-brand-orange/5 text-brand-orange font-bold text-lg animate-glow relative overflow-hidden">
+                                class="p-4 border-b-2 border-brand-orange bg-brand-orange/5 text-brand-orange font-bold text-lg text-center animate-glow relative overflow-hidden">
                                 <span class="relative z-10">Tapete Exclusive 3D</span>
                                 <div class="absolute inset-0 bg-brand-orange/10 blur-xl -z-0"></div>
                             </th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
-                        <tr>
-                            <td class="p-4 border-b border-gray-800">Proteção do Carpete</td>
-                            <td class="p-4 border-b border-gray-800 text-red-500"><i class="fas fa-times"></i> Parcial
-                                (Sujeira Vaza)</td>
-                            <td class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold"><i
-                                    class="fas fa-check"></i> Total (Abas Altas)</td>
+                        <tr class="hover:bg-white/[0.02] transition">
+                            <td class="p-4 border-b border-gray-800 font-medium">Durabilidade</td>
+                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
+                                    class="fas fa-times mr-1"></i>Racha com o tempo</td>
+                            <td
+                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
+                                <i class="fas fa-check mr-1"></i>+5 anos garantidos</td>
                         </tr>
-                        <tr>
-                            <td class="p-4 border-b border-gray-800">Fixação</td>
-                            <td class="p-4 border-b border-gray-800 text-red-500"><i class="fas fa-times"></i> Escorrega
-                                nos Pedais</td>
-                            <td class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold"><i
-                                    class="fas fa-check"></i> Travas Originais</td>
+                        <tr class="hover:bg-white/[0.02] transition">
+                            <td class="p-4 border-b border-gray-800 font-medium">Encaixe Milimétrico</td>
+                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
+                                    class="fas fa-times mr-1"></i>Genérico / Escorrega</td>
+                            <td
+                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
+                                <i class="fas fa-check mr-1"></i>Sob medida para seu carro</td>
                         </tr>
-                        <tr>
-                            <td class="p-4 border-b border-gray-800">Estética</td>
-                            <td class="p-4 border-b border-gray-800 text-gray-500">Industrial / Básico</td>
-                            <td class="p-4 border-b border-gray-800 bg-brand-orange/5 text-brand-orange font-bold"><i
-                                    class="fas fa-star"></i> Luxo / Couro Eco</td>
+                        <tr class="hover:bg-white/[0.02] transition">
+                            <td class="p-4 border-b border-gray-800 font-medium">Odor</td>
+                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
+                                    class="fas fa-skull mr-1"></i>Cheiro forte de borracha</td>
+                            <td
+                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
+                                <i class="fas fa-check mr-1"></i>Sem odor — XPE inerte</td>
                         </tr>
-                        <tr>
-                            <td class="p-4 border-b border-gray-800">Odor</td>
-                            <td class="p-4 border-b border-gray-800 text-red-500"><i class="fas fa-skull"></i> Cheiro de
-                                Borracha</td>
-                            <td class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold"><i
-                                    class="fas fa-check"></i> Sem Odor</td>
+                        <tr class="hover:bg-white/[0.02] transition">
+                            <td class="p-4 border-b border-gray-800 font-medium">Proteção UV</td>
+                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
+                                    class="fas fa-times mr-1"></i>Desbota e resseca</td>
+                            <td
+                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
+                                <i class="fas fa-check mr-1"></i>Tratamento UV incluso</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02] transition">
+                            <td class="p-4 border-b border-gray-800 font-medium">Bordas Altas</td>
+                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
+                                    class="fas fa-times mr-1"></i>Planas (líquidos vazam)</td>
+                            <td
+                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
+                                <i class="fas fa-check mr-1"></i>5cm — contém derramamentos</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02] transition">
+                            <td class="p-4 font-medium">Garantia</td>
+                            <td class="p-4 text-red-400 text-center"><i class="fas fa-times mr-1"></i>Sem garantia</td>
+                            <td class="p-4 bg-brand-orange/5 text-green-400 font-bold text-center"><i
+                                    class="fas fa-check mr-1"></i>12 meses + troca grátis</td>
                         </tr>
                     </tbody>
                 </table>
@@ -419,80 +609,89 @@
         </div>
     </section>
 
-    <!-- Testimonials -->
+    <!-- ======= TESTIMONIALS + UGC GALLERY ======= -->
     <section id="depoimentos" class="px-6 py-20 max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold text-center mb-12">O que dizem nossos clientes</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Testimonial 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             <div class="glass p-6 rounded-xl border-t border-brand-orange/20">
                 <div class="flex items-center gap-3 mb-4">
-                    <img src="./assets/customer-1-BXTDELSp.webp" alt="Ricardo S."
-                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover">
+                    <img src="./assets/customer-1-BXTDELSp.webp"
+                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover" alt="Ricardo S.">
                     <div>
                         <p class="font-bold text-sm">Ricardo S.</p>
                         <p class="text-xs text-brand-orange">BMW 320i</p>
                     </div>
                 </div>
-                <div class="text-yellow-400 text-xs mb-2">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                        class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
+                <div class="text-yellow-400 text-xs mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                 <p class="text-sm text-gray-300 italic">"Acabamento impecável. Encaixou perfeitamente e mudou a cara do
                     carro. Recomendo demais!"</p>
             </div>
-            <!-- Testimonial 2 -->
             <div class="glass p-6 rounded-xl border-t border-brand-orange/20">
                 <div class="flex items-center gap-3 mb-4">
-                    <img src="./assets/customer-11-Va_eVyCD.webp" alt="Fernanda L."
-                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover">
+                    <img src="./assets/customer-11-Va_eVyCD.webp"
+                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover" alt="Fernanda L.">
                     <div>
                         <p class="font-bold text-sm">Fernanda L.</p>
                         <p class="text-xs text-brand-orange">Jeep Compass</p>
                     </div>
                 </div>
-                <div class="text-yellow-400 text-xs mb-2">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                        class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
+                <div class="text-yellow-400 text-xs mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                 <p class="text-sm text-gray-300 italic">"Muito fácil de limpar, realmente. Derrubaram café e não manchou
                     nada. O atendimento também foi 10."</p>
             </div>
-            <!-- Testimonial 3 -->
             <div class="glass p-6 rounded-xl border-t border-brand-orange/20">
                 <div class="flex items-center gap-3 mb-4">
-                    <img src="./assets/customer-3-Dp2JbBLF.webp" alt="Carlos M."
-                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover">
+                    <img src="./assets/customer-3-Dp2JbBLF.webp"
+                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover" alt="Carlos M.">
                     <div>
                         <p class="font-bold text-sm">Carlos M.</p>
                         <p class="text-xs text-brand-orange">Toyota Corolla</p>
                     </div>
                 </div>
-                <div class="text-yellow-400 text-xs mb-2">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                        class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
-                <p class="text-sm text-gray-300 italic">"Valeu cada centavo. O material é muito superior aos
-                    baratinhos que vendem por aí."</p>
+                <div class="text-yellow-400 text-xs mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-sm text-gray-300 italic">"Valeu cada centavo. O material é muito superior aos baratinhos
+                    que vendem por aí."</p>
             </div>
         </div>
 
-        <!-- Social Proof Gallery -->
-        <div class="mt-16">
-            <h3 class="text-xl font-semibold text-center mb-8 text-gray-400">Junte-se a milhares de motoristas
+        <!-- UGC Gallery -->
+        <div class="text-center mb-8">
+            <h3 class="text-3xl font-black mb-1">Mais de <span class="text-brand-orange">10.000 clientes</span>
                 satisfeitos</h3>
-            <div
-                class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 opacity-70 hover:opacity-100 transition duration-500">
-                <img src="./assets/customer-4-DU4N_uCX.webp" class="rounded-lg h-32 w-full object-cover">
-                <img src="./assets/customer-5-DIAem0KY.webp" class="rounded-lg h-32 w-full object-cover">
-                <img src="./assets/customer-6-DoC9OLcH.jpeg" class="rounded-lg h-32 w-full object-cover">
-                <img src="./assets/customer-7-D97f4G7q.webp" class="rounded-lg h-32 w-full object-cover">
-                <img src="./assets/customer-8-HuK2VOte.webp" class="rounded-lg h-32 w-full object-cover">
-                <img src="./assets/customer-10-Cic76gTa.webp" class="rounded-lg h-32 w-full object-cover">
-            </div>
+            <p class="text-gray-400 text-sm">Fotos reais enviadas pelos nossos clientes</p>
+        </div>
+        <div class="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+            <img src="./assets/customer-4-DU4N_uCX.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-5-DIAem0KY.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-6-DoC9OLcH.jpeg"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-7-D97f4G7q.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-8-HuK2VOte.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-9-dPISaVgV.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-10-Cic76gTa.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-12-CsY0kDew.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-13-BmyqEl7e.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-14-BEwioIiH.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/customer-16-88IyM-cO.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+            <img src="./assets/product-3-hYd1p11T.webp"
+                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ======= FOOTER ======= -->
     <footer class="bg-black py-10 text-center text-gray-600 text-sm border-t border-gray-900">
         <div class="flex justify-center items-center gap-6 mb-8 flex-wrap">
             <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="Compra Segura"
@@ -502,7 +701,6 @@
             <img src="./assets/meios-pagamento-Dk4yb50c.webp" alt="Meios de Pagamento"
                 class="h-8 opacity-80 hover:opacity-100 transition">
         </div>
-
         <p>&copy; 2026 Exclusive 3D. Todos os direitos reservados.</p>
         <div class="mt-4 flex justify-center gap-4">
             <i class="fab fa-instagram hover:text-white cursor-pointer text-xl transition"></i>
@@ -512,52 +710,97 @@
         <p class="mt-4 text-xs">Políticas de Privacidade | Termos de Uso</p>
     </footer>
 
-    <!-- Checkout / Lead Form (Hidden initially) -->
-    <div id="checkout-modal"
-        class="fixed inset-0 z-50 bg-black/95 hidden items-center justify-center p-4 backdrop-blur-sm">
+    <!-- ======= WHATSAPP FLOATING BUTTON ======= -->
+    <a href="https://wa.me/5511999999999?text=Olá!%20Tenho%20interesse%20nos%20tapetes%20Exclusive%203D" target="_blank"
+        class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-400 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-green-900/50 transition hover:scale-110"
+        title="Fale conosco no WhatsApp">
+        <i class="fab fa-whatsapp text-3xl"></i>
+        <span
+            class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">1</span>
+    </a>
+
+    <!-- ======= CHECKOUT MODAL (Mobile-First) ======= -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center backdrop-blur-sm">
         <div
-            class="bg-brand-black border border-brand-orange/30 p-8 rounded-2xl max-w-md w-full relative shadow-2xl shadow-orange-900/20 animate-fade-in">
-            <button onclick="closeCheckout()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i
-                    class="fas fa-times"></i></button>
-            <h3 class="text-2xl font-bold text-class-brand-orange mb-2 text-brand-orange">Finalizar Pedido</h3>
-            <p class="text-sm text-gray-400 mb-6">Seu modelo: <span id="modal-model-name"
-                    class="font-bold text-white"></span></p>
+            class="modal-inner bg-brand-black w-full h-full sm:h-auto sm:max-w-md sm:rounded-2xl sm:border sm:border-brand-orange/30 sm:shadow-2xl shadow-orange-900/20 animate-fade-in relative overflow-hidden flex flex-col">
 
-            <form id="checkout-form" class="space-y-4">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-black/50 flex-shrink-0">
                 <div>
-                    <label class="text-xs text-gray-400">Nome Completo</label>
-                    <input type="text" id="name" required placeholder="Digite seu nome"
-                        class="w-full bg-gray-900 border border-gray-700 rounded p-3 text-white focus:border-brand-orange outline-none transition">
+                    <h3 class="text-base font-black text-brand-orange">Finalizar Pedido</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Preencha seus dados abaixo</p>
                 </div>
-                <div>
-                    <label class="text-xs text-gray-400">E-mail</label>
-                    <input type="email" id="email" required placeholder="seu@email.com"
-                        class="w-full bg-gray-900 border border-gray-700 rounded p-3 text-white focus:border-brand-orange outline-none transition">
-                </div>
-                <div>
-                    <label class="text-xs text-gray-400">WhatsApp</label>
-                    <input type="tel" id="phone" placeholder="(11) 99999-9999" required
-                        class="w-full bg-gray-900 border border-gray-700 rounded p-3 text-white focus:border-brand-orange outline-none transition">
-                </div>
+                <button onclick="closeCheckout()"
+                    class="text-gray-400 hover:text-white transition w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
 
-                <div class="bg-gray-800/50 p-3 rounded text-xs text-gray-400 flex items-start gap-2">
-                    <i class="fas fa-info-circle mt-0.5 text-brand-orange"></i>
-                    <p>Ao clicar abaixo, você será redirecionado para o checkout seguro. Seus dados estão protegidos.
+            <!-- Order Summary -->
+            <div class="px-5 py-3 bg-green-500/10 border-b border-green-500/20 flex-shrink-0">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-xs text-gray-400">Kit selecionado:</p>
+                        <p id="modal-kit-name" class="text-sm font-bold text-white">—</p>
+                        <p class="text-xs text-amber-400 mt-0.5"><i class="fas fa-gift mr-1"></i>Brinde: Aromatizador de
+                            Carro Novo — R$ 0,00</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-gray-400">Total PIX</p>
+                        <p id="modal-kit-price" class="text-xl font-black text-green-400">—</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mt-2">
+                    <p class="text-[10px] text-gray-500">Veículo: <span id="modal-model-name"
+                            class="text-gray-300 font-medium"></span></p>
+                </div>
+            </div>
+
+            <!-- Form body -->
+            <div class="modal-body px-5 py-5 space-y-4 overflow-y-auto flex-1 pb-24 sm:pb-5">
+                <div>
+                    <label class="text-xs text-gray-400 font-medium block mb-1">Nome Completo</label>
+                    <input type="text" id="co-name" required placeholder="Digite seu nome completo"
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 font-medium block mb-1">CPF</label>
+                    <input type="tel" id="co-cpf" required placeholder="000.000.000-00" maxlength="14"
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 font-medium block mb-1">WhatsApp / Celular</label>
+                    <input type="tel" id="co-phone" required placeholder="(11) 99999-9999" maxlength="15"
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 font-medium block mb-1">E-mail</label>
+                    <input type="email" id="co-email" required placeholder="seu@email.com"
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange outline-none transition text-sm">
+                </div>
+                <div class="bg-gray-800/40 p-3 rounded-lg flex items-start gap-2 text-xs text-gray-400">
+                    <i class="fas fa-shield-alt text-green-500 mt-0.5"></i>
+                    <p>Seus dados são protegidos por criptografia SSL. Você será redirecionado para o checkout seguro.
                     </p>
                 </div>
+            </div>
 
-                <button type="submit"
-                    class="w-full bg-brand-orange text-brand-black font-bold py-4 rounded-lg hover:bg-orange-600 transition mt-4 flex justify-center items-center gap-2 transform hover:scale-[1.02] shadow-lg shadow-orange-500/20">
+            <!-- Fixed Footer CTA -->
+            <div class="modal-footer px-5 py-4 border-t border-white/10 bg-black/80 flex-shrink-0">
+                <button id="checkout-submit-btn" onclick="submitCheckout()"
+                    class="w-full bg-brand-orange text-brand-black font-black py-4 rounded-xl hover:bg-orange-500 transition flex items-center justify-center gap-2 text-base uppercase tracking-wide shadow-lg shadow-orange-500/30 hover:scale-[1.02] transform">
                     <i class="fas fa-lock"></i> IR PARA PAGAMENTO SEGURO
                 </button>
-                <div class="text-center text-xs text-gray-500 flex items-center justify-center gap-2 mt-2">
+                <div class="flex items-center justify-center gap-3 mt-3 text-[10px] text-gray-500">
                     <i class="fas fa-shield-alt text-green-500"></i> Ambiente 100% Criptografado
+                    <span>•</span>
+                    <i class="fas fa-lock text-green-500"></i> Dados Protegidos
                 </div>
-            </form>
+            </div>
+
         </div>
     </div>
 
-    <!-- Main Logic -->
     <script type="module" src="./js/main.js"></script>
 </body>
 
