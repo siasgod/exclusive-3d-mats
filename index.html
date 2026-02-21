@@ -1,806 +1,1030 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exclusive 3D - Tapetes Automotivos de Luxo</title>
+    <title>Exclusive 3D — Tapetes Automotivos de Alta Performance</title>
     <meta name="description"
-        content="Proteção total contra líquidos, ajuste milimétrico e design de luxo para o seu veículo.">
+        content="Tapetes 3D sob medida: borracha 7mm, bordas 5cm impermeáveis, ilhós metálicos. Frete Grátis para todo Brasil.">
     <link rel="icon" type="image/png" href="./assets/favicon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Montserrat:wght@700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Montserrat:wght@700;900&display=swap"
         rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: { black: '#0a0a0a', orange: '#FF4500', white: '#f8f9fa' }
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    animation: {
-                        'pulse-orange': 'pulse-orange 2s infinite',
-                        'glow': 'glow 2s infinite alternate',
-                        'fade-in': 'fadeIn 0.4s ease-out forwards',
-                        'slide-up': 'slideUp 0.5s ease-out forwards',
-                        'bounce-in': 'bounceIn 0.6s cubic-bezier(0.36,0.07,0.19,0.97) forwards',
-                    },
-                    keyframes: {
-                        'pulse-orange': {
-                            '0%': { transform: 'scale(0.95)', boxShadow: '0 0 0 0 rgba(255,69,0,0.7)' },
-                            '70%': { transform: 'scale(1)', boxShadow: '0 0 0 10px rgba(255,69,0,0)' },
-                            '100%': { transform: 'scale(0.95)', boxShadow: '0 0 0 0 rgba(255,69,0,0)' },
-                        },
-                        'glow': {
-                            '0%': { boxShadow: '0 0 5px rgba(255,69,0,0.2)' },
-                            '100%': { boxShadow: '0 0 20px rgba(255,69,0,0.6)' },
-                        },
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
-                        bounceIn: {
-                            '0%': { transform: 'scale(0.8)', opacity: '0' },
-                            '60%': { transform: 'scale(1.05)' },
-                            '100%': { transform: 'scale(1)', opacity: '1' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #f8f9fa;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
         }
 
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #f8f9fa;
+            overflow-x: hidden
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a0a0a;
+            background: #0a0a0a
         }
 
         ::-webkit-scrollbar-thumb {
             background: #333;
-            border-radius: 4px;
+            border-radius: 3px
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #FF4500;
+            background: #FF4500
         }
 
-        .neon-green {
-            box-shadow: 0 0 0 2px #22c55e, 0 0 20px rgba(34, 197, 94, 0.4);
+        /* Utility */
+        .hidden {
+            display: none !important
         }
 
-        .step-transition {
-            transition: opacity 0.35s ease, transform 0.35s ease;
+        @media(max-width:560px) {
+            #kit-grid {
+                grid-template-columns: 1fr !important
+            }
         }
 
-        .step-hidden {
-            opacity: 0;
-            transform: translateY(12px);
-            pointer-events: none;
+        @media(max-width:640px) {
+            #menu-btn-nav {
+                display: block !important
+            }
+
+            .nav-links.desktop {
+                display: none !important
+            }
+        }
+
+        /* Glass */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08)
+        }
+
+        /* Hero Carousel */
+        #hero-carousel {
             position: absolute;
             inset: 0;
+            overflow: hidden
         }
 
-        .step-visible {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: all;
-            position: relative;
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease
         }
 
-        .brand-btn {
-            transition: all 0.2s;
+        .hero-slide.active {
+            opacity: 1
         }
 
-        .brand-btn:hover,
-        .brand-btn.active {
-            background: #FF4500;
-            color: #000;
-            border-color: #FF4500;
-            transform: translateY(-2px);
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
         }
 
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, .6) 0%, rgba(0, 0, 0, .8) 100%)
+        }
+
+        /* Infinite horizontal strip carousel */
+        .strip-track {
+            display: flex;
+            gap: 12px;
+            animation: stripScroll 22s linear infinite;
+            width: max-content
+        }
+
+        .strip-track:hover {
+            animation-play-state: paused
+        }
+
+        @keyframes stripScroll {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
+
+        .strip-img {
+            width: 220px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, .1)
+        }
+
+        /* Dropdowns */
+        .sel {
+            width: 100%;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            cursor: pointer;
+            transition: border-color .2s
+        }
+
+        .sel:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, .2)
+        }
+
+        .sel:disabled {
+            opacity: .4;
+            cursor: not-allowed
+        }
+
+        /* Confirm box */
+        #confirm-box {
+            background: rgba(34, 197, 94, .08);
+            border: 1.5px solid #22c55e;
+            border-radius: 14px;
+            padding: 20px;
+            margin-top: 16px;
+            animation: bounceIn .5s ease
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(.9)
+            }
+
+            60% {
+                transform: scale(1.03)
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+        }
+
+        /* Kit cards */
         .kit-card {
-            transition: transform 0.25s, box-shadow 0.25s;
+            background: rgba(255, 255, 255, .04);
+            border: 1.5px solid #222;
+            border-radius: 18px;
+            padding: 24px;
+            transition: transform .25s, box-shadow .25s, border-color .25s;
+            cursor: pointer
         }
 
         .kit-card:hover {
             transform: translateY(-4px);
+            border-color: #444
         }
 
-        @media (max-width: 640px) {
-            #checkout-modal .modal-inner {
-                border-radius: 0;
-                max-width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
+        .kit-card.kit-selected {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 2px #22c55e, 0 0 25px rgba(34, 197, 94, .25)
+        }
+
+        .kit-best {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, .4)
+        }
+
+        /* Sales sections */
+        .sales-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 0
+        }
+
+        .sales-img {
+            width: 100%;
+            border-radius: 16px;
+            object-fit: cover;
+            max-height: 340px
+        }
+
+        .photo-grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px
+        }
+
+        .photo-grid-4 img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px
+        }
+
+        @media(max-width:720px) {
+            .sales-grid {
+                grid-template-columns: 1fr
             }
 
-            #checkout-modal .modal-body {
-                flex: 1;
-                overflow-y: auto;
-                padding-bottom: 5rem;
+            .sales-grid.reverse .text-side {
+                order: -1
             }
 
-            #checkout-modal .modal-footer {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                padding: 1rem;
-                background: #0a0a0a;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-                z-index: 60;
+            .photo-grid-4 img {
+                height: 120px
+            }
+        }
+
+        /* Sticky Footer */
+        #sticky-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 12px 16px;
+            background: linear-gradient(to top, #0a0a0a, rgba(10, 10, 10, .95));
+            border-top: 1px solid rgba(255, 255, 255, .07);
+            padding-bottom: env(safe-area-inset-bottom, 12px)
+        }
+
+        /* Drawer */
+        #drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .75);
+            z-index: 110;
+            backdrop-filter: blur(4px)
+        }
+
+        #checkout-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 120;
+            background: #111;
+            border-radius: 22px 22px 0 0;
+            border-top: 1.5px solid #22c55e;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        .drawer-hidden {
+            transform: translateY(100%)
+        }
+
+        .drawer-open {
+            transform: translateY(0)
+        }
+
+        @media(min-width:640px) {
+            #checkout-drawer {
+                max-width: 500px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100%)
+            }
+
+            .drawer-open {
+                transform: translateX(-50%) translateY(0) !important
+            }
+        }
+
+        /* Buttons */
+        .btn-green {
+            background: #22c55e;
+            color: #000;
+            font-weight: 900;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background .2s, transform .15s;
+            text-transform: uppercase;
+            letter-spacing: .05em
+        }
+
+        .btn-green:hover {
+            background: #16a34a;
+            transform: scale(1.02)
+        }
+
+        .btn-orange {
+            background: #FF4500;
+            color: #000;
+            font-weight: 900;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background .2s
+        }
+
+        .btn-orange:hover {
+            background: #e03d00
+        }
+
+        /* Pulse animation */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, .5)
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(34, 197, 94, 0)
+            }
+        }
+
+        .pulse-green {
+            animation: pulse 2s infinite
+        }
+
+        /* Stars */
+        .stars {
+            color: #f59e0b;
+            font-size: 12px
+        }
+
+        /* Trust badges */
+        .badge-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 16px
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 600
+        }
+
+        /* Nav */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 24px;
+            position: sticky;
+            top: 36px;
+            z-index: 50;
+            margin: 8px 16px;
+            border-radius: 14px
+        }
+
+        .nav-link {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color .2s
+        }
+
+        .nav-link:hover {
+            color: #FF4500
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center
+        }
+
+        @media(max-width:640px) {
+            .nav-links.desktop {
+                display: none
             }
         }
     </style>
-    <script>
-        !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s) }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        // fbq('init', 'YOUR_PIXEL_ID');
-        // fbq('track', 'PageView');
-    </script>
 </head>
 
-<body class="antialiased overflow-x-hidden">
+<body>
 
-    <!-- ======= URGENCY BAR ======= -->
+    <!-- URGENCY BAR -->
     <div
-        class="bg-brand-orange text-brand-black text-center py-2 font-bold text-sm sticky top-0 z-50 shadow-lg shadow-orange-500/20">
-        <span id="viewer-count">12</span> pessoas estão vendo este modelo agora! | Oferta encerra em <span
-            id="timer">15:00</span>
+        style="background:#FF4500;color:#000;text-align:center;padding:9px 16px;font-weight:900;font-size:13px;position:sticky;top:0;z-index:60">
+        🔥 <span id="viewer-count">12</span> pessoas vendo agora &nbsp;|&nbsp; Oferta encerra em <span id="timer"
+            style="font-variant-numeric:tabular-nums">15:00</span> &nbsp;|&nbsp; Frete Grátis 🚚
     </div>
 
-    <!-- ======= NAV ======= -->
-    <nav
-        class="flex items-center justify-between px-6 py-4 glass sticky top-10 z-40 mx-4 mt-4 rounded-xl border-t border-white/10">
-        <div class="text-xl font-bold text-brand-orange tracking-widest flex items-center gap-2">
+    <!-- NAV -->
+    <nav class="glass">
+        <div style="font-size:20px;font-weight:900;color:#FF4500;letter-spacing:2px">
             <i class="fas fa-layer-group"></i> EXCLUSIVE 3D
         </div>
-        <button id="menu-btn" class="md:hidden text-brand-white focus:outline-none"><i
-                class="fas fa-bars text-2xl"></i></button>
-        <div class="hidden md:flex space-x-8 text-sm font-medium">
-            <a href="#beneficios" class="hover:text-brand-orange transition">Benefícios</a>
-            <a href="#comparativo" class="hover:text-brand-orange transition">Comparativo</a>
-            <a href="#depoimentos" class="hover:text-brand-orange transition">Depoimentos</a>
-            <a href="#comprar"
-                class="text-brand-orange font-bold border border-brand-orange px-4 py-2 rounded hover:bg-brand-orange hover:text-black transition">Comprar
-                Agora</a>
+        <div class="nav-links desktop">
+            <a href="#beneficios" class="nav-link">Benefícios</a>
+            <a href="#depoimentos" class="nav-link">Avaliações</a>
+            <a href="#comprar" class="nav-link"
+                style="color:#FF4500;border:1.5px solid #FF4500;padding:7px 16px;border-radius:8px">Comprar</a>
         </div>
+        <button id="menu-btn"
+            style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer;display:none"><i
+                class="fas fa-bars"></i></button>
     </nav>
-    <div id="mobile-menu" class="hidden fixed inset-0 bg-brand-black z-30 pt-24 px-6 space-y-6 text-center text-lg">
-        <a href="#beneficios" class="block hover:text-brand-orange">Benefícios</a>
-        <a href="#comparativo" class="block hover:text-brand-orange">Comparativo</a>
-        <a href="#depoimentos" class="block hover:text-brand-orange">Depoimentos</a>
-        <a href="#comprar" class="block text-brand-orange font-bold">Comprar Agora</a>
+    <div id="mobile-menu"
+        style="display:none;position:fixed;inset:0;background:#0a0a0a;z-index:55;flex-direction:column;align-items:center;justify-content:center;gap:32px;font-size:22px;font-weight:700">
+        <a href="#beneficios" style="color:#fff;text-decoration:none">Benefícios</a>
+        <a href="#depoimentos" style="color:#fff;text-decoration:none">Avaliações</a>
+        <a href="#comprar" style="color:#22c55e;text-decoration:none">Comprar Agora</a>
+        <button onclick="document.getElementById('mobile-menu').style.display='none'"
+            style="background:none;border:1px solid #444;color:#888;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px">Fechar</button>
     </div>
 
-    <!-- ======= HERO ======= -->
-    <section class="relative pt-32 pb-48 px-6 text-center max-w-7xl mx-auto overflow-hidden">
-        <div id="hero-carousel" class="absolute inset-0 z-0">
-            <img src="./assets/carousel-new-2-CTcO_2X9.jpg"
-                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-100"
-                alt="Hero 1">
-            <img src="./assets/carousel-4-BpsqPhmo.webp"
-                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0"
-                alt="Hero 2">
-            <img src="./assets/carousel-5-Cm0njbwO.webp"
-                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0"
-                alt="Hero 3">
+    <!-- HERO -->
+    <section
+        style="position:relative;min-height:85vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:80px 24px 120px">
+        <div id="hero-carousel">
+            <div class="hero-slide">
+                <img src="./assets/carousel-new-2-CTcO_2X9.jpg" alt="Tapete 3D instalado">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-slide">
+                <img src="./assets/carousel-4-BpsqPhmo.webp" alt="Tapete impermeável">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-slide">
+                <img src="./assets/carousel-5-Cm0njbwO.webp" alt="Tapete sob medida">
+                <div class="hero-overlay"></div>
+            </div>
         </div>
-        <div class="absolute inset-0 bg-black/70 z-0"></div>
-        <div class="relative z-10 animate-slide-up">
-            <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6 drop-shadow-2xl">
-                A Revolução do Interior Automotivo: <span class="text-brand-orange">Tapetes 3D Sob Medida</span>
+        <div style="position:relative;z-index:10;max-width:760px;margin:0 auto">
+            <div
+                style="display:inline-block;background:rgba(255,69,0,.15);border:1px solid rgba(255,69,0,.4);border-radius:30px;padding:6px 18px;font-size:12px;font-weight:700;color:#FF4500;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px">
+                ⭐ Mais de 10.000 clientes satisfeitos
+            </div>
+            <h1 style="font-size:clamp(2rem,5vw,3.8rem);font-weight:900;line-height:1.1;margin-bottom:20px">
+                O Tapete que <span style="color:#FF4500">Protege de Verdade</span><br>e Encaixa Perfeitamente no Seu
+                Carro
             </h1>
-            <p class="text-gray-200 text-lg md:text-xl mb-10 max-w-2xl mx-auto drop-shadow-md">
-                Proteção total contra líquidos, ajuste milimétrico e design de luxo para o seu veículo.
+            <p
+                style="color:#ccc;font-size:clamp(1rem,2vw,1.2rem);margin-bottom:36px;max-width:580px;margin-left:auto;margin-right:auto">
+                Borracha 7mm de alta densidade · Bordas de 5cm impermeáveis · Ilhós metálicos · 100% sob medida para o
+                seu modelo.
             </p>
-            <a href="#comprar"
-                class="inline-block bg-brand-orange text-brand-black px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide animate-pulse-orange hover:bg-orange-600 transition shadow-lg shadow-orange-500/40">
-                Quero Meu Kit Exclusive
+            <a href="#comprar" class="btn-green pulse-green"
+                style="display:inline-block;padding:18px 42px;font-size:17px;border-radius:14px;text-decoration:none;margin-bottom:16px">
+                <i class="fas fa-car-side" style="margin-right:8px"></i>SELECIONAR MEU CARRO
             </a>
-            <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto opacity-80">
-                <img src="./assets/carousel-4-BpsqPhmo.webp"
-                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10" alt="">
-                <img src="./assets/carousel-5-Cm0njbwO.webp"
-                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10" alt="">
-                <img src="./assets/product-1-CLmPGSY4.webp"
-                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10" alt="">
-                <img src="./assets/product-5-CjEBeeXw.webp"
-                    class="rounded-lg shadow-lg hover:scale-105 transition duration-300 border border-white/10" alt="">
-            </div>
+            <p style="color:#888;font-size:13px"><i class="fas fa-truck"
+                    style="color:#22c55e;margin-right:6px"></i>Frete Grátis para todo Brasil · Entrega 5–7 dias úteis
+            </p>
         </div>
     </section>
 
-    <!-- ======= CONFIGURADOR DE 3 PASSOS ======= -->
-    <section id="comprar" class="px-6 -mt-20 mb-8 relative z-20">
-        <div
-            class="glass max-w-3xl mx-auto p-8 rounded-2xl shadow-2xl border border-gray-700 backdrop-blur-xl bg-black/80">
+    <!-- STRIP CAROUSEL (fotos dos tapetes instalados) -->
+    <div
+        style="overflow:hidden;padding:16px 0;background:rgba(255,255,255,.02);border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a">
+        <div class="strip-track">
+            <img src="./assets/product-1-CLmPGSY4.webp" class="strip-img" alt="">
+            <img src="./assets/carousel-4-BpsqPhmo.webp" class="strip-img" alt="">
+            <img src="./assets/carousel-5-Cm0njbwO.webp" class="strip-img" alt="">
+            <img src="./assets/product-3-hYd1p11T.webp" class="strip-img" alt="">
+            <img src="./assets/product-5-CjEBeeXw.webp" class="strip-img" alt="">
+            <img src="./assets/product-4-CORQHeZN.jpg" class="strip-img" alt="">
+            <img src="./assets/product-7-BOjti7KE.webp" class="strip-img" alt="">
+            <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="strip-img" alt="">
+            <!-- Duplicated for seamless loop -->
+            <img src="./assets/product-1-CLmPGSY4.webp" class="strip-img" alt="">
+            <img src="./assets/carousel-4-BpsqPhmo.webp" class="strip-img" alt="">
+            <img src="./assets/carousel-5-Cm0njbwO.webp" class="strip-img" alt="">
+            <img src="./assets/product-3-hYd1p11T.webp" class="strip-img" alt="">
+            <img src="./assets/product-5-CjEBeeXw.webp" class="strip-img" alt="">
+            <img src="./assets/product-4-CORQHeZN.jpg" class="strip-img" alt="">
+            <img src="./assets/product-7-BOjti7KE.webp" class="strip-img" alt="">
+            <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="strip-img" alt="">
+        </div>
+    </div>
 
-            <!-- Progress Indicator -->
-            <div id="progress-bar" class="flex items-center justify-center gap-2 mb-6">
-                <div class="flex items-center gap-2">
-                    <div id="dot-1"
-                        class="w-8 h-8 rounded-full bg-brand-orange text-black font-bold text-sm flex items-center justify-center transition-all duration-300">
-                        1</div>
-                    <span class="text-xs text-gray-400 hidden sm:inline">Marca</span>
-                </div>
-                <div class="h-px w-8 bg-gray-700 flex-shrink-0" id="line-1"></div>
-                <div class="flex items-center gap-2">
-                    <div id="dot-2"
-                        class="w-8 h-8 rounded-full bg-gray-700 text-gray-400 font-bold text-sm flex items-center justify-center transition-all duration-300">
-                        2</div>
-                    <span class="text-xs text-gray-400 hidden sm:inline">Modelo</span>
-                </div>
-                <div class="h-px w-8 bg-gray-700 flex-shrink-0" id="line-2"></div>
-                <div class="flex items-center gap-2">
-                    <div id="dot-3"
-                        class="w-8 h-8 rounded-full bg-gray-700 text-gray-400 font-bold text-sm flex items-center justify-center transition-all duration-300">
-                        3</div>
-                    <span class="text-xs text-gray-400 hidden sm:inline">Ano</span>
-                </div>
-            </div>
-            <p id="step-label" class="text-center text-xs text-gray-500 mb-6 uppercase tracking-widest">Passo 1 de 3 —
-                Selecione a Marca</p>
+    <!-- VEHICLE SELECTOR -->
+    <section id="comprar" style="padding:64px 16px 32px;max-width:680px;margin:0 auto">
+        <div style="text-align:center;margin-bottom:32px">
+            <p
+                style="color:#FF4500;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">
+                Passo 1 de 1</p>
+            <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;margin-bottom:10px">Selecione o seu veículo
+            </h2>
+            <p style="color:#888;font-size:14px">Temos o molde exato para mais de 500 modelos nacionais e importados</p>
+        </div>
 
-            <!-- STEP 1: BRAND -->
-            <div id="cfg-step-1" class="step-transition step-visible">
-                <h2 class="text-xl font-bold mb-5 text-center text-brand-orange"><i class="fas fa-car mr-2"></i>Qual a
-                    marca do seu veículo?</h2>
-                <!-- Popular Brands Grid -->
-                <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-5">
-                    <button onclick="selectBrand('Fiat')"
-                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">Fiat</button>
-                    <button onclick="selectBrand('Volkswagen')"
-                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">VW</button>
-                    <button onclick="selectBrand('Chevrolet')"
-                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">GM</button>
-                    <button onclick="selectBrand('Toyota')"
-                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">Toyota</button>
-                    <button onclick="selectBrand('Ford')"
-                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">Ford</button>
-                    <button onclick="selectBrand('Honda')"
-                        class="brand-btn bg-gray-900 border border-gray-700 rounded-lg py-3 px-2 text-sm font-bold text-center">Honda</button>
-                </div>
-                <p class="text-xs text-center text-gray-500 mb-3">Ou busque outra marca:</p>
-                <div class="relative">
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                    <input list="brand-list" id="brand-search" placeholder="Digite a marca..." autocomplete="off"
-                        class="w-full bg-brand-black border border-gray-700 rounded-lg py-3 pl-10 pr-4 text-white focus:border-brand-orange focus:ring-1 focus:ring-brand-orange outline-none transition placeholder-gray-600">
-                    <datalist id="brand-list"></datalist>
-                </div>
-            </div>
-
-            <!-- STEP 2: MODEL -->
-            <div id="cfg-step-2" class="step-transition step-hidden">
-                <h2 class="text-xl font-bold mb-2 text-center text-brand-orange"><i class="fas fa-list mr-2"></i>Qual o
-                    modelo?</h2>
-                <p id="step2-brand-label" class="text-center text-gray-400 text-sm mb-5"></p>
-                <select id="model-select"
-                    class="w-full bg-brand-black border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange focus:ring-1 focus:ring-brand-orange outline-none transition h-[52px]">
-                    <option value="">Selecione o Modelo</option>
+        <div class="glass" style="border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:14px">
+            <!-- Marca -->
+            <div>
+                <label
+                    style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px"><i
+                        class="fas fa-car" style="color:#FF4500;margin-right:6px"></i>Marca</label>
+                <select id="sel-brand" class="sel">
+                    <option value="">Selecione a marca</option>
                 </select>
-                <div class="flex gap-3 mt-5">
-                    <button onclick="goToConfigStep(1)"
-                        class="flex-1 border border-gray-700 text-gray-400 py-3 rounded-lg hover:border-gray-500 transition text-sm">←
-                        Voltar</button>
-                    <button id="step2-next" onclick="confirmarModelo()" disabled
-                        class="flex-1 bg-brand-orange text-black font-bold py-3 rounded-lg hover:bg-orange-600 transition disabled:opacity-40 disabled:cursor-not-allowed text-sm">Próximo
-                        →</button>
-                </div>
+            </div>
+            <!-- Modelo -->
+            <div>
+                <label
+                    style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px"><i
+                        class="fas fa-list" style="color:#FF4500;margin-right:6px"></i>Modelo</label>
+                <select id="sel-model" class="sel" disabled>
+                    <option value="">Selecione o modelo</option>
+                </select>
+            </div>
+            <!-- Ano -->
+            <div>
+                <label
+                    style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:8px"><i
+                        class="fas fa-calendar-alt" style="color:#FF4500;margin-right:6px"></i>Ano</label>
+                <select id="sel-year" class="sel" disabled>
+                    <option value="">Selecione o ano</option>
+                </select>
             </div>
 
-            <!-- STEP 3: YEAR -->
-            <div id="cfg-step-3" class="step-transition step-hidden">
-                <h2 class="text-xl font-bold mb-2 text-center text-brand-orange"><i
-                        class="fas fa-calendar-alt mr-2"></i>Ano do veículo?</h2>
-                <p id="step3-model-label" class="text-center text-gray-400 text-sm mb-5"></p>
-                <div id="year-buttons" class="grid grid-cols-4 sm:grid-cols-5 gap-2 mb-5"></div>
-                <button onclick="goToConfigStep(2)"
-                    class="w-full border border-gray-700 text-gray-400 py-2 rounded-lg hover:border-gray-500 transition text-sm">←
-                    Voltar</button>
-            </div>
-
-            <!-- SUCCESS BANNER (hidden, shown after step 3) -->
-            <div id="success-banner" class="hidden mt-4">
-                <div class="bg-green-500/20 border border-green-500 rounded-xl p-5 text-center animate-bounce-in">
-                    <div class="text-green-400 text-2xl font-black mb-1">✓ Configuração Concluída!</div>
-                    <p class="text-white font-semibold text-sm" id="success-text">Molde Premium disponível para seu
-                        veículo</p>
-                    <p class="text-gray-400 text-xs mt-2">Estoque confirmado • Entrega em até 5 dias úteis</p>
-                    <button onclick="scrollToKitSection()"
-                        class="mt-4 w-full bg-green-500 hover:bg-green-400 text-black font-black py-3 rounded-lg transition text-sm uppercase tracking-wide animate-pulse">
-                        Ver Kits Disponíveis →
-                    </button>
+            <!-- Confirmation Box -->
+            <div id="confirm-box" class="hidden">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+                    <div style="color:#22c55e;font-size:22px">✓</div>
+                    <div>
+                        <p style="color:#22c55e;font-weight:900;font-size:14px">Veículo selecionado:</p>
+                        <p id="conf-vehicle-text" style="color:#fff;font-weight:700;font-size:16px"></p>
+                    </div>
                 </div>
+                <div
+                    style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.25);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px">
+                    <i class="fas fa-truck" style="color:#22c55e;font-size:18px"></i>
+                    <div>
+                        <p style="font-weight:700;font-size:13px;color:#22c55e">Frete Grátis para todo Brasil</p>
+                        <p style="font-size:12px;color:#999">Entrega em 5 a 7 dias úteis após confirmação</p>
+                    </div>
+                </div>
+                <a href="#kit-section"
+                    style="display:block;text-align:center;margin-top:14px;padding:14px;background:#22c55e;color:#000;font-weight:900;border-radius:11px;text-decoration:none;font-size:14px;text-transform:uppercase;letter-spacing:.05em">
+                    Ver Kits Disponíveis →
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- ======= KIT SELECTION SECTION ======= -->
-    <section id="kit-section" class="px-6 py-12 hidden">
-        <div class="max-w-3xl mx-auto">
-            <div class="text-center mb-8">
-                <p class="text-brand-orange text-xs font-bold uppercase tracking-widest mb-2">Escolha seu Kit</p>
-                <h2 class="text-3xl font-black mb-2">Selecione a proteção ideal</h2>
-                <p class="text-gray-400 text-sm">Oferta por tempo limitado — Frete Grátis para todo o Brasil</p>
-            </div>
+    <!-- KIT SELECTION (always visible) -->
+    <section id="kit-section" style="padding:48px 16px;max-width:780px;margin:0 auto">
+        <div style="text-align:center;margin-bottom:32px">
+            <p
+                style="color:#FF4500;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">
+                Escolha sua proteção</p>
+            <h2 style="font-size:clamp(1.6rem,4vw,2.3rem);font-weight:900;margin-bottom:8px">Selecione o Kit Ideal</h2>
+            <p style="color:#888;font-size:14px">Frete Grátis · Garantia de 12 meses · Troca sem burocracia</p>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div id="kit-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
 
-                <!-- Card 1: Kit Premium (destaque) -->
+            <!-- Kit Premium (destaque) -->
+            <div class="kit-card kit-best" data-kit="Kit Interno + Porta Malas"
+                onclick="selectKit('Kit Interno + Porta Malas', 79.90)" style="position:relative;overflow:hidden">
                 <div
-                    class="kit-card glass p-6 rounded-2xl border-2 border-green-500 neon-green relative overflow-hidden">
-                    <div
-                        class="absolute top-0 left-0 right-0 bg-green-500 text-black text-xs font-black py-1 text-center tracking-wider">
-                        ⭐ MAIS ESCOLHIDO
-                    </div>
-                    <div class="mt-5 h-48 overflow-hidden rounded-xl mb-4">
+                    style="position:absolute;top:0;left:0;right:0;background:#22c55e;color:#000;font-size:11px;font-weight:900;text-align:center;padding:5px;text-transform:uppercase;letter-spacing:1px">
+                    ⭐ MAIS ESCOLHIDO</div>
+                <div style="padding-top:24px">
+                    <div style="height:170px;border-radius:12px;overflow:hidden;margin-bottom:14px">
                         <img src="./assets/kit-complete-BFARBGDS.jpg" alt="Kit Completo"
-                            class="w-full h-full object-cover">
+                            style="width:100%;height:100%;object-fit:cover">
                     </div>
-                    <h3 class="text-lg font-extrabold mb-1 text-white uppercase">Kit Interno + Porta Malas</h3>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Proteção total: Cabine completa + porta-malas
-                        com ajuste milimétrico.</p>
-                    <div class="mb-4 bg-black/30 p-3 rounded-lg border border-white/5">
-                        <p class="text-gray-500 text-xs line-through">De R$ 489,90</p>
-                        <div class="flex items-baseline gap-2">
-                            <p class="text-3xl font-black text-green-400">R$ 79,90</p>
-                            <span class="text-xs text-green-400 font-bold">no PIX</span>
-                        </div>
-                        <p class="text-white/50 text-[10px] mt-1 italic">Ou em até 12x no cartão</p>
+                    <h3 style="font-size:15px;font-weight:900;color:#fff;text-transform:uppercase;margin-bottom:6px">Kit
+                        Interno + Porta Malas</h3>
+                    <p style="color:#888;font-size:12px;margin-bottom:12px;line-height:1.5">Proteção total da cabine +
+                        porta-malas com ajuste milimétrico.</p>
+                    <div
+                        style="background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:12px;margin-bottom:14px">
+                        <p style="color:#555;font-size:11px;text-decoration:line-through">De R$ 489,90</p>
+                        <p style="font-size:30px;font-weight:900;color:#22c55e;line-height:1">R$ 79,90</p>
+                        <p style="font-size:11px;color:#22c55e;font-weight:700">no PIX · ou 12x no cartão</p>
                     </div>
-                    <ul class="text-xs text-gray-300 space-y-2 mb-5">
-                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> 3 Tapetes
-                            internos sob medida</li>
-                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> Traseiro
-                            inteiriço + proteção central</li>
-                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> Tapete
-                            porta-malas premium</li>
-                        <li
-                            class="flex items-center gap-2 text-amber-400 font-bold animate-pulse border-t border-white/10 pt-2">
-                            <i class="fas fa-gift"></i> BRINDE: Aromatizador Black Premium
-                        </li>
+                    <ul
+                        style="font-size:12px;color:#bbb;list-style:none;margin-bottom:14px;display:flex;flex-direction:column;gap:6px">
+                        <li><i class="fas fa-check" style="color:#22c55e;margin-right:6px"></i>3 tapetes internos sob
+                            medida</li>
+                        <li><i class="fas fa-check" style="color:#22c55e;margin-right:6px"></i>Traseiro inteiriço +
+                            túnel central</li>
+                        <li><i class="fas fa-check" style="color:#22c55e;margin-right:6px"></i>Tapete porta-malas
+                            premium</li>
+                        <li style="color:#f59e0b;font-weight:700"><i class="fas fa-gift"
+                                style="margin-right:6px"></i>BRINDE: Aromatizador Black</li>
                     </ul>
-                    <button onclick="selectKit('Kit Interno + Porta Malas', 79.90)"
-                        class="w-full bg-green-500 hover:bg-green-400 text-black font-black py-4 rounded-xl transition text-sm uppercase tracking-wide shadow-lg shadow-green-900/30">
-                        Quero Este Kit →
+                    <button onclick="selectKit('Kit Interno + Porta Malas', 79.90)" class="btn-green pulse-green"
+                        style="width:100%;padding:14px;font-size:13px">
+                        QUERO ESTE KIT →
                     </button>
-                    <p class="text-center text-[10px] text-gray-500 mt-2">🔒 Compra 100% segura e criptografada</p>
+                    <p style="text-align:center;font-size:10px;color:#555;margin-top:8px">🔒 Compra 100% segura e
+                        criptografada</p>
                 </div>
+            </div>
 
-                <!-- Card 2: Kit Essencial -->
+            <!-- Kit Essencial -->
+            <div class="kit-card" data-kit="Kit Essencial" onclick="selectKit('Kit Essencial', 59.90)">
+                <div style="height:170px;border-radius:12px;overflow:hidden;margin-bottom:14px">
+                    <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Essencial"
+                        style="width:100%;height:100%;object-fit:cover">
+                </div>
+                <h3 style="font-size:15px;font-weight:900;color:#fff;text-transform:uppercase;margin-bottom:6px">Kit
+                    Essencial</h3>
+                <p style="color:#888;font-size:12px;margin-bottom:12px;line-height:1.5">Proteção completa para o
+                    assoalho dianteiro e traseiro.</p>
                 <div
-                    class="kit-card glass p-6 rounded-2xl border border-gray-700 hover:border-brand-orange transition duration-300 relative">
-                    <div class="h-48 overflow-hidden rounded-xl mb-4">
-                        <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Essencial"
-                            class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-lg font-extrabold mb-1 text-white uppercase">Kit Essencial</h3>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Proteção completa para o assoalho dianteiro e
-                        traseiro do seu veículo.</p>
-                    <div class="mb-4 bg-black/30 p-3 rounded-lg border border-white/5">
-                        <p class="text-gray-500 text-xs line-through">De R$ 329,90</p>
-                        <div class="flex items-baseline gap-2">
-                            <p class="text-3xl font-black text-white">R$ 59,90</p>
-                            <span class="text-xs text-green-400 font-bold">no PIX</span>
+                    style="background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:12px;margin-bottom:14px">
+                    <p style="color:#555;font-size:11px;text-decoration:line-through">De R$ 329,90</p>
+                    <p style="font-size:30px;font-weight:900;color:#fff;line-height:1">R$ 59,90</p>
+                    <p style="font-size:11px;color:#22c55e;font-weight:700">no PIX · ou 12x no cartão</p>
+                </div>
+                <ul
+                    style="font-size:12px;color:#bbb;list-style:none;margin-bottom:14px;display:flex;flex-direction:column;gap:6px">
+                    <li><i class="fas fa-check" style="color:#FF4500;margin-right:6px"></i>3 tapetes internos sob medida
+                    </li>
+                    <li><i class="fas fa-check" style="color:#FF4500;margin-right:6px"></i>Traseiro inteiriço + proteção
+                        central</li>
+                </ul>
+                <button onclick="selectKit('Kit Essencial', 59.90)"
+                    style="width:100%;padding:14px;font-size:13px;font-weight:900;background:transparent;border:1.5px solid #555;color:#fff;border-radius:12px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;transition:background .2s,border-color .2s"
+                    onmouseover="this.style.background='#222';this.style.borderColor='#888'"
+                    onmouseout="this.style.background='transparent';this.style.borderColor='#555'">
+                    QUERO ESTE KIT →
+                </button>
+                <p style="text-align:center;font-size:10px;color:#555;margin-top:8px">🔒 Compra 100% segura e
+                    criptografada</p>
+            </div>
+        </div>
+
+        <!-- Trust Badges below kits -->
+        <div class="badge-row" style="margin-top:24px">
+            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL Seguro" style="height:40px;opacity:.85">
+            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:34px;opacity:.85">
+            <div class="trust-badge"><i class="fas fa-shield-alt" style="color:#22c55e"></i><span>Garantia 1 Ano</span>
+            </div>
+            <div class="trust-badge"><i class="fas fa-undo" style="color:#22c55e"></i><span>Troca Grátis</span></div>
+        </div>
+    </section>
+
+    <!-- SALES SECTION 1: Borracha Premium -->
+    <section id="beneficios" style="padding:72px 24px;background:linear-gradient(to bottom,#0a0a0a,#101010)">
+        <div class="sales-grid">
+            <img src="./assets/product-3-hYd1p11T.webp" class="sales-img" alt="Borracha Premium 7mm">
+            <div class="text-side">
+                <p
+                    style="color:#FF4500;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">
+                    Material Premium</p>
+                <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:16px">Borracha Automotiva
+                    de<br><span style="color:#FF4500">7mm de Espessura</span></h2>
+                <p style="color:#aaa;line-height:1.8;margin-bottom:20px">Enquanto tapetes comuns usam 2mm de borracha
+                    reciclada que rach após 1 ano, o Exclusive 3D é fabricado com <strong style="color:#fff">borracha
+                        XPE virgem de 7mm</strong>, o mesmo padrão automotivo aplicado em veículos de luxo europeus.</p>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+                    <li style="display:flex;align-items:center;gap:10px;color:#ccc;font-size:14px"><span
+                            style="background:#22c55e;color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">✓</span>Alta
+                        densidade — absorve impacto dos pés</li>
+                    <li style="display:flex;align-items:center;gap:10px;color:#ccc;font-size:14px"><span
+                            style="background:#22c55e;color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">✓</span>Sem
+                        cheiro — material XPE inerte e inodoro</li>
+                    <li style="display:flex;align-items:center;gap:10px;color:#ccc;font-size:14px"><span
+                            style="background:#22c55e;color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">✓</span>Resistência
+                        UV — não desbota nem resseca</li>
+                    <li style="display:flex;align-items:center;gap:10px;color:#ccc;font-size:14px"><span
+                            style="background:#22c55e;color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">✓</span>+5
+                        anos de durabilidade comprovada</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SALES SECTION 2: 100% Impermeável -->
+    <section style="padding:72px 24px;background:#0d0d0d">
+        <div class="sales-grid reverse">
+            <div class="text-side">
+                <p
+                    style="color:#22c55e;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">
+                    Zero Preocupação</p>
+                <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:16px">Bordas de
+                    5cm:<br><span style="color:#22c55e">100% Impermeável</span></h2>
+                <p style="color:#aaa;line-height:1.8;margin-bottom:20px">As bordas elevadas de <strong
+                        style="color:#fff">5 centímetros</strong> formam uma barreira selada ao redor de todo o tapete.
+                    Café, água, refrigerante, lama — tudo fica contido. Basta inclinar e jogar fora.</p>
+                <div
+                    style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:16px;margin-top:4px">
+                    <p style="font-weight:700;color:#22c55e;margin-bottom:4px">⚡ Limpeza em 30 segundos</p>
+                    <p style="color:#888;font-size:13px">Pano úmido e está novo. Diga adeus ao aspirador de pó e ao
+                        tapete encharcado.</p>
+                </div>
+            </div>
+            <div class="photo-grid-4">
+                <img src="./assets/product-1-CLmPGSY4.webp" alt="Borda alta contendo líquido">
+                <img src="./assets/product-5-CjEBeeXw.webp" alt="Impermeável">
+                <img src="./assets/carousel-4-BpsqPhmo.webp" alt="Bordas 5cm">
+                <img src="./assets/product-7-BOjti7KE.webp" alt="100% impermeável">
+            </div>
+        </div>
+    </section>
+
+    <!-- SALES SECTION 3: Ilhós de Fixação -->
+    <section style="padding:72px 24px;background:linear-gradient(to bottom,#101010,#0a0a0a)">
+        <div class="sales-grid">
+            <img src="./assets/product-4-CORQHeZN.jpg" class="sales-img" alt="Ilhós de fixação metálicos">
+            <div class="text-side">
+                <p
+                    style="color:#FF4500;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">
+                    Segurança em Primeiro Lugar</p>
+                <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:16px">Ilhós Metálicos
+                    com<br><span style="color:#FF4500">Travas de Fábrica</span></h2>
+                <p style="color:#aaa;line-height:1.8;margin-bottom:20px">O sistema de fixação utiliza os <strong
+                        style="color:#fff">próprios pontos de ancoragem originais do seu veículo</strong>. Os ilhós
+                    metálicos de aço inox travam o tapete no lugar, impedindo qualquer deslizamento — mesmo em frenagens
+                    bruscas.</p>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                    <div style="display:flex;align-items:flex-start;gap:12px">
+                        <div style="background:#FF4500;border-radius:8px;padding:8px 10px;flex-shrink:0"><i
+                                class="fas fa-lock" style="color:#000;font-size:14px"></i></div>
+                        <div>
+                            <p style="font-weight:700;font-size:14px;margin-bottom:3px">Não escorrega, nunca</p>
+                            <p style="color:#777;font-size:13px">Compatível com os clips originais de 99% dos modelos
+                            </p>
                         </div>
-                        <p class="text-green-500 text-xs font-bold mt-1"><i class="fas fa-tag mr-1"></i>Economize R$
-                            270,00</p>
                     </div>
-                    <ul class="text-xs text-gray-300 space-y-2 mb-5">
-                        <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> 3 Tapetes
-                            internos sob medida</li>
-                        <li class="flex items-center gap-2"><i class="fas fa-check text-brand-orange"></i> Traseiro
-                            inteiriço + proteção central</li>
-                    </ul>
-                    <button onclick="selectKit('Kit Essencial', 59.90)"
-                        class="w-full bg-transparent border border-gray-600 hover:bg-white hover:text-black text-white font-bold py-4 rounded-xl transition text-sm uppercase tracking-wide">
-                        Quero Este Kit →
-                    </button>
-                    <p class="text-center text-[10px] text-gray-500 mt-2">🔒 Compra 100% segura e criptografada</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ======= TECH FEATURES GRID ======= -->
-    <section id="tech-features" class="px-6 py-16 bg-gradient-to-b from-black to-gray-950">
-        <div class="max-w-4xl mx-auto">
-            <p class="text-center text-brand-orange text-xs font-bold uppercase tracking-widest mb-2">Engenharia de
-                Precisão</p>
-            <h2 class="text-3xl font-black text-center mb-10">Tecnologia que <span class="text-brand-orange">você vê e
-                    sente</span></h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div
-                    class="glass p-5 rounded-xl text-center hover:border-brand-orange border border-transparent transition duration-300">
-                    <div
-                        class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-orange text-2xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" class="w-7 h-7">
-                            <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-                        </svg>
+                    <div style="display:flex;align-items:flex-start;gap:12px">
+                        <div style="background:#FF4500;border-radius:8px;padding:8px 10px;flex-shrink:0"><i
+                                class="fas fa-shield-alt" style="color:#000;font-size:14px"></i></div>
+                        <div>
+                            <p style="font-weight:700;font-size:14px;margin-bottom:3px">Pedais 100% livres</p>
+                            <p style="color:#777;font-size:13px">Sem risco de prender sob o acelerador ou freio</p>
+                        </div>
                     </div>
-                    <p class="font-black text-lg text-white">7mm</p>
-                    <p class="text-brand-orange text-xs font-bold uppercase">Espessura</p>
-                    <p class="text-gray-500 text-xs mt-1">Borracha de alta densidade</p>
-                </div>
-                <div
-                    class="glass p-5 rounded-xl text-center hover:border-brand-orange border border-transparent transition duration-300">
-                    <div
-                        class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-orange">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" class="w-7 h-7">
-                            <rect x="3" y="3" width="18" height="18" rx="2" />
-                            <path d="M3 9h18M9 21V9" />
-                        </svg>
-                    </div>
-                    <p class="font-black text-lg text-white">5cm</p>
-                    <p class="text-brand-orange text-xs font-bold uppercase">Bordas</p>
-                    <p class="text-gray-500 text-xs mt-1">Proteção contra líquidos</p>
-                </div>
-                <div
-                    class="glass p-5 rounded-xl text-center hover:border-brand-orange border border-transparent transition duration-300">
-                    <div
-                        class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-orange">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" class="w-7 h-7">
-                            <circle cx="12" cy="12" r="3" />
-                            <path
-                                d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
-                        </svg>
-                    </div>
-                    <p class="font-black text-lg text-white">Pinado</p>
-                    <p class="text-brand-orange text-xs font-bold uppercase">Base</p>
-                    <p class="text-gray-500 text-xs mt-1">Antiderrapante original</p>
-                </div>
-                <div
-                    class="glass p-5 rounded-xl text-center hover:border-brand-orange border border-transparent transition duration-300">
-                    <div
-                        class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-orange">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" class="w-7 h-7">
-                            <circle cx="12" cy="12" r="4" />
-                            <circle cx="12" cy="12" r="9" />
-                        </svg>
-                    </div>
-                    <p class="font-black text-lg text-white">Metálico</p>
-                    <p class="text-brand-orange text-xs font-bold uppercase">Ilhós</p>
-                    <p class="text-gray-500 text-xs mt-1">Fixação de fábrica</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ======= BENEFITS GRID ======= -->
-    <section id="beneficios" class="px-6 py-20 bg-gradient-to-t from-gray-900 to-black">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-16">Por que escolher o <span
-                    class="text-brand-orange">Exclusive 3D</span>?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <!-- SALES SECTION 4: Sob Medida -->
+    <section style="padding:72px 24px;background:#0d0d0d">
+        <div class="sales-grid reverse">
+            <div class="text-side">
+                <p
+                    style="color:#22c55e;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">
+                    Encaixe Perfeito</p>
+                <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:16px">Cobre 100% do
+                    Assoalho<br><span style="color:#22c55e">Incluindo o Túnel Central</span></h2>
+                <p style="color:#aaa;line-height:1.8;margin-bottom:20px">Tapetes genéricos deixam lacunas que acumulam
+                    sujeira. O Exclusive 3D é <strong style="color:#fff">cortado com precisão milimétrica</strong> para
+                    o seu modelo específico, cobrindo cada centímetro do assoalho — inclusive a área do câmbio e o túnel
+                    central.</p>
                 <div
-                    class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange group">
-                    <div
-                        class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange group-hover:bg-brand-orange group-hover:text-black transition">
-                        <i class="fas fa-tint text-3xl"></i></div>
-                    <h3 class="font-bold text-lg mb-2">Impermeabilidade 100%</h3>
-                    <p class="text-gray-400 text-sm">Protege o carpete original contra qualquer líquido ou sujeira.
-                        Derramou? Secou.</p>
-                </div>
-                <div
-                    class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange group">
-                    <div
-                        class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange group-hover:bg-brand-orange group-hover:text-black transition">
-                        <i class="fas fa-lock text-3xl"></i></div>
-                    <h3 class="font-bold text-lg mb-2">Fixação Segura</h3>
-                    <p class="text-gray-400 text-sm">Velcro de alta aderência e clipes originais. Não escorrega e não
-                        atrapalha os pedais.</p>
-                </div>
-                <div
-                    class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange group">
-                    <div
-                        class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange group-hover:bg-brand-orange group-hover:text-black transition">
-                        <i class="fas fa-leaf text-3xl"></i></div>
-                    <h3 class="font-bold text-lg mb-2">Inodoro e Ecológico</h3>
-                    <p class="text-gray-400 text-sm">Material XPE premium que não deixa cheiro ruim no carro, mesmo sob
-                        sol forte.</p>
-                </div>
-                <div
-                    class="glass p-6 rounded-xl text-center hover:bg-white/5 transition duration-300 border-t-2 border-transparent hover:border-brand-orange group">
-                    <div
-                        class="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-orange group-hover:bg-brand-orange group-hover:text-black transition">
-                        <i class="fas fa-clock text-3xl"></i></div>
-                    <h3 class="font-bold text-lg mb-2">Limpeza Rápida</h3>
-                    <p class="text-gray-400 text-sm">Basta passar um pano úmido e está novo em 30 segundos. Diga adeus à
-                        aspiração demorada.</p>
+                    style="background:rgba(255,165,0,.06);border:1px solid rgba(255,165,0,.2);border-radius:12px;padding:16px">
+                    <p style="font-weight:700;color:#f59e0b;margin-bottom:8px">🏆 Por que isso importa?</p>
+                    <p style="color:#888;font-size:13px;line-height:1.7">O carpete original do seu carro é impossível de
+                        limpar depois de encharcado. Um tapete mal dimensionado expõe justamente as áreas mais críticas.
+                        O nosso não.</p>
                 </div>
             </div>
+            <img src="./assets/product-7-BOjti7KE.webp" class="sales-img"
+                alt="Tapete sob medida cobrindo assoalho completo">
         </div>
     </section>
 
-    <!-- ======= COMPARISON TABLE (6 rows) ======= -->
-    <section id="comparativo" class="py-20 bg-black/40">
-        <div class="max-w-5xl mx-auto px-6">
-            <p class="text-center text-brand-orange text-xs font-bold uppercase tracking-widest mb-2">Comparativo</p>
-            <h2 class="text-3xl font-bold text-center mb-12">Nosso Tapete Protect 3D <span
-                    class="text-gray-500">vs</span> Tapete Comum de Borracha</h2>
-            <div class="overflow-x-auto rounded-xl shadow-2xl">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr>
-                            <th class="p-4 border-b border-gray-700 text-gray-400 font-medium">Critério</th>
-                            <th class="p-4 border-b border-gray-700 font-bold text-gray-500 text-center">Tapete Borracha
-                                Comum</th>
-                            <th
-                                class="p-4 border-b-2 border-brand-orange bg-brand-orange/5 text-brand-orange font-bold text-lg text-center animate-glow relative overflow-hidden">
-                                <span class="relative z-10">Tapete Exclusive 3D</span>
-                                <div class="absolute inset-0 bg-brand-orange/10 blur-xl -z-0"></div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-sm">
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="p-4 border-b border-gray-800 font-medium">Durabilidade</td>
-                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
-                                    class="fas fa-times mr-1"></i>Racha com o tempo</td>
-                            <td
-                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
-                                <i class="fas fa-check mr-1"></i>+5 anos garantidos</td>
-                        </tr>
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="p-4 border-b border-gray-800 font-medium">Encaixe Milimétrico</td>
-                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
-                                    class="fas fa-times mr-1"></i>Genérico / Escorrega</td>
-                            <td
-                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
-                                <i class="fas fa-check mr-1"></i>Sob medida para seu carro</td>
-                        </tr>
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="p-4 border-b border-gray-800 font-medium">Odor</td>
-                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
-                                    class="fas fa-skull mr-1"></i>Cheiro forte de borracha</td>
-                            <td
-                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
-                                <i class="fas fa-check mr-1"></i>Sem odor — XPE inerte</td>
-                        </tr>
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="p-4 border-b border-gray-800 font-medium">Proteção UV</td>
-                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
-                                    class="fas fa-times mr-1"></i>Desbota e resseca</td>
-                            <td
-                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
-                                <i class="fas fa-check mr-1"></i>Tratamento UV incluso</td>
-                        </tr>
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="p-4 border-b border-gray-800 font-medium">Bordas Altas</td>
-                            <td class="p-4 border-b border-gray-800 text-red-400 text-center"><i
-                                    class="fas fa-times mr-1"></i>Planas (líquidos vazam)</td>
-                            <td
-                                class="p-4 border-b border-gray-800 bg-brand-orange/5 text-green-400 font-bold text-center">
-                                <i class="fas fa-check mr-1"></i>5cm — contém derramamentos</td>
-                        </tr>
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="p-4 font-medium">Garantia</td>
-                            <td class="p-4 text-red-400 text-center"><i class="fas fa-times mr-1"></i>Sem garantia</td>
-                            <td class="p-4 bg-brand-orange/5 text-green-400 font-bold text-center"><i
-                                    class="fas fa-check mr-1"></i>12 meses + troca grátis</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <!-- TESTIMONIALS -->
+    <section id="depoimentos" style="padding:72px 24px;max-width:1100px;margin:0 auto">
+        <div style="text-align:center;margin-bottom:40px">
+            <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;margin-bottom:8px">O que dizem os clientes
+            </h2>
+            <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:12px">
+                <div style="display:flex;gap:3px;color:#f59e0b;font-size:20px">★★★★★</div>
+                <span style="color:#22c55e;font-weight:700;font-size:16px">4.9 / 5.0</span>
+                <span style="color:#666;font-size:13px">· +10.000 avaliações</span>
             </div>
         </div>
-    </section>
 
-    <!-- ======= TESTIMONIALS + UGC GALLERY ======= -->
-    <section id="depoimentos" class="px-6 py-20 max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-center mb-12">O que dizem nossos clientes</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <div class="glass p-6 rounded-xl border-t border-brand-orange/20">
-                <div class="flex items-center gap-3 mb-4">
+        <!-- Text Reviews -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-bottom:48px">
+            <div class="glass" style="border-radius:14px;padding:20px;border-top:2px solid #FF4500">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
                     <img src="./assets/customer-1-BXTDELSp.webp"
-                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover" alt="Ricardo S.">
+                        style="width:46px;height:46px;border-radius:50%;border:2px solid #FF4500;object-fit:cover"
+                        alt="Ricardo S.">
                     <div>
-                        <p class="font-bold text-sm">Ricardo S.</p>
-                        <p class="text-xs text-brand-orange">BMW 320i</p>
+                        <p style="font-weight:700;font-size:14px">Ricardo S.</p>
+                        <p style="color:#FF4500;font-size:12px">BMW 320i</p>
                     </div>
                 </div>
-                <div class="text-yellow-400 text-xs mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                <p class="text-sm text-gray-300 italic">"Acabamento impecável. Encaixou perfeitamente e mudou a cara do
-                    carro. Recomendo demais!"</p>
+                <div class="stars">★★★★★</div>
+                <p style="color:#ccc;font-size:13px;line-height:1.6;margin-top:8px;font-style:italic">"Acabamento
+                    impecável. Encaixou perfeitamente e mudou a cara do interior. Recomendo demais!"</p>
             </div>
-            <div class="glass p-6 rounded-xl border-t border-brand-orange/20">
-                <div class="flex items-center gap-3 mb-4">
+            <div class="glass" style="border-radius:14px;padding:20px;border-top:2px solid #FF4500">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
                     <img src="./assets/customer-11-Va_eVyCD.webp"
-                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover" alt="Fernanda L.">
+                        style="width:46px;height:46px;border-radius:50%;border:2px solid #FF4500;object-fit:cover"
+                        alt="Fernanda L.">
                     <div>
-                        <p class="font-bold text-sm">Fernanda L.</p>
-                        <p class="text-xs text-brand-orange">Jeep Compass</p>
+                        <p style="font-weight:700;font-size:14px">Fernanda L.</p>
+                        <p style="color:#FF4500;font-size:12px">Jeep Compass</p>
                     </div>
                 </div>
-                <div class="text-yellow-400 text-xs mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                <p class="text-sm text-gray-300 italic">"Muito fácil de limpar, realmente. Derrubaram café e não manchou
-                    nada. O atendimento também foi 10."</p>
+                <div class="stars">★★★★★</div>
+                <p style="color:#ccc;font-size:13px;line-height:1.6;margin-top:8px;font-style:italic">"Derrubaram café e
+                    não manchou nada! Muito fácil de limpar. O atendimento também foi 10."</p>
             </div>
-            <div class="glass p-6 rounded-xl border-t border-brand-orange/20">
-                <div class="flex items-center gap-3 mb-4">
+            <div class="glass" style="border-radius:14px;padding:20px;border-top:2px solid #FF4500">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
                     <img src="./assets/customer-3-Dp2JbBLF.webp"
-                        class="w-12 h-12 rounded-full border-2 border-brand-orange object-cover" alt="Carlos M.">
+                        style="width:46px;height:46px;border-radius:50%;border:2px solid #FF4500;object-fit:cover"
+                        alt="Carlos M.">
                     <div>
-                        <p class="font-bold text-sm">Carlos M.</p>
-                        <p class="text-xs text-brand-orange">Toyota Corolla</p>
+                        <p style="font-weight:700;font-size:14px">Carlos M.</p>
+                        <p style="color:#FF4500;font-size:12px">Toyota Corolla</p>
                     </div>
                 </div>
-                <div class="text-yellow-400 text-xs mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                <p class="text-sm text-gray-300 italic">"Valeu cada centavo. O material é muito superior aos baratinhos
-                    que vendem por aí."</p>
+                <div class="stars">★★★★★</div>
+                <p style="color:#ccc;font-size:13px;line-height:1.6;margin-top:8px;font-style:italic">"Valeu cada
+                    centavo. O material é muito superior. Já comprei para dois carros!"</p>
             </div>
         </div>
 
-        <!-- UGC Gallery -->
-        <div class="text-center mb-8">
-            <h3 class="text-3xl font-black mb-1">Mais de <span class="text-brand-orange">10.000 clientes</span>
-                satisfeitos</h3>
-            <p class="text-gray-400 text-sm">Fotos reais enviadas pelos nossos clientes</p>
+        <!-- UGC Photo Grid -->
+        <div style="text-align:center;margin-bottom:24px">
+            <h3 style="font-size:1.4rem;font-weight:900">📸 Fotos Reais dos Clientes</h3>
+            <p style="color:#666;font-size:13px;margin-top:6px">Fotos enviadas por quem já recebeu o pedido</p>
         </div>
-        <div class="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+        <div style="columns:2;column-gap:10px" id="ugc-grid">
             <img src="./assets/customer-4-DU4N_uCX.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-5-DIAem0KY.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-6-DoC9OLcH.jpeg"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-7-D97f4G7q.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-8-HuK2VOte.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-9-dPISaVgV.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-10-Cic76gTa.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-12-CsY0kDew.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-13-BmyqEl7e.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-14-BEwioIiH.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/customer-16-88IyM-cO.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
             <img src="./assets/product-3-hYd1p11T.webp"
-                class="w-full rounded-lg hover:scale-[1.02] transition duration-300 break-inside-avoid" alt="">
+                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
         </div>
+        <!-- expand on md+ -->
+        <style>
+            @media(min-width:640px) {
+                #ugc-grid {
+                    columns: 3
+                }
+            }
+
+            @media(min-width:900px) {
+                #ugc-grid {
+                    columns: 4
+                }
+            }
+        </style>
     </section>
 
-    <!-- ======= FOOTER ======= -->
-    <footer class="bg-black py-10 text-center text-gray-600 text-sm border-t border-gray-900">
-        <div class="flex justify-center items-center gap-6 mb-8 flex-wrap">
-            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="Compra Segura"
-                class="h-12 opacity-80 hover:opacity-100 transition">
-            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="Reclame Aqui"
-                class="h-10 opacity-80 hover:opacity-100 transition">
-            <img src="./assets/meios-pagamento-Dk4yb50c.webp" alt="Meios de Pagamento"
-                class="h-8 opacity-80 hover:opacity-100 transition">
+    <!-- FOOTER -->
+    <footer style="background:#050505;border-top:1px solid #111;padding:48px 24px 120px;text-align:center">
+        <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:24px">
+            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL" style="height:44px;opacity:.8">
+            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:36px;opacity:.8">
+            <img src="./assets/meios-pagamento-Dk4yb50c.webp" alt="Pagamentos" style="height:30px;opacity:.8">
         </div>
-        <p>&copy; 2026 Exclusive 3D. Todos os direitos reservados.</p>
-        <div class="mt-4 flex justify-center gap-4">
-            <i class="fab fa-instagram hover:text-white cursor-pointer text-xl transition"></i>
-            <i class="fab fa-facebook hover:text-white cursor-pointer text-xl transition"></i>
-            <i class="fab fa-whatsapp hover:text-white cursor-pointer text-xl transition"></i>
-        </div>
-        <p class="mt-4 text-xs">Políticas de Privacidade | Termos de Uso</p>
+        <p style="color:#444;font-size:13px">© 2026 Exclusive 3D Tapetes. Todos os direitos reservados.</p>
+        <p style="color:#333;font-size:11px;margin-top:8px">Políticas de Privacidade · Termos de Uso</p>
     </footer>
 
-    <!-- ======= WHATSAPP FLOATING BUTTON ======= -->
+    <!-- WHATSAPP -->
     <a href="https://wa.me/5511999999999?text=Olá!%20Tenho%20interesse%20nos%20tapetes%20Exclusive%203D" target="_blank"
-        class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-400 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-green-900/50 transition hover:scale-110"
-        title="Fale conosco no WhatsApp">
-        <i class="fab fa-whatsapp text-3xl"></i>
+        style="position:fixed;bottom:80px;right:16px;z-index:99;background:#25d366;color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 20px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s"
+        onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        <i class="fab fa-whatsapp"></i>
         <span
-            class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">1</span>
+            style="position:absolute;top:-4px;right:-4px;background:red;color:#fff;font-size:9px;font-weight:900;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center">1</span>
     </a>
 
-    <!-- ======= CHECKOUT MODAL (Mobile-First) ======= -->
-    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center backdrop-blur-sm">
-        <div
-            class="modal-inner bg-brand-black w-full h-full sm:h-auto sm:max-w-md sm:rounded-2xl sm:border sm:border-brand-orange/30 sm:shadow-2xl shadow-orange-900/20 animate-fade-in relative overflow-hidden flex flex-col">
+    <!-- STICKY FOOTER -->
+    <div id="sticky-footer">
+        <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="btn-green pulse-green"
+            style="width:100%;padding:16px;font-size:16px;border-radius:12px;max-width:600px;display:block;margin:0 auto">
+            <i class="fas fa-shopping-cart" style="margin-right:8px"></i>COMPRAR AGORA
+        </button>
+    </div>
 
-            <!-- Header -->
-            <div class="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-black/50 flex-shrink-0">
+    <!-- DRAWER BACKDROP -->
+    <div id="drawer-backdrop" class="hidden" onclick="closeDrawer()"></div>
+
+    <!-- CHECKOUT DRAWER -->
+    <div id="checkout-drawer" class="drawer-hidden">
+        <!-- Handle -->
+        <div style="text-align:center;padding:12px 0 4px">
+            <div style="width:40px;height:4px;background:#333;border-radius:4px;display:inline-block"></div>
+        </div>
+        <!-- Header -->
+        <div
+            style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px 16px;border-bottom:1px solid #1a1a1a">
+            <h3 style="font-size:17px;font-weight:900;color:#22c55e">✓ Confirmar Pedido</h3>
+            <button onclick="closeDrawer()"
+                style="background:none;border:none;color:#888;font-size:20px;cursor:pointer;padding:4px"><i
+                    class="fas fa-times"></i></button>
+        </div>
+        <!-- Vehicle Summary -->
+        <div style="padding:16px 20px;background:rgba(34,197,94,.05);border-bottom:1px solid #1a1a1a">
+            <div style="display:flex;align-items:center;justify-content:space-between">
                 <div>
-                    <h3 class="text-base font-black text-brand-orange">Finalizar Pedido</h3>
-                    <p class="text-xs text-gray-400 mt-0.5">Preencha seus dados abaixo</p>
+                    <p style="font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px"><i
+                            class="fas fa-car" style="margin-right:4px"></i>Veículo</p>
+                    <p id="drawer-vehicle" style="font-weight:700;font-size:15px;color:#fff;margin-top:2px">—</p>
                 </div>
-                <button onclick="closeCheckout()"
-                    class="text-gray-400 hover:text-white transition w-8 h-8 flex items-center justify-center">
-                    <i class="fas fa-times text-lg"></i>
+                <button onclick="drawerAlterarVeiculo()"
+                    style="background:none;border:1px solid #333;color:#888;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600;transition:border-color .2s"
+                    onmouseover="this.style.borderColor='#666'" onmouseout="this.style.borderColor='#333'">
+                    Alterar
                 </button>
             </div>
-
-            <!-- Order Summary -->
-            <div class="px-5 py-3 bg-green-500/10 border-b border-green-500/20 flex-shrink-0">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="text-xs text-gray-400">Kit selecionado:</p>
-                        <p id="modal-kit-name" class="text-sm font-bold text-white">—</p>
-                        <p class="text-xs text-amber-400 mt-0.5"><i class="fas fa-gift mr-1"></i>Brinde: Aromatizador de
-                            Carro Novo — R$ 0,00</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-xs text-gray-400">Total PIX</p>
-                        <p id="modal-kit-price" class="text-xl font-black text-green-400">—</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2 mt-2">
-                    <p class="text-[10px] text-gray-500">Veículo: <span id="modal-model-name"
-                            class="text-gray-300 font-medium"></span></p>
-                </div>
-            </div>
-
-            <!-- Form body -->
-            <div class="modal-body px-5 py-5 space-y-4 overflow-y-auto flex-1 pb-24 sm:pb-5">
+        </div>
+        <!-- Kit + Price -->
+        <div style="padding:20px">
+            <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px">
+                <img src="./assets/kit-complete-BFARBGDS.jpg"
+                    style="width:80px;height:70px;object-fit:cover;border-radius:10px;flex-shrink:0"
+                    alt="Kit selecionado" id="drawer-kit-img">
                 <div>
-                    <label class="text-xs text-gray-400 font-medium block mb-1">Nome Completo</label>
-                    <input type="text" id="co-name" required placeholder="Digite seu nome completo"
-                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange outline-none transition text-sm">
-                </div>
-                <div>
-                    <label class="text-xs text-gray-400 font-medium block mb-1">CPF</label>
-                    <input type="tel" id="co-cpf" required placeholder="000.000.000-00" maxlength="14"
-                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange outline-none transition text-sm">
-                </div>
-                <div>
-                    <label class="text-xs text-gray-400 font-medium block mb-1">WhatsApp / Celular</label>
-                    <input type="tel" id="co-phone" required placeholder="(11) 99999-9999" maxlength="15"
-                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange outline-none transition text-sm">
-                </div>
-                <div>
-                    <label class="text-xs text-gray-400 font-medium block mb-1">E-mail</label>
-                    <input type="email" id="co-email" required placeholder="seu@email.com"
-                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-brand-orange outline-none transition text-sm">
-                </div>
-                <div class="bg-gray-800/40 p-3 rounded-lg flex items-start gap-2 text-xs text-gray-400">
-                    <i class="fas fa-shield-alt text-green-500 mt-0.5"></i>
-                    <p>Seus dados são protegidos por criptografia SSL. Você será redirecionado para o checkout seguro.
+                    <p style="font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px">Kit selecionado</p>
+                    <p id="drawer-kit-name" style="font-weight:700;font-size:14px;color:#fff;margin:3px 0">Kit Interno +
+                        Porta Malas</p>
+                    <p id="drawer-original-price" style="font-size:12px;color:#555;text-decoration:line-through">R$
+                        489,90</p>
+                    <p id="drawer-price" style="font-size:22px;font-weight:900;color:#22c55e;line-height:1.1">R$ 79,90
+                        <span style="font-size:12px;font-weight:600;color:#888">no PIX</span>
                     </p>
                 </div>
             </div>
-
-            <!-- Fixed Footer CTA -->
-            <div class="modal-footer px-5 py-4 border-t border-white/10 bg-black/80 flex-shrink-0">
-                <button id="checkout-submit-btn" onclick="submitCheckout()"
-                    class="w-full bg-brand-orange text-brand-black font-black py-4 rounded-xl hover:bg-orange-500 transition flex items-center justify-center gap-2 text-base uppercase tracking-wide shadow-lg shadow-orange-500/30 hover:scale-[1.02] transform">
-                    <i class="fas fa-lock"></i> IR PARA PAGAMENTO SEGURO
-                </button>
-                <div class="flex items-center justify-center gap-3 mt-3 text-[10px] text-gray-500">
-                    <i class="fas fa-shield-alt text-green-500"></i> Ambiente 100% Criptografado
-                    <span>•</span>
-                    <i class="fas fa-lock text-green-500"></i> Dados Protegidos
-                </div>
+            <div
+                style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:10px;padding:12px 14px;margin-bottom:20px;display:flex;align-items:center;gap:10px">
+                <i class="fas fa-truck" style="color:#22c55e;font-size:16px"></i>
+                <span style="font-size:13px;color:#aaa;font-weight:600">Frete Grátis · Entrega 5–7 dias úteis</span>
             </div>
-
+            <button id="drawer-pay-btn" onclick="drawerConfirmPayment()" class="btn-green pulse-green"
+                style="width:100%;padding:18px;font-size:16px;border-radius:13px">
+                ✓ CONFIRMAR E PAGAR
+            </button>
+            <div
+                style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px;font-size:11px;color:#555">
+                <span><i class="fas fa-lock" style="color:#22c55e;margin-right:4px"></i>Ambiente criptografado</span>
+                <span>·</span>
+                <span><i class="fas fa-shield-alt" style="color:#22c55e;margin-right:4px"></i>Compra 100% segura</span>
+            </div>
         </div>
     </div>
 
+    <!-- Nav mobile js -->
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (menuBtn && mobileMenu) {
+            menuBtn.style.display = 'block';
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.style.display = mobileMenu.style.display === 'none' ? 'flex' : 'none';
+            });
+            mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.style.display = 'none'));
+        }
+    </script>
     <script type="module" src="./js/main.js"></script>
 </body>
 

@@ -9,47 +9,44 @@ const state = {
     selectedYear: '',
     selectedKit: null,
     kitPrice: 0,
+    vehicleConfirmed: false,
     viewers: 12,
     offerEndTime: sessionStorage.getItem('offerEndTime') || null,
-    configStep: 1
 };
 
 // ============================================================
 // UTILITIES
 // ============================================================
+const $ = (id) => document.getElementById(id);
 const formatCurrency = (val) =>
     new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
-
-const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-const $ = (id) => document.getElementById(id);
 
 // ============================================================
 // URGENCY BAR
 // ============================================================
 const initUrgency = () => {
-    // Viewer count
     setInterval(() => {
         const change = Math.floor(Math.random() * 3) - 1;
         state.viewers = Math.max(8, Math.min(45, state.viewers + change));
-        $('viewer-count').innerText = state.viewers;
+        const el = $('viewer-count');
+        if (el) el.innerText = state.viewers;
     }, 4000);
 
-    // Timer (persists across refreshes via sessionStorage)
     if (!state.offerEndTime) {
         state.offerEndTime = Date.now() + 15 * 60 * 1000;
         sessionStorage.setItem('offerEndTime', state.offerEndTime);
     }
     const tick = () => {
-        let distance = state.offerEndTime - Date.now();
+        let distance = Number(state.offerEndTime) - Date.now();
         if (distance < 0) {
             state.offerEndTime = Date.now() + 15 * 60 * 1000;
             sessionStorage.setItem('offerEndTime', state.offerEndTime);
-            distance = state.offerEndTime - Date.now();
+            distance = 15 * 60 * 1000;
         }
         const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((distance % (1000 * 60)) / 1000);
-        $('timer').innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        const el = $('timer');
+        if (el) el.innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     };
     tick();
     setInterval(tick, 1000);
@@ -59,134 +56,110 @@ const initUrgency = () => {
 // HERO SLIDER
 // ============================================================
 const initHeroSlider = () => {
-    const slides = document.querySelectorAll('#hero-carousel img');
+    const slides = document.querySelectorAll('#hero-carousel .hero-slide');
     let cur = 0;
     if (!slides.length) return;
-    slides[0].classList.add('opacity-100');
+    slides[cur].classList.add('active');
     setInterval(() => {
-        slides[cur].classList.replace('opacity-100', 'opacity-0');
+        slides[cur].classList.remove('active');
         cur = (cur + 1) % slides.length;
-        slides[cur].classList.replace('opacity-0', 'opacity-100');
-    }, 5000);
+        slides[cur].classList.add('active');
+    }, 4500);
 };
 
 // ============================================================
-// 3-STEP CONFIGURATOR
+// 3-DROPDOWN CAR SELECTOR
 // ============================================================
-
-// Move between configurator steps
-window.goToConfigStep = (step) => {
-    state.configStep = step;
-    for (let i = 1; i <= 3; i++) {
-        const el = $(`cfg-step-${i}`);
-        if (i === step) {
-            el.classList.remove('step-hidden');
-            el.classList.add('step-visible');
-        } else {
-            el.classList.add('step-hidden');
-            el.classList.remove('step-visible');
-        }
-    }
-    // Update progress dots
-    for (let i = 1; i <= 3; i++) {
-        const dot = $(`dot-${i}`);
-        if (i < step) {
-            dot.className = 'w-8 h-8 rounded-full bg-green-500 text-black font-bold text-sm flex items-center justify-center transition-all duration-300';
-            dot.innerHTML = '<i class="fas fa-check text-xs"></i>';
-        } else if (i === step) {
-            dot.className = 'w-8 h-8 rounded-full bg-brand-orange text-black font-bold text-sm flex items-center justify-center transition-all duration-300';
-            dot.innerText = i;
-        } else {
-            dot.className = 'w-8 h-8 rounded-full bg-gray-700 text-gray-400 font-bold text-sm flex items-center justify-center transition-all duration-300';
-            dot.innerText = i;
-        }
-    }
-    // Update label
-    const labels = ['', 'Passo 1 de 3 — Selecione a Marca', 'Passo 2 de 3 — Selecione o Modelo', 'Passo 3 de 3 — Selecione o Ano'];
-    $('step-label').innerText = labels[step] || '';
-    // Hide success banner and kit section when going back
-    if (step < 3) {
-        $('success-banner').classList.add('hidden');
-    }
-};
-
-// Brand selected (from grid button or datalist)
-window.selectBrand = (brand) => {
-    if (!carDatabase[brand]) return;
-    state.selectedBrand = brand;
-    // Populate model select
-    const modelSel = $('model-select');
-    modelSel.innerHTML = '<option value="">Selecione o Modelo</option>';
-    carDatabase[brand].sort().forEach(m => {
-        const opt = document.createElement('option');
-        opt.value = m;
-        opt.textContent = m;
-        modelSel.appendChild(opt);
-    });
-    $('step2-brand-label').innerText = `Marca: ${brand}`;
-    $('step2-next').disabled = true;
-    goToConfigStep(2);
-};
-
-// Model confirmation (step 2 → step 3)
-window.confirmarModelo = () => {
-    const val = $('model-select').value;
-    if (!val) return;
-    state.selectedModel = val;
-    // Populate year buttons
-    const yearsDiv = $('year-buttons');
-    yearsDiv.innerHTML = '';
-    const currentYear = new Date().getFullYear();
-    for (let y = currentYear; y >= currentYear - 12; y--) {
-        const btn = document.createElement('button');
-        btn.className = 'brand-btn bg-gray-900 border border-gray-700 rounded-lg py-2 text-sm font-bold text-center';
-        btn.innerText = y;
-        btn.onclick = () => selectYear(y);
-        yearsDiv.appendChild(btn);
-    }
-    $('step3-model-label').innerText = `${state.selectedBrand} ${state.selectedModel}`;
-    goToConfigStep(3);
-};
-
-// Year selected → show success banner
-window.selectYear = (year) => {
-    state.selectedYear = year;
-    $('success-text').innerText = `Molde Premium disponível para ${state.selectedBrand} ${state.selectedModel} (${year})`;
-    $('success-banner').classList.remove('hidden');
-    $('success-banner').scrollIntoView({ behavior: 'smooth', block: 'center' });
-};
-
-// Scroll to kit section and reveal it
-window.scrollToKitSection = () => {
-    const kitSection = $('kit-section');
-    kitSection.classList.remove('hidden');
-    setTimeout(() => {
-        kitSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
-};
-
-// Init brand datalist & search input
 const initCarSelector = () => {
+    const brandSel = $('sel-brand');
+    const modelSel = $('sel-model');
+    const yearSel = $('sel-year');
+    if (!brandSel) return;
+
+    // Populate brands
     const brands = Object.keys(carDatabase).sort();
-    const datalist = $('brand-list');
-    datalist.innerHTML = '';
     brands.forEach(b => {
         const opt = document.createElement('option');
         opt.value = b;
-        datalist.appendChild(opt);
+        opt.textContent = b;
+        brandSel.appendChild(opt);
     });
 
-    // Listen for datalist selection
-    $('brand-search').addEventListener('input', (e) => {
-        const val = e.target.value.trim();
-        const key = Object.keys(carDatabase).find(k => k.toLowerCase() === val.toLowerCase());
-        if (key) selectBrand(key);
+    brandSel.addEventListener('change', () => {
+        const brand = brandSel.value;
+        state.selectedBrand = brand;
+        state.selectedModel = '';
+        state.selectedYear = '';
+        state.vehicleConfirmed = false;
+        hideConfirmBox();
+
+        // Reset downstream
+        modelSel.innerHTML = '<option value="">Selecione o modelo</option>';
+        modelSel.disabled = !brand;
+        yearSel.innerHTML = '<option value="">Selecione o ano</option>';
+        yearSel.disabled = true;
+
+        if (!brand) return;
+        const models = Object.keys(carDatabase[brand]).sort();
+        models.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m;
+            opt.textContent = m;
+            modelSel.appendChild(opt);
+        });
     });
 
-    // Step 2 model select enable next button
-    $('model-select').addEventListener('change', (e) => {
-        $('step2-next').disabled = !e.target.value;
+    modelSel.addEventListener('change', () => {
+        const model = modelSel.value;
+        state.selectedModel = model;
+        state.selectedYear = '';
+        state.vehicleConfirmed = false;
+        hideConfirmBox();
+
+        yearSel.innerHTML = '<option value="">Selecione o ano</option>';
+        yearSel.disabled = !model;
+
+        if (!model) return;
+        const years = carDatabase[state.selectedBrand][model];
+        // Show newest first
+        [...years].reverse().forEach(y => {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = y;
+            yearSel.appendChild(opt);
+        });
     });
+
+    yearSel.addEventListener('change', () => {
+        const year = yearSel.value;
+        state.selectedYear = year;
+        state.vehicleConfirmed = false;
+        hideConfirmBox();
+        if (year) confirmVehicle();
+    });
+};
+
+const confirmVehicle = () => {
+    state.vehicleConfirmed = true;
+    const { selectedBrand: b, selectedModel: m, selectedYear: y } = state;
+
+    // Update confirmation box text
+    const confText = $('conf-vehicle-text');
+    if (confText) confText.textContent = `${b} ${m} ${y}`;
+
+    const box = $('confirm-box');
+    if (box) {
+        box.classList.remove('hidden');
+        box.classList.add('animate-bounce-in');
+    }
+
+    // Update sticky button price to reflect selected kit or default
+    updateStickyPrice();
+};
+
+const hideConfirmBox = () => {
+    const box = $('confirm-box');
+    if (box) box.classList.add('hidden');
 };
 
 // ============================================================
@@ -195,109 +168,140 @@ const initCarSelector = () => {
 window.selectKit = (kitName, price) => {
     state.selectedKit = kitName;
     state.kitPrice = price;
-    openCheckout();
+
+    // Visual: highlight selected kit card
+    document.querySelectorAll('.kit-card').forEach(c => c.classList.remove('kit-selected'));
+    const cards = document.querySelectorAll('.kit-card');
+    cards.forEach(c => {
+        if (c.dataset.kit === kitName) c.classList.add('kit-selected');
+    });
+
+    updateStickyPrice();
+
+    // If vehicle already confirmed, open drawer directly
+    if (state.vehicleConfirmed) {
+        openDrawer();
+    } else {
+        // Scroll to selector
+        smoothScrollTo('comprar');
+    }
 };
 
 // ============================================================
-// CHECKOUT MODAL
+// STICKY FOOTER BUTTON
 // ============================================================
-const openCheckout = () => {
-    const modal = $('checkout-modal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
+const updateStickyPrice = () => {
+    const btn = $('sticky-buy-btn');
+    if (!btn) return;
+    if (state.kitPrice > 0) {
+        btn.innerHTML = `<i class="fas fa-shopping-cart mr-2"></i>COMPRAR AGORA &mdash; ${formatCurrency(state.kitPrice)}`;
+    } else {
+        btn.innerHTML = `<i class="fas fa-shopping-cart mr-2"></i>COMPRAR AGORA`;
+    }
+};
 
-    // Populate summary
-    $('modal-kit-name').innerText = state.selectedKit || 'Kit Exclusive 3D';
-    $('modal-kit-price').innerText = formatCurrency(state.kitPrice);
-    $('modal-model-name').innerText = `${state.selectedBrand} ${state.selectedModel} ${state.selectedYear}`.trim() || '—';
+window.stickyBuyClick = () => {
+    if (!state.vehicleConfirmed) {
+        smoothScrollTo('comprar');
+        // Pulse the selector to draw attention
+        const sel = $('sel-brand');
+        if (sel) {
+            sel.classList.add('ring-2', 'ring-brand-orange');
+            setTimeout(() => sel.classList.remove('ring-2', 'ring-brand-orange'), 2000);
+        }
+        return;
+    }
+    openDrawer();
+};
 
-    // Prevent body scroll on mobile
+// ============================================================
+// BOTTOM DRAWER (Checkout)
+// ============================================================
+const openDrawer = () => {
+    const drawer = $('checkout-drawer');
+    const backdrop = $('drawer-backdrop');
+    if (!drawer) return;
+
+    // Populate drawer with current state
+    const dVehicle = $('drawer-vehicle');
+    if (dVehicle) {
+        dVehicle.textContent = `${state.selectedBrand} ${state.selectedModel} ${state.selectedYear}`;
+    }
+    const dKit = $('drawer-kit-name');
+    if (dKit) dKit.textContent = state.selectedKit || 'Kit Interno + Porta Malas';
+
+    const dPrice = $('drawer-price');
+    if (dPrice) dPrice.textContent = formatCurrency(state.kitPrice || 79.90);
+
+    const dOriginal = $('drawer-original-price');
+    const origPrice = state.kitPrice === 59.90 ? 329.90 : 489.90;
+    if (dOriginal) dOriginal.textContent = formatCurrency(origPrice);
+
+    drawer.classList.remove('drawer-hidden');
+    drawer.classList.add('drawer-open');
+    if (backdrop) backdrop.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 };
 
-window.closeCheckout = () => {
-    $('checkout-modal').classList.add('hidden');
-    $('checkout-modal').classList.remove('flex');
+window.closeDrawer = () => {
+    const drawer = $('checkout-drawer');
+    const backdrop = $('drawer-backdrop');
+    if (drawer) {
+        drawer.classList.remove('drawer-open');
+        drawer.classList.add('drawer-hidden');
+    }
+    if (backdrop) backdrop.classList.add('hidden');
     document.body.style.overflow = '';
 };
 
-// ============================================================
-// CHECKOUT SUBMISSION
-// ============================================================
-window.submitCheckout = () => {
-    const name = $('co-name').value.trim();
-    const cpf = $('co-cpf').value.replace(/\D/g, '');
-    const phone = $('co-phone').value.replace(/\D/g, '');
-    const email = $('co-email').value.trim();
+window.drawerAlterarVeiculo = () => {
+    closeDrawer();
+    state.vehicleConfirmed = false;
+    hideConfirmBox();
+    smoothScrollTo('comprar');
+};
 
-    if (name.length < 3) { alert('Por favor, digite seu nome completo.'); return; }
-    if (cpf.length !== 11) { alert('Por favor, digite um CPF válido (11 dígitos).'); return; }
-    if (phone.length < 10) { alert('Por favor, digite um celular válido com DDD.'); return; }
-    if (!validateEmail(email)) { alert('Por favor, digite um e-mail válido.'); return; }
-
-    const btn = $('checkout-submit-btn');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processando...';
-    btn.disabled = true;
-
-    const payload = {
-        name,
-        cpf: $('co-cpf').value,
-        phone: $('co-phone').value,
-        email,
-        car: `${state.selectedBrand} ${state.selectedModel} ${state.selectedYear}`.trim(),
-        kit: state.selectedKit,
-        price: formatCurrency(state.kitPrice),
-    };
-
-    console.log('[Exclusive3D] Checkout payload:', payload);
-
-    // Pixel event
+window.drawerConfirmPayment = () => {
+    const btn = $('drawer-pay-btn');
+    if (btn) {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Redirecionando...';
+        btn.disabled = true;
+    }
+    // Fire pixel event if available
     if (typeof fbq === 'function') {
         fbq('track', 'InitiateCheckout', { value: state.kitPrice, currency: 'BRL' });
     }
-
+    // TODO: replace with real gateway URL
     setTimeout(() => {
-        // TODO: Replace with real gateway URL
-        alert(`Redirecionando para o pagamento seguro...\nKit: ${payload.kit}\nValor: ${payload.price}`);
-        btn.innerHTML = '<i class="fas fa-lock mr-2"></i> IR PARA PAGAMENTO SEGURO';
-        btn.disabled = false;
+        alert(`Redirecionando para o pagamento seguro...\nKit: ${state.selectedKit}\nVeículo: ${state.selectedBrand} ${state.selectedModel} ${state.selectedYear}\nValor: ${formatCurrency(state.kitPrice)}`);
+        if (btn) {
+            btn.innerHTML = '<i class="fas fa-check mr-2"></i>CONFIRMAR E PAGAR';
+            btn.disabled = false;
+        }
     }, 1500);
 };
 
 // ============================================================
-// INPUT MASKS
+// SMOOTH SCROLL
 // ============================================================
-const initMasks = () => {
-    const cpfInput = $('co-cpf');
-    if (cpfInput) {
-        cpfInput.addEventListener('input', (e) => {
-            e.target.value = e.target.value
-                .replace(/\D/g, '')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-                .substring(0, 14);
-        });
-    }
-    const phoneInput = $('co-phone');
-    if (phoneInput) {
-        phoneInput.addEventListener('input', (e) => {
-            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-            e.target.value = !x[2] ? x[1] : `(${x[1]}) ${x[2]}${x[3] ? '-' + x[3] : ''}`;
-        });
-    }
+const smoothScrollTo = (id) => {
+    const el = $(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
+window.scrollToSection = smoothScrollTo;
+
 // ============================================================
-// NAV - Mobile Menu
+// NAV
 // ============================================================
 const initNav = () => {
     const btn = $('menu-btn');
     const menu = $('mobile-menu');
     if (btn && menu) {
         btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-        // Close when a link is clicked
-        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.add('hidden')));
+        menu.querySelectorAll('a').forEach(a =>
+            a.addEventListener('click', () => menu.classList.add('hidden'))
+        );
     }
 };
 
@@ -308,8 +312,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initUrgency();
     initHeroSlider();
     initCarSelector();
-    initMasks();
     initNav();
-    // Start on step 1
-    goToConfigStep(1);
 });
