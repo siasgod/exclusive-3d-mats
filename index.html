@@ -527,6 +527,26 @@
                 display: none
             }
         }
+
+        /* Estilos para os Dots do Carrossel */
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: #FF4500;
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        #hero-carousel {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 
@@ -563,44 +583,46 @@
             style="background:none;border:1px solid #444;color:#888;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px">Fechar</button>
     </div>
 
-    <!-- HERO -->
+    <!-- HERO REFACTORED -->
     <section
-        style="position:relative;min-height:85vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:80px 24px 120px">
-        <div id="hero-carousel">
-            <div class="hero-slide">
-                <img src="./assets/carousel-new-2-CTcO_2X9.jpg" alt="Tapete 3D instalado">
-                <div class="hero-overlay"></div>
+        style="background:#0a0a0a; padding: 60px 24px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+
+        <!-- Carousel Centralizado -->
+        <div style="width: 100%; max-width: 600px; position: relative; margin-bottom: 30px;">
+            <div id="hero-carousel" style="display: flex; overflow: hidden; border-radius: 20px; aspect-ratio: 16/9;">
+                <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="hero-slide-img"
+                    style="width:100%; flex-shrink:0; object-fit: cover;">
+                <img src="./assets/carousel-4-BpsqPhmo.webp" class="hero-slide-img"
+                    style="width:100%; flex-shrink:0; object-fit: cover;">
+                <img src="./assets/carousel-5-Cm0njbwO.webp" class="hero-slide-img"
+                    style="width:100%; flex-shrink:0; object-fit: cover;">
             </div>
-            <div class="hero-slide">
-                <img src="./assets/carousel-4-BpsqPhmo.webp" alt="Tapete impermeável">
-                <div class="hero-overlay"></div>
-            </div>
-            <div class="hero-slide">
-                <img src="./assets/carousel-5-Cm0njbwO.webp" alt="Tapete sob medida">
-                <div class="hero-overlay"></div>
+            <!-- Dots Navigation -->
+            <div id="carousel-dots" style="display: flex; justify-content: center; gap: 8px; margin-top: 15px;">
+                <span class="dot active" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
             </div>
         </div>
-        <div style="position:relative;z-index:10;max-width:760px;margin:0 auto">
+
+        <!-- Text Content Below Carousel -->
+        <div style="max-width: 800px;">
             <div
-                style="display:inline-block;background:rgba(255,69,0,.15);border:1px solid rgba(255,69,0,.4);border-radius:30px;padding:6px 18px;font-size:12px;font-weight:700;color:#FF4500;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px">
-                ⭐ Mais de 10.000 clientes satisfeitos
+                style="display:inline-block; background:rgba(255,69,0,.1); border:1px solid rgba(255,69,0,.3); border-radius:30px; padding:6px 15px; font-size:11px; font-weight:700; color:#FF4500; text-transform:uppercase; margin-bottom:15px;">
+                ⭐ Líder em Proteção Automotiva
             </div>
-            <h1 style="font-size:clamp(2rem,5vw,3.8rem);font-weight:900;line-height:1.1;margin-bottom:20px">
-                O Tapete que <span style="color:#FF4500">Protege de Verdade</span><br>e Encaixa Perfeitamente no Seu
-                Carro
+            <h1
+                style="font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:900; color:#fff; line-height:1.1; margin-bottom:15px;">
+                O Tapete que <span style="color:#FF4500">Protege de Verdade</span><br>e Encaixa no Seu Carro
             </h1>
             <p
-                style="color:#ccc;font-size:clamp(1rem,2vw,1.2rem);margin-bottom:36px;max-width:580px;margin-left:auto;margin-right:auto">
-                Borracha 7mm de alta densidade · Bordas de 5cm impermeáveis · Ilhós metálicos · 100% sob medida para o
-                seu modelo.
+                style="color:#888; font-size:1.1rem; margin-bottom:30px; max-width:600px; margin-left:auto; margin-right:auto;">
+                Sob medida para o seu veículo com bordas de 5cm e borracha premium de 7mm.
             </p>
             <a href="#comprar" class="btn-green pulse-green"
-                style="display:inline-block;padding:18px 42px;font-size:17px;border-radius:14px;text-decoration:none;margin-bottom:16px">
-                <i class="fas fa-car-side" style="margin-right:8px"></i>SELECIONAR MEU CARRO
+                style="padding:16px 32px; border-radius:12px; text-decoration:none; display:inline-block;">
+                SELECIONAR MEU VEÍCULO
             </a>
-            <p style="color:#888;font-size:13px"><i class="fas fa-truck"
-                    style="color:#22c55e;margin-right:6px"></i>Frete Grátis para todo Brasil · Entrega 5–7 dias úteis
-            </p>
         </div>
     </section>
 
