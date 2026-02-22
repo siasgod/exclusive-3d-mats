@@ -1,106 +1,89 @@
-// CONFIGURAÇÕES
 const API_BASE = "https://parallelum.com.br/fipe/api/v1/carros";
 let selection = { brandId: '', brandName: '', modelId: '', modelName: '', yearId: '' };
-let allModels = [];
 
-// --- 1. LÓGICA DO CARROSSEL ---
+// --- TIMER REGRESSIVO ---
+function startTimer(duration, display) {
+    let timer = duration, minutes, seconds;
+    setInterval(() => {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = minutes + ":" + seconds;
+        if (--timer < 0) timer = duration;
+    }, 1000);
+}
+
+// --- CARROSSEL AUTOMÁTICO ---
 let currentSlide = 0;
+const slides = document.querySelectorAll('.hero-slide-img');
+const dotsContainer = document.getElementById('carousel-dots');
 
-// Utilidade para selecionar elementos (mantida para facilitar integração)
-const $ = (id) => document.getElementById(id);
+function initCarousel() {
+    slides.forEach((_, i) => {
+        const d = document.createElement('span');
+        d.className = i === 0 ? 'dot active' : 'dot';
+        d.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(d);
+    });
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        goToSlide(currentSlide);
+    }, 4000);
+}
 
-window.goToSlide = function (index) {
-    const container = $('hero-carousel');
+function goToSlide(index) {
+    const container = document.getElementById('hero-carousel');
     const dots = document.querySelectorAll('.dot');
-    if (!container) return;
-
+    if (!container || dots.length === 0) return;
     container.scrollTo({ left: container.offsetWidth * index, behavior: 'smooth' });
     dots.forEach(d => d.classList.remove('active'));
     if (dots[index]) dots[index].classList.add('active');
     currentSlide = index;
-};
+}
 
-const initHeroSlider = () => {
-    const carousel = $('hero-carousel');
-    const dots = document.querySelectorAll('.dot');
-    if (!carousel || dots.length === 0) return;
-
-    // Update dots based on scroll position (manual swipe)
-    carousel.addEventListener('scroll', () => {
-        const index = Math.round(carousel.scrollLeft / carousel.offsetWidth);
-        dots.forEach((d, i) => d.classList.toggle('active', i === index));
-        currentSlide = index;
-    });
-};
-
-// --- 2. LÓGICA FIPE API (SELETOR) ---
+// --- FIPE API INTEGRATION (CORRIGIDO) ---
 async function initFipe() {
-    const selBrand = $('sel-brand');
-    if (!selBrand) return;
-
+    const selBrand = document.getElementById('sel-brand');
     try {
         const response = await fetch(`${API_BASE}/marcas`);
         const brands = await response.json();
+        selBrand.innerHTML = '<option value="">Selecione a Marca</option>';
         brands.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(b => {
             const opt = document.createElement('option');
             opt.value = b.codigo;
             opt.textContent = b.nome;
             selBrand.appendChild(opt);
         });
-    } catch (e) { console.error("Erro API Marcas", e); }
+    } catch (e) {
+        if (selBrand) selBrand.innerHTML = '<option>Erro ao carregar marcas</option>';
+    }
 }
 
-// Quando mudar a Marca
-const brandEl = $('sel-brand');
+// Evento Marca -> Modelo
+const brandEl = document.getElementById('sel-brand');
 if (brandEl) {
     brandEl.addEventListener('change', async (e) => {
         const id = e.target.value;
         if (!id) return;
-
         selection.brandId = id;
         selection.brandName = e.target.options[e.target.selectedIndex].text;
 
-        // UI Update
-        const trigger = $('model-trigger');
-        const label = $('model-selected-text');
+        const trigger = document.getElementById('model-trigger');
+        const label = document.getElementById('model-selected-text');
         if (trigger) trigger.disabled = false;
-        if (label) label.innerText = "Carregando modelos...";
+        if (label) label.innerText = "Carregando...";
 
         const res = await fetch(`${API_BASE}/marcas/${id}/modelos`);
         const data = await res.json();
-        allModels = data.modelos;
-        renderModels(allModels);
-        if (label) label.innerText = "Selecione o modelo";
-    });
-}
-
-// Pop-over e Busca
-const modelSearch = $('model-search');
-if (modelSearch) {
-    modelSearch.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        renderModels(allModels.filter(m => m.nome.toLowerCase().includes(term)));
-    });
-}
-
-const modelTrigger = $('model-trigger');
-const modelPopover = $('model-popover');
-if (modelTrigger && modelPopover) {
-    modelTrigger.addEventListener('click', () => {
-        modelPopover.classList.toggle('show');
-        if (modelPopover.classList.contains('show')) $('model-search').focus();
-    });
-
-    // Fechar popover ao clicar fora
-    document.addEventListener('click', (e) => {
-        if (!modelTrigger.contains(e.target) && !modelPopover.contains(e.target)) {
-            modelPopover.classList.remove('show');
-        }
+        window.allModels = data.modelos;
+        renderModels(window.allModels);
+        if (label) label.innerText = "Selecione o Modelo";
     });
 }
 
 function renderModels(list) {
-    const container = $('model-results');
+    const container = document.getElementById('model-results');
     if (!container) return;
     container.innerHTML = '';
     list.forEach(m => {
@@ -111,99 +94,94 @@ function renderModels(list) {
     });
 }
 
-async function selectModel(id, name) {
+function selectModel(id, name) {
     selection.modelId = id;
     selection.modelName = name;
-    const label = $('model-selected-text');
-    if (label) label.innerText = name;
+    const modelText = document.getElementById('model-selected-text');
+    if (modelText) modelText.innerText = name;
+    const modelPopover = document.getElementById('model-popover');
     if (modelPopover) modelPopover.classList.remove('show');
-
-    const selYear = $('sel-year');
-    if (selYear) {
-        selYear.disabled = false;
-        selYear.innerHTML = '<option>Carregando anos...</option>';
-
-        try {
-            const res = await fetch(`${API_BASE}/marcas/${selection.brandId}/modelos/${id}/anos`);
-            const years = await res.json();
-            selYear.innerHTML = '<option value="">Selecione o ano</option>';
-            years.forEach(y => {
-                const opt = document.createElement('option');
-                opt.value = y.codigo;
-                opt.textContent = y.nome;
-                selYear.appendChild(opt);
-            });
-        } catch (e) {
-            selYear.innerHTML = '<option value="">Erro ao carregar</option>';
-        }
-    }
+    loadYears(id);
 }
 
-// Finalização e Segurança (Trava de Kit)
-const yearEl = $('sel-year');
+async function loadYears(modelId) {
+    const selYear = document.getElementById('sel-year');
+    if (!selYear) return;
+    selYear.disabled = false;
+    selYear.innerHTML = '<option>Aguarde...</option>';
+    const res = await fetch(`${API_BASE}/marcas/${selection.brandId}/modelos/${modelId}/anos`);
+    const years = await res.json();
+    selYear.innerHTML = '<option value="">Selecione o Ano</option>';
+    years.forEach(y => {
+        const opt = document.createElement('option');
+        opt.value = y.codigo;
+        opt.textContent = y.nome;
+        selYear.appendChild(opt);
+    });
+}
+
+const yearEl = document.getElementById('sel-year');
 if (yearEl) {
     yearEl.addEventListener('change', (e) => {
         if (!e.target.value) return;
         selection.yearId = e.target.value;
-        const fullVehicle = `${selection.brandName} ${selection.modelName} ${e.target.options[e.target.selectedIndex].text}`;
-
-        const confText = $('conf-vehicle-text');
-        const confBox = $('confirm-box');
-        const drVehicle = $('drawer-vehicle');
-
-        if (confText) confText.innerText = fullVehicle;
+        const full = `${selection.brandName} ${selection.modelName} ${e.target.options[e.target.selectedIndex].text}`;
+        const confText = document.getElementById('conf-vehicle-text');
+        const confBox = document.getElementById('confirm-box');
+        const drVehicle = document.getElementById('drawer-vehicle');
+        if (confText) confText.innerText = full;
         if (confBox) confBox.classList.remove('hidden');
-        if (drVehicle) drVehicle.innerText = fullVehicle;
+        if (drVehicle) drVehicle.innerText = full;
     });
 }
 
-// --- 3. LÓGICA DE URGÊNCIA (Preservada) ---
-const initUrgency = () => {
-    let viewers = 12;
-    setInterval(() => {
-        const change = Math.floor(Math.random() * 3) - 1;
-        viewers = Math.max(8, Math.min(45, viewers + change));
-        const el = $('viewer-count');
-        if (el) el.innerText = viewers;
-    }, 4000);
-
-    let offerEndTime = sessionStorage.getItem('offerEndTime');
-    if (!offerEndTime) {
-        offerEndTime = Date.now() + 15 * 60 * 1000;
-        sessionStorage.setItem('offerEndTime', offerEndTime);
-    }
-    const tick = () => {
-        let distance = Number(offerEndTime) - Date.now();
-        if (distance < 0) {
-            offerEndTime = Date.now() + 15 * 60 * 1000;
-            sessionStorage.setItem('offerEndTime', offerEndTime);
-            distance = 15 * 60 * 1000;
+// Busca no Pop-over
+const modelSearch = document.getElementById('model-search');
+if (modelSearch) {
+    modelSearch.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        if (window.allModels) {
+            const filtered = window.allModels.filter(m => m.nome.toLowerCase().includes(term));
+            renderModels(filtered);
         }
-        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((distance % (1000 * 60)) / 1000);
-        const el = $('timer');
-        if (el) el.innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    });
+}
+
+const modelTrigger = document.getElementById('model-trigger');
+if (modelTrigger) {
+    modelTrigger.onclick = () => {
+        const modelPopover = document.getElementById('model-popover');
+        if (modelPopover) modelPopover.classList.toggle('show');
     };
-    tick();
-    setInterval(tick, 1000);
+}
+
+// --- 4. KITS E DRAWER (Preservados para funcionalidade) ---
+window.stickyBuyClick = function () {
+    const comprar = document.getElementById('comprar');
+    if (comprar) comprar.scrollIntoView({ behavior: 'smooth' });
 };
 
-// --- 4. KITS E DRAWER ---
+window.drawerAlterarVeiculo = function () {
+    window.closeDrawer();
+    const comprar = document.getElementById('comprar');
+    if (comprar) comprar.scrollIntoView({ behavior: 'smooth' });
+};
+
 window.selectKit = function (kitName, price) {
-    if (!selection.yearId) {
+    if (!selection.yearId && !document.getElementById('sel-year').value) {
         alert("⚠️ ATENÇÃO: Você precisa selecionar seu veículo primeiro para garantirmos o encaixe perfeito!");
-        const comprarSection = $('comprar');
+        const comprarSection = document.getElementById('comprar');
         if (comprarSection) comprarSection.scrollIntoView({ behavior: 'smooth' });
         return;
     }
 
-    const dKitName = $('drawer-kit-name');
-    const dPrice = $('drawer-price');
+    const dKitName = document.getElementById('drawer-kit-name');
+    const dPrice = document.getElementById('drawer-price');
     if (dKitName) dKitName.textContent = kitName;
     if (dPrice) dPrice.innerHTML = `R$ ${price.toFixed(2)} <span style="font-size:12px;font-weight:600;color:#888">no PIX</span>`;
 
     // Preços originais para o drawer
-    const dOriginal = $('drawer-original-price');
+    const dOriginal = document.getElementById('drawer-original-price');
     const origPrice = price < 70 ? 329.90 : 489.90;
     if (dOriginal) dOriginal.textContent = `R$ ${origPrice.toFixed(2)}`;
 
@@ -211,8 +189,8 @@ window.selectKit = function (kitName, price) {
 };
 
 function openDrawer() {
-    const backdrop = $('drawer-backdrop');
-    const drawer = $('checkout-drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const drawer = document.getElementById('checkout-drawer');
     if (backdrop) backdrop.classList.remove('hidden');
     if (drawer) {
         drawer.classList.remove('drawer-hidden');
@@ -222,8 +200,8 @@ function openDrawer() {
 }
 
 window.closeDrawer = function () {
-    const backdrop = $('drawer-backdrop');
-    const drawer = $('checkout-drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const drawer = document.getElementById('checkout-drawer');
     if (backdrop) backdrop.classList.add('hidden');
     if (drawer) {
         drawer.classList.remove('drawer-open');
@@ -233,15 +211,15 @@ window.closeDrawer = function () {
 };
 
 window.drawerConfirmPayment = () => {
-    const btn = $('drawer-pay-btn');
+    const btn = document.getElementById('drawer-pay-btn');
     if (btn) {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Redirecionando...';
         btn.disabled = true;
     }
     setTimeout(() => {
-        const kitName = $('drawer-kit-name') ? $('drawer-kit-name').textContent : '';
+        const kitName = document.getElementById('drawer-kit-name') ? document.getElementById('drawer-kit-name').textContent : '';
         const fullVehicle = `${selection.brandName} ${selection.modelName}`;
-        const price = $('drawer-price') ? $('drawer-price').innerText : '';
+        const price = document.getElementById('drawer-price') ? document.getElementById('drawer-price').innerText : '';
 
         alert(`Redirecionando para o pagamento seguro...\nKit: ${kitName}\nVeículo: ${fullVehicle}\nValor: ${price}`);
         if (btn) {
@@ -251,9 +229,10 @@ window.drawerConfirmPayment = () => {
     }, 1500);
 };
 
-// Iniciar
-document.addEventListener('DOMContentLoaded', () => {
-    initUrgency();
-    initHeroSlider();
+// Inicialização
+window.onload = () => {
+    const timerDisplay = document.querySelector('#timer');
+    if (timerDisplay) startTimer(15 * 60, timerDisplay);
+    initCarousel();
     initFipe();
-});
+};
