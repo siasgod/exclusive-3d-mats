@@ -251,6 +251,11 @@
             transition: border-color .2s
         }
 
+        .sel option {
+            background-color: #111;
+            color: #fff;
+        }
+
         .sel:focus {
             outline: none;
             border-color: #22c55e;
@@ -546,6 +551,22 @@
 
         #hero-carousel {
             scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        #hero-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Chrome/Safari */
+        .hero-slide-img {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -587,15 +608,13 @@
     <section
         style="background:#0a0a0a; padding: 60px 24px; display: flex; flex-direction: column; align-items: center; text-align: center;">
 
-        <!-- Carousel Centralizado -->
+        <!-- Carousel Centralizado (Manual & Snap) -->
         <div style="width: 100%; max-width: 600px; position: relative; margin-bottom: 30px;">
-            <div id="hero-carousel" style="display: flex; overflow: hidden; border-radius: 20px; aspect-ratio: 16/9;">
+            <div id="hero-carousel" style="display: flex; overflow-x: auto; border-radius: 20px; max-height: 550px;">
                 <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="hero-slide-img"
-                    style="width:100%; flex-shrink:0; object-fit: cover;">
-                <img src="./assets/carousel-4-BpsqPhmo.webp" class="hero-slide-img"
-                    style="width:100%; flex-shrink:0; object-fit: cover;">
-                <img src="./assets/carousel-5-Cm0njbwO.webp" class="hero-slide-img"
-                    style="width:100%; flex-shrink:0; object-fit: cover;">
+                    alt="Tapete Exclusive 3D Instalado">
+                <img src="./assets/carousel-4-BpsqPhmo.webp" class="hero-slide-img" alt="Praticidade e Limpeza">
+                <img src="./assets/carousel-5-Cm0njbwO.webp" class="hero-slide-img" alt="Conforto e Durabilidade">
             </div>
             <!-- Dots Navigation -->
             <div id="carousel-dots" style="display: flex; justify-content: center; gap: 8px; margin-top: 15px;">
