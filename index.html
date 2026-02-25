@@ -43,10 +43,28 @@
             background: #FF4500
         }
 
+        /* Utility */
         .hidden {
             display: none !important
         }
 
+        @media(max-width:560px) {
+            #kit-grid {
+                grid-template-columns: 1fr !important
+            }
+        }
+
+        @media(max-width:640px) {
+            #menu-btn-nav {
+                display: block !important
+            }
+
+            .nav-links.desktop {
+                display: none !important
+            }
+        }
+
+        /* Glass */
         .glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(12px);
@@ -100,7 +118,7 @@
         }
 
         .popover-content.show {
-            display: flex
+            display: flex !important
         }
 
         .search-input {
@@ -139,32 +157,7 @@
             color: #fff
         }
 
-        @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        /* Carousel & Strip */
-        #hero-carousel {
-            display: flex;
-            overflow: hidden;
-            scroll-behavior: smooth;
-            border-radius: 15px;
-        }
-
-        .hero-slide-img {
-            width: 100%;
-            flex-shrink: 0;
-            object-fit: contain;
-        }
-
+        /* Carousel */
         .strip-track {
             display: flex;
             gap: 12px;
@@ -187,45 +180,55 @@
             height: 150px;
             object-fit: cover;
             border-radius: 10px;
+            flex-shrink: 0;
             border: 1px solid rgba(255, 255, 255, .1)
         }
 
-        /* Seletor Estilo */
         .sel {
             width: 100%;
             height: 50px;
-            background: #151515;
-            border: 1px solid #333;
+            background: #151515 !important;
+            border: 1px solid #333 !important;
             border-radius: 10px;
             padding: 14px 16px;
             color: #fff;
+            font-size: 15px;
+            font-weight: 600;
             appearance: none;
             cursor: pointer;
         }
 
-        /* Kit Cards */
-        .kit-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        /* Drawer */
+        #drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .75);
+            z-index: 110;
+            backdrop-filter: blur(4px);
+            display: none;
         }
 
-        .kit-card {
+        #checkout-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 120;
             background: #111;
-            border: 1.5px solid #222;
-            border-radius: 18px;
-            padding: 24px;
-            cursor: pointer;
-            transition: transform .25s;
+            border-radius: 22px 22px 0 0;
+            border-top: 1.5px solid #22c55e;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+            padding: 20px;
         }
 
-        .kit-card:hover {
-            transform: translateY(-4px);
+        .drawer-hidden {
+            transform: translateY(100%)
         }
 
-        .kit-best {
-            border: 2px solid #22c55e;
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+        .drawer-open {
+            transform: translateY(0)
         }
 
         .btn-green {
@@ -235,45 +238,24 @@
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            width: 100%;
-            padding: 15px;
+            transition: all .2s;
         }
 
-        /* Drawer System */
-        #drawer-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            display: none;
-            backdrop-filter: blur(4px);
-        }
+        /* Pulse animation */
+        @keyframes pulse {
 
-        #checkout-drawer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #111;
-            z-index: 1001;
-            border-radius: 20px 20px 0 0;
-            padding: 30px 20px;
-            border-top: 2px solid #22c55e;
-            transition: transform 0.4s ease;
-        }
-
-        .drawer-hidden {
-            transform: translateY(100%);
-        }
-
-        .drawer-open {
-            transform: translateY(0);
-        }
-
-        @media(max-width:560px) {
-            .kit-grid {
-                grid-template-columns: 1fr !important;
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, .5)
             }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(34, 197, 94, 0)
+            }
+        }
+
+        .pulse-green {
+            animation: pulse 2s infinite
         }
     </style>
 </head>
@@ -282,7 +264,9 @@
 
     <div
         style="background:#FF4500;color:#000;text-align:center;padding:10px;font-weight:900;font-size:14px;position:sticky;top:0;z-index:100">
-        OFERTA EXCLUSIVA TERMINA EM: <span id="timer">15:00</span> | FRETE GRÁTIS PARA TODO BRASIL 🚚
+        OFERTA EXCLUSIVA TERMINA EM: <span id="timer"
+            style="background:#000; color:#fff; padding:2px 8px; border-radius:4px; margin-left:5px">15:00</span> |
+        FRETE GRÁTIS PARA TODO BRASIL 🚚
     </div>
 
     <nav class="glass"
@@ -293,47 +277,53 @@
     </nav>
 
     <section
-        style="padding: 40px 20px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        style="background:#0a0a0a; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; text-align: center;">
         <div
-            style="background:rgba(255,69,0,0.1); border:1px solid #FF4500; color:#FF4500; padding:5px 15px; border-radius:20px; font-size:12px; font-weight:700; margin-bottom:20px;">
+            style="background:rgba(255,69,0,0.1); border:1px solid #FF4500; color:#FF4500; padding:5px 15px; border-radius:20px; font-size:12px; font-weight:700; margin-bottom:20px; text-transform:uppercase">
             🔥 PROMOÇÃO DE LANÇAMENTO: 40% OFF ATÉ HOJE
         </div>
 
-        <div style="width: 100%; max-width: 550px; margin-bottom: 25px;">
-            <div id="hero-carousel">
-                <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="hero-slide-img">
-                <img src="./assets/product-1-CLmPGSY4.webp" class="hero-slide-img">
-                <img src="./assets/carousel-4-BpsqPhmo.webp" class="hero-slide-img">
-                <img src="./assets/product-3-hYd1p11T.webp" class="hero-slide-img">
+        <div style="width: 100%; max-width: 550px; position: relative; margin-bottom: 25px;">
+            <div id="hero-carousel"
+                style="display: flex; overflow: hidden; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="hero-slide-img"
+                    style="width:100%; height:auto; flex-shrink:0;">
+                <img src="./assets/product-1-CLmPGSY4.webp" class="hero-slide-img"
+                    style="width:100%; height:auto; flex-shrink:0;">
+                <img src="./assets/carousel-4-BpsqPhmo.webp" class="hero-slide-img"
+                    style="width:100%; height:auto; flex-shrink:0;">
             </div>
         </div>
 
-        <h1 style="font-size:clamp(1.8rem, 5vw, 2.8rem); font-weight:900; margin-bottom:12px;">O Encaixe Perfeito que
-            seu Carro Merece</h1>
-        <p style="color:#aaa; margin-bottom:30px;">100% sob medida para o seu veículo</p>
+        <h1
+            style="font-size:clamp(1.8rem, 5vw, 2.8rem); font-weight:900; color:#fff; line-height:1.1; margin-bottom:12px;">
+            O Encaixe Perfeito que seu Carro Merece
+        </h1>
+        <p style="color:#aaa; font-size:1.1rem; margin-bottom:30px;">100% sob medida para o seu veículo</p>
     </section>
 
-    <div style="overflow:hidden; padding:16px 0; background:rgba(255,255,255,.02); border-y:1px solid #1a1a1a">
+    <div
+        style="overflow:hidden;padding:16px 0;background:rgba(255,255,255,.02);border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a">
         <div class="strip-track">
             <img src="./assets/product-1-CLmPGSY4.webp" class="strip-img">
             <img src="./assets/carousel-4-BpsqPhmo.webp" class="strip-img">
             <img src="./assets/carousel-5-Cm0njbwO.webp" class="strip-img">
-            <img src="./assets/product-3-hYd1p11T.webp" class="strip-img">
             <img src="./assets/product-1-CLmPGSY4.webp" class="strip-img">
             <img src="./assets/carousel-4-BpsqPhmo.webp" class="strip-img">
+            <img src="./assets/carousel-5-Cm0njbwO.webp" class="strip-img">
         </div>
     </div>
 
     <section id="comprar" style="padding:40px 16px; max-width:500px; margin:0 auto">
         <div class="glass" style="border-radius:20px; padding:25px; display:flex; flex-direction:column; gap:15px">
-            <h3 style="text-align:center; font-size:16px; color:#FF4500">SELECIONE SEU VEÍCULO:</h3>
+            <h3 style="text-align:center; font-size:16px; margin-bottom:10px; color:#FF4500">SELECIONE SEU VEÍCULO:</h3>
 
             <select id="sel-brand" class="sel">
                 <option value="">Carregando marcas...</option>
             </select>
 
             <div class="popover-container">
-                <button id="model-trigger" class="popover-trigger" disabled>
+                <button id="model-trigger" class="popover-trigger" disabled style="height:50px">
                     <span id="model-selected-text">Selecione o Modelo</span>
                     <i class="fas fa-chevron-down"></i>
                 </button>
@@ -350,33 +340,52 @@
             <div id="confirm-box" class="hidden">
                 <div
                     style="background:rgba(34,197,94,0.1); border:1px solid #22c55e; border-radius:12px; padding:15px; text-align:center">
-                    <p id="conf-vehicle-text" style="color:#22c55e; font-weight:800;"></p>
-                    <p style="color:#fff; font-size:12px;">⚠️ Molde Disponível! Escolha seu kit abaixo:</p>
+                    <p style="color:#22c55e; font-weight:800; font-size:14px" id="conf-vehicle-text"></p>
+                    <p style="color:#fff; font-size:12px; margin-top:5px">⚠️ Molde Disponível! Escolha seu kit abaixo:
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="kit-section" style="padding:48px 16px; max-width:800px; margin:0 auto">
-        <div class="kit-grid">
-            <div class="kit-card kit-best" onclick="selectKit('Kit Interno + Porta Malas', 79.90)">
+    <section id="kit-section" style="padding:48px 16px;max-width:780px;margin:0 auto">
+        <div style="text-align:center;margin-bottom:32px">
+            <h2 style="font-size:clamp(1.6rem,4vw,2.3rem);font-weight:900;margin-bottom:8px">Selecione o Kit Ideal</h2>
+        </div>
+
+        <div id="kit-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
+            <div class="kit-card kit-best" onclick="selectKit('Kit Interno + Porta Malas', 79.90)"
+                style="position:relative; background:#111; border: 2px solid #22c55e; border-radius:16px; padding: 20px;">
                 <div
-                    style="background:#22c55e; color:#000; font-size:10px; font-weight:900; text-align:center; padding:4px; margin:-24px -24px 20px; border-radius:16px 16px 0 0;">
-                    MAIS ESCOLHIDO</div>
-                <img src="./assets/kit-complete-BFARBGDS.jpg"
-                    style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-bottom:15px;">
-                <h3 style="font-size:16px; margin-bottom:10px;">Kit Interno + Porta Malas</h3>
-                <p style="font-size:28px; font-weight:900; color:#22c55e;">R$ 79,90</p>
-                <button class="btn-green" style="margin-top:15px;">QUERO ESTE KIT →</button>
+                    style="position:absolute; top:0; left:0; right:0; background:#22c55e; color:#000; font-size:11px; font-weight:900; text-align:center; padding:5px; border-radius: 14px 14px 0 0;">
+                    ⭐ MAIS ESCOLHIDO</div>
+                <img src="./assets/kit-complete-BFARBGDS.jpg" style="width:100%; border-radius:10px; margin-top: 15px;">
+                <h3 style="margin: 15px 0 5px;">Kit Interno + Porta Malas</h3>
+                <p style="font-size:30px; font-weight:900; color:#22c55e;">R$ 79,90</p>
+                <button class="btn-green pulse-green" style="width:100%; padding:15px; margin-top:10px;">QUERO ESTE KIT
+                    →</button>
             </div>
 
-            <div class="kit-card" onclick="selectKit('Kit Essencial', 59.90)">
-                <img src="./assets/kit-basic-Tk9H7iJ2.jpg"
-                    style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-bottom:15px;">
-                <h3 style="font-size:16px; margin-bottom:10px;">Kit Essencial (Interno)</h3>
-                <p style="font-size:28px; font-weight:900;">R$ 59,90</p>
-                <button class="btn-green" style="background:#444; color:#fff; margin-top:15px;">QUERO ESTE KIT
-                    →</button>
+            <div class="kit-card" onclick="selectKit('Kit Essencial', 59.90)"
+                style="background:#111; border: 1.5px solid #333; border-radius:16px; padding: 20px;">
+                <img src="./assets/kit-basic-Tk9H7iJ2.jpg" style="width:100%; border-radius:10px;">
+                <h3 style="margin: 15px 0 5px;">Kit Essencial</h3>
+                <p style="font-size:30px; font-weight:900; color:#fff;">R$ 59,90</p>
+                <button
+                    style="width:100%; padding:15px; margin-top:10px; background: transparent; border: 1px solid #555; color: #fff;">QUERO
+                    ESTE KIT →</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="beneficios" style="padding:72px 24px;background:linear-gradient(to bottom,#0a0a0a,#101010)">
+        <div
+            style="max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+            <img src="./assets/product-3-hYd1p11T.webp" style="width:100%; border-radius:16px;">
+            <div>
+                <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 16px;">Borracha Automotiva de 7mm</h2>
+                <p style="color:#aaa; line-height: 1.8;">O Exclusive 3D é fabricado com borracha XPE virgem de 7mm,
+                    garantindo durabilidade extrema e conforto.</p>
             </div>
         </div>
     </section>
@@ -384,21 +393,13 @@
     <div id="drawer-backdrop" onclick="closeDrawer()"></div>
     <div id="checkout-drawer" class="drawer-hidden">
         <div style="text-align:center;">
-            <div style="width:40px; height:4px; background:#333; border-radius:2px; margin:0 auto 20px;"></div>
-            <h2 id="drawer-kit-name" style="color:#22c55e; margin-bottom:5px;">Nome do Kit</h2>
-            <p id="drawer-vehicle" style="color:#888; font-size:14px; margin-bottom:20px;">Veículo Selecionado</p>
-
-            <div style="background:#1a1a1a; padding:20px; border-radius:15px; margin-bottom:20px;">
-                <p style="font-size:12px; color:#666;">Total a pagar:</p>
-                <p id="drawer-price" style="font-size:36px; font-weight:900; color:#fff;">R$ 0,00</p>
+            <h2 id="drawer-kit-name" style="color:#22c55e;">Nome do Kit</h2>
+            <p id="drawer-vehicle" style="color:#888; margin-bottom: 20px;">Veículo</p>
+            <div style="background:#1a1a1a; padding:15px; border-radius:10px; margin-bottom:20px;">
+                <p id="drawer-price" style="font-size:32px; font-weight:900;">R$ 0,00</p>
             </div>
-
             <button id="drawer-pay-btn" onclick="drawerConfirmPayment()" class="btn-green"
-                style="font-size:16px; padding:18px;">
-                CONFIRMAR E PAGAR AGORA
-            </button>
-            <p style="font-size:11px; color:#555; margin-top:15px;"><i class="fas fa-lock"></i> Pagamento processado de
-                forma segura</p>
+                style="width:100%; padding:18px;">CONFIRMAR PAGAMENTO</button>
         </div>
     </div>
 
