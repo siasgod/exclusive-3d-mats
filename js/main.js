@@ -44,37 +44,80 @@ async function initFipe() {
     } catch (e) { console.error("Erro FIPE:", e); }
 }
 
+// --- SELEÇÃO DE MARCA ---
 document.getElementById('sel-brand')?.addEventListener('change', async (e) => {
     const id = e.target.value;
-    if (!id) return;
+    const modelTrigger = document.getElementById('model-trigger');
+    const label = document.getElementById('model-selected-text');
+
+    if (!id) {
+        if (modelTrigger) modelTrigger.disabled = true;
+        return;
+    }
+
+    // Ativa o botão de modelo
+    if (modelTrigger) modelTrigger.disabled = false;
+
     selection.brandId = id;
     selection.brandName = e.target.options[e.target.selectedIndex].text;
 
-    const label = document.getElementById('model-selected-text');
     if (label) label.innerText = "Carregando modelos...";
 
     try {
         const res = await fetch(`${API_BASE}/marcas/${id}/modelos`);
         const data = await res.json();
-        window.allModels = data.modelos;
+        window.allModels = data.modelos; // Guarda para o filtro de busca
         renderModels(window.allModels);
         if (label) label.innerText = "Selecione o Modelo";
     } catch (error) {
         if (label) label.innerText = "Erro ao carregar";
+        console.error("Erro ao buscar modelos:", error);
     }
 });
 
+// --- RENDERIZAR E FILTRAR MODELOS NO POPOVER ---
 function renderModels(list) {
     const container = document.getElementById('model-results');
     if (!container) return;
     container.innerHTML = '';
+
     list.forEach(m => {
         const btn = document.createElement('button');
         btn.innerText = m.nome;
+        btn.type = "button";
         btn.onclick = () => selectModel(m.codigo, m.nome);
         container.appendChild(btn);
     });
 }
+
+// Lógica de Busca no Popover
+document.getElementById('model-search')?.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    if (!window.allModels) return;
+    const filtered = window.allModels.filter(m =>
+        m.nome.toLowerCase().includes(term)
+    );
+    renderModels(filtered);
+});
+
+// Abrir/Fechar Popover
+document.getElementById('model-trigger')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const popover = document.getElementById('model-popover');
+    if (popover) {
+        popover.classList.toggle('show');
+        document.getElementById('model-search')?.focus();
+    }
+});
+
+// Fechar popover ao clicar fora
+document.addEventListener('click', (e) => {
+    const popover = document.getElementById('model-popover');
+    const trigger = document.getElementById('model-trigger');
+    if (popover && !trigger.contains(e.target) && !popover.contains(e.target)) {
+        popover.classList.remove('show');
+    }
+});
 
 function selectModel(id, name) {
     selection.modelId = id;
@@ -89,6 +132,7 @@ function selectModel(id, name) {
     loadYears(id);
 }
 
+// --- CARREGAR ANOS ---
 async function loadYears(modelId) {
     const selYear = document.getElementById('sel-year');
     if (!selYear) return;
@@ -111,6 +155,7 @@ async function loadYears(modelId) {
     }
 }
 
+// --- CONFIRMAÇÃO DO VEÍCULO ---
 document.getElementById('sel-year')?.addEventListener('change', (e) => {
     if (!e.target.value) return;
     selection.yearId = e.target.value;
@@ -148,23 +193,29 @@ window.selectKit = function (kitName, price) {
 
 function openDrawer() {
     const drawer = document.getElementById('checkout-drawer');
-    const overlay = document.getElementById('drawer-overlay');
+    const overlay = document.getElementById('drawer-backdrop') || document.getElementById('drawer-overlay');
 
-    if (drawer) drawer.classList.add('active');
-    if (overlay) overlay.classList.add('active');
+    if (drawer) {
+        drawer.classList.add('drawer-open');
+        drawer.classList.remove('drawer-hidden');
+    }
+    if (overlay) overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
 }
 
 window.closeDrawer = function () {
     const drawer = document.getElementById('checkout-drawer');
-    const overlay = document.getElementById('drawer-overlay');
+    const overlay = document.getElementById('drawer-backdrop') || document.getElementById('drawer-overlay');
 
-    if (drawer) drawer.classList.remove('active');
-    if (overlay) overlay.classList.remove('active');
+    if (drawer) {
+        drawer.classList.remove('drawer-open');
+        drawer.classList.add('drawer-hidden');
+    }
+    if (overlay) overlay.style.display = 'none';
     document.body.style.overflow = '';
 };
 
-// REDIRECIONAMENTO PARA A PÁGINA DE DADOS (PASSO 1)
+// --- REDIRECIONAMENTO FINAL ---
 window.drawerConfirmPayment = () => {
     const btn = document.getElementById('drawer-pay-btn');
     if (btn) {
@@ -172,18 +223,19 @@ window.drawerConfirmPayment = () => {
         btn.disabled = true;
     }
 
-    // Captura dados com segurança (evita erro se o HTML não tiver os IDs exatos)
     const kitEl = document.getElementById('drawer-kit-name');
     const priceEl = document.getElementById('drawer-price');
     const vehicleEl = document.getElementById('drawer-vehicle');
 
+    // Limpa o preço para enviar apenas números/ponto
+    const precoLimpo = priceEl ? priceEl.innerText.replace('R$', '').trim() : '0.00';
+
     const params = new URLSearchParams({
         kit: kitEl ? (kitEl.innerText || kitEl.textContent) : 'Kit Padrão',
-        preco: priceEl ? (priceEl.innerText || priceEl.textContent) : '0.00',
+        preco: precoLimpo,
         veiculo: vehicleEl ? (vehicleEl.innerText || vehicleEl.textContent) : 'Veículo não selecionado'
     });
 
-    // Aguarda 1 segundo e redireciona
     setTimeout(() => {
         window.location.href = `dados-pagamento.html?${params.toString()}`;
     }, 1000);
