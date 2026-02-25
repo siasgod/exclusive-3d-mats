@@ -19,6 +19,25 @@
             outline: none;
             box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
         }
+
+        .hidden {
+            display: none;
+        }
+
+        .shipping-card {
+            transition: all 0.2s ease;
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+        }
+
+        .shipping-card:hover {
+            border-color: #3b82f6;
+        }
+
+        input[type="radio"]:checked+.shipping-card {
+            border-color: #16a34a;
+            background-color: #f0fdf4;
+        }
     </style>
 </head>
 
@@ -35,116 +54,288 @@
 
     <nav class="bg-white border-b">
         <div class="max-w-4xl mx-auto flex justify-between px-6 py-4">
-            <div class="step-active pb-1 text-sm">1. DADOS</div>
-            <div class="text-gray-400 text-sm">2. ENTREGA</div>
-            <div class="text-gray-400 text-sm">3. PAGAMENTO</div>
+            <div id="step-1" class="step-active pb-1 text-sm">1. DADOS</div>
+            <div id="step-2" class="text-gray-400 text-sm pb-1">2. ENTREGA</div>
+            <div id="step-3" class="text-gray-400 text-sm pb-1">3. PAGAMENTO</div>
         </div>
     </nav>
 
     <main class="max-w-4xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
 
         <div class="md:col-span-2 space-y-6">
-            <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h2 class="text-lg font-bold mb-6 flex items-center gap-2">
-                    <i class="fas fa-user-circle text-gray-400"></i> Informações Pessoais
-                </h2>
-
-                <form id="form-checkout" class="space-y-4">
+            <form id="form-checkout">
+                <section id="section-pessoal"
+                    class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                    <h2 class="text-lg font-bold mb-6 flex items-center gap-2">
+                        <i class="fas fa-user-circle text-gray-400"></i> Informações Pessoais
+                    </h2>
                     <div>
                         <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nome Completo</label>
-                        <input type="text" placeholder="Ex: João Silva" required
+                        <input type="text" id="nome" placeholder="Ex: João Silva" required
                             class="w-full p-3 border border-gray-300 rounded-lg">
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase mb-1">E-mail</label>
-                            <input type="email" placeholder="seu@email.com" required
+                            <input type="email" id="email" placeholder="seu@email.com" required
                                 class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">WhatsApp /
-                                Celular</label>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">WhatsApp</label>
                             <input type="tel" id="phone" placeholder="(00) 00000-0000" required
                                 class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                     </div>
-
                     <div>
                         <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CPF</label>
                         <input type="text" id="cpf" placeholder="000.000.000-00" required
                             class="w-full p-3 border border-gray-300 rounded-lg">
                     </div>
-
-                    <button type="submit"
+                    <button type="button" onclick="irParaEntrega()"
                         class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-wider mt-4">
                         Avançar para Entrega <i class="fas fa-arrow-right ml-2"></i>
                     </button>
-                </form>
-            </section>
+                </section>
+
+                <section id="section-entrega"
+                    class="hidden bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <i class="fas fa-truck text-gray-400"></i> Onde devemos entregar?
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CEP</label>
+                            <input type="text" id="cep" placeholder="00000-000" required
+                                class="w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Rua / Logradouro</label>
+                            <input type="text" id="rua" readonly
+                                class="w-full p-3 border border-gray-100 bg-gray-50 rounded-lg text-gray-500">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Número</label>
+                            <input type="text" id="numero" required
+                                class="w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div class="md:col-span-3">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Bairro /
+                                Complemento</label>
+                            <input type="text" id="bairro" class="w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 mt-8">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">Escolha o melhor frete:</label>
+
+                        <label class="relative block">
+                            <input type="radio" name="shipping" value="22.40" onchange="updateTotal(22.40)"
+                                class="peer hidden">
+                            <div class="shipping-card p-4 rounded-xl flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <p class="text-sm font-bold text-gray-800 uppercase tracking-tighter">📦 FULL ⚡
+                                        JADLOG EXPRESS</p>
+                                </div>
+                                <span class="font-bold text-gray-800">R$ 22,40</span>
+                            </div>
+                        </label>
+
+                        <label class="relative block">
+                            <input type="radio" name="shipping" value="16.91" onchange="updateTotal(16.91)" checked
+                                class="peer hidden">
+                            <div class="shipping-card p-4 rounded-xl flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <p class="text-sm font-bold text-gray-800 uppercase tracking-tighter">📦 SEDEX -
+                                        CORREIOS</p>
+                                </div>
+                                <span class="font-bold text-gray-800">R$ 16,91</span>
+                            </div>
+                        </label>
+
+                        <label class="relative block opacity-60">
+                            <input type="radio" name="shipping" value="0" onchange="updateTotal(0)" class="peer hidden">
+                            <div class="shipping-card p-4 rounded-xl flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <p class="text-sm font-bold text-gray-800 uppercase tracking-tighter">📦 FRETE
+                                        NORMAL (15 DIAS)</p>
+                                </div>
+                                <span class="font-bold text-green-600">GRÁTIS</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <button type="submit" id="btn-submit"
+                        class="w-full bg-black hover:bg-gray-800 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-wider mt-6">
+                        Gerar PIX Seguro <i class="fas fa-chevron-right ml-2 text-xs"></i>
+                    </button>
+                </section>
+
+                <section id="section-pagamento"
+                    class="hidden bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center space-y-6">
+                    <div class="flex flex-col items-center">
+                        <div id="pix-timer"
+                            class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-bold mb-4 italic">
+                            <i class="fas fa-clock mr-2"></i> Aguardando Pagamento (05:00)
+                        </div>
+                        <h2 class="text-xl font-black text-gray-800 italic uppercase">Pague via PIX</h2>
+                        <p class="text-gray-500 text-sm">Aprovação imediata e envio prioritário.</p>
+                    </div>
+
+                    <div
+                        class="flex justify-center border-4 border-gray-50 p-4 rounded-2xl bg-white max-w-[220px] mx-auto shadow-inner">
+                        <img id="pix-qr-code" src="" alt="QR Code PIX">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase">Clique no código abaixo para
+                            copiar</label>
+                        <div class="relative group cursor-pointer" onclick="copyPix()">
+                            <input type="text" id="pix-key" readonly
+                                class="w-full p-4 bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl text-xs font-mono text-center cursor-pointer group-hover:border-green-500 transition-all">
+                            <div class="absolute inset-y-0 right-4 flex items-center">
+                                <i class="fas fa-copy text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
         </div>
 
         <div class="md:col-span-1">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 sticky top-6">
-                <h3 class="font-bold text-gray-800 mb-4 uppercase text-xs tracking-widest">Resumo do Pedido</h3>
-
+                <h3 class="font-bold text-gray-800 mb-4 uppercase text-xs tracking-widest border-b pb-2">Resumo</h3>
                 <div class="flex gap-4 mb-4 pb-4 border-b">
-                    <div class="w-16 h-16 bg-gray-100 rounded-lg flex-shrink-0 flex items-center justify-center">
-                        <i class="fas fa-box text-gray-300"></i>
+                    <div
+                        class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden text-2xl text-gray-300">
+                        <i class="fas fa-box"></i>
                     </div>
                     <div>
-                        <p id="resumo-kit" class="text-sm font-bold leading-tight">Carregando kit...</p>
-                        <p id="resumo-veiculo" class="text-xs text-gray-500 mt-1">Carregando veículo...</p>
+                        <p id="resumo-kit" class="text-sm font-bold leading-tight uppercase">---</p>
+                        <p id="resumo-veiculo" class="text-[10px] text-gray-500 mt-1 uppercase">---</p>
                     </div>
                 </div>
-
-                <div class="space-y-2">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">Subtotal</span>
-                        <span id="resumo-preco" class="font-bold">R$ 0,00</span>
-                    </div>
-                    <div class="flex justify-between text-sm text-green-600 font-bold">
-                        <span>Frete</span>
-                        <span>GRÁTIS</span>
-                    </div>
-                    <div class="pt-4 mt-4 border-t flex justify-between items-center">
-                        <span class="font-bold text-lg">Total</span>
-                        <span id="total-final" class="text-2xl font-black text-green-600">R$ 0,00</span>
-                    </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm"><span class="text-gray-500">Subtotal</span><span
+                            id="resumo-preco" class="font-bold">R$ 0,00</span></div>
+                    <div class="flex justify-between text-sm"><span class="text-gray-500">Frete</span><span
+                            id="resumo-frete-texto" class="font-black italic">R$ 16,91</span></div>
+                    <div class="pt-4 mt-4 border-t flex justify-between items-center"><span
+                            class="font-bold text-gray-800">TOTAL</span><span id="total-final"
+                            class="text-2xl font-black text-green-600 tracking-tighter">R$ 0,00</span></div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // Lógica para pegar os dados da URL
         const params = new URLSearchParams(window.location.search);
+        const valorBase = parseFloat(params.get('preco')?.replace('R$', '').replace('.', '').replace(',', '.') || "0");
+
         document.getElementById('resumo-kit').innerText = params.get('kit') || 'Kit Selecionado';
-        document.getElementById('resumo-veiculo').innerText = params.get('veiculo') || 'Veículo não informado';
-        const preco = params.get('preco') || 'R$ 0,00';
-        document.getElementById('resumo-preco').innerText = preco;
-        document.getElementById('total-final').innerText = preco;
+        document.getElementById('resumo-veiculo').innerText = params.get('veiculo') || 'Veículo';
+        document.getElementById('resumo-preco').innerText = `R$ ${valorBase.toFixed(2).replace('.', ',')}`;
 
-        // Máscara Simples para CPF e Telefone
-        document.getElementById('cpf').addEventListener('input', e => {
-            let v = e.target.value.replace(/\D/g, "");
-            v = v.replace(/(\d{3})(\d)/, "$1.$2");
-            v = v.replace(/(\d{3})(\d)/, "$1.$2");
-            v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-            e.target.value = v;
+        updateTotal(16.91);
+
+        const mask = (el, fn) => el.addEventListener('input', e => e.target.value = fn(e.target.value));
+        mask(document.getElementById('cpf'), v => v.replace(/\D/g, "").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"));
+        mask(document.getElementById('phone'), v => v.replace(/\D/g, "").replace(/^(\d{2})(\d)/g, "($1) $2").replace(/(\d)(\d{4})$/, "$1-$2"));
+        mask(document.getElementById('cep'), v => {
+            v = v.replace(/\D/g, "").replace(/^(\d{5})(\d)/, "$1-$2");
+            if (v.length === 9) buscaCEP(v);
+            return v;
         });
 
-        document.getElementById('phone').addEventListener('input', e => {
-            let v = e.target.value.replace(/\D/g, "");
-            v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
-            v = v.replace(/(\d)(\d{4})$/, "$1-$2");
-            e.target.value = v;
-        });
+        function irParaEntrega() {
+            if (!document.getElementById('nome').value || !document.getElementById('cpf').value) return alert("Preencha seus dados.");
+            document.getElementById('section-pessoal').classList.add('hidden');
+            document.getElementById('section-entrega').classList.remove('hidden');
+            document.getElementById('step-2').className = "step-active pb-1 text-sm";
+            window.scrollTo(0, 0);
+        }
 
-        document.getElementById('form-checkout').addEventListener('submit', e => {
+        async function buscaCEP(cep) {
+            try {
+                const res = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, "")}/json/`);
+                const data = await res.json();
+                if (!data.erro) {
+                    document.getElementById('rua').value = data.logradouro;
+                    document.getElementById('bairro').value = data.bairro;
+                    document.getElementById('numero').focus();
+                }
+            } catch (e) { }
+        }
+
+        function updateTotal(frete) {
+            const novoTotal = valorBase + parseFloat(frete);
+            document.getElementById('total-final').innerText = `R$ ${novoTotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-frete-texto').innerText = frete === 0 ? "Grátis" : `R$ ${frete.toFixed(2).replace('.', ',')}`;
+        }
+
+        // LÓGICA DE PAGAMENTO - ENVIO PARA O BACKEND (PHP)
+        document.getElementById('form-checkout').addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('Dados capturados! Agora iríamos para a parte do Endereço (API de CEP).');
+            const btn = document.getElementById('btn-submit');
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> GERANDO PIX...';
+            btn.disabled = true;
+
+            const dadosPedido = {
+                nome: document.getElementById('nome').value,
+                email: document.getElementById('email').value,
+                cpf: document.getElementById('cpf').value,
+                phone: document.getElementById('phone').value,
+                valor: document.getElementById('total-final').innerText.replace('R$ ', '').replace('.', '').replace(',', '.'),
+                kit: params.get('kit')
+            };
+
+            try {
+                // Aqui chamamos o seu arquivo PHP que conterá o Token da SyncPay
+                const response = await fetch('processar-pix.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosPedido)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('pix-qr-code').src = result.qr_code_url;
+                    document.getElementById('pix-key').value = result.copy_paste_key;
+
+                    document.getElementById('section-entrega').classList.add('hidden');
+                    document.getElementById('section-pagamento').classList.remove('hidden');
+                    document.getElementById('step-3').className = "step-active pb-1 text-sm";
+                    startTimer();
+                } else {
+                    alert("Erro ao gerar PIX. Tente novamente.");
+                    btn.disabled = false;
+                    btn.innerText = "Tentar Novamente";
+                }
+            } catch (err) {
+                alert("Erro de conexão.");
+                btn.disabled = false;
+            }
         });
+
+        function copyPix() {
+            const copyText = document.getElementById("pix-key");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Código copiado! Pague no seu banco.");
+        }
+
+        function startTimer() {
+            let duration = 300;
+            const display = document.getElementById('pix-timer');
+            const timer = setInterval(() => {
+                let minutes = Math.floor(duration / 60);
+                let seconds = duration % 60;
+                display.innerHTML = `<i class="fas fa-clock mr-2"></i> Aguardando Pagamento (${minutes}:${seconds < 10 ? '0' + seconds : seconds})`;
+                if (--duration < 0) clearInterval(timer);
+            }, 1000);
+        }
     </script>
 </body>
 
