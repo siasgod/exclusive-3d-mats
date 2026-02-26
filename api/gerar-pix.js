@@ -4,23 +4,23 @@ export default async function handler(req, res) {
     const { customer, amount, kitName } = req.body;
 
     try {
-        // CORREÇÃO: O domínio correto geralmente é .com.br com 'payments' 
-        // ou o domínio .app. Vamos usar o oficial:
-        const urlOficial = "https://api.syncpayments.com.br/v1/payments";
+        // A URL oficial baseada no seu painel da SyncPay
+        const url = "https://api.syncpayments.com.br/v1/payments";
 
-        const response = await fetch(urlOficial, {
+        const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                // Usando o nome da variável que está agora na sua Vercel
                 "x-api-key": process.env.SYNCPAY_SECRET_KEY
             },
             body: JSON.stringify({
-                amount: amount,
+                amount: amount, // Valor em centavos (ex: 9681)
                 payment_method: "pix",
                 customer: {
                     name: customer.name,
                     email: customer.email,
-                    cpf_cnpj: customer.cpf_cnpj.replace(/\D/g, "")
+                    cpf_cnpj: customer.cpf_cnpj.replace(/\D/g, "") // Envia apenas números
                 },
                 items: [{
                     title: kitName,
@@ -36,21 +36,19 @@ export default async function handler(req, res) {
         try {
             data = JSON.parse(responseText);
         } catch (e) {
-            return res.status(500).json({
-                error: "Erro de DNS ou URL. O servidor retornou algo não esperado.",
-                debug: responseText.substring(0, 100)
-            });
+            console.error("Erro ao converter JSON. Recebido:", responseText);
+            return res.status(500).json({ error: "Resposta inválida da API." });
         }
 
-        if (!response.ok) return res.status(response.status).json(data);
+        if (!response.ok) {
+            console.error("Erro da SyncPay:", data);
+            return res.status(response.status).json(data);
+        }
 
         return res.status(200).json(data);
 
     } catch (error) {
-        console.error("Erro de conexão (Fetch Failed):", error.message);
-        return res.status(500).json({
-            error: "Falha ao conectar na API. Verifique a URL.",
-            code: error.code
-        });
+        console.error("Erro fatal:", error.message);
+        return res.status(500).json({ error: error.message });
     }
 }
