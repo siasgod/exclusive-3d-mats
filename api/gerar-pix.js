@@ -1,3 +1,4 @@
+// api/gerar-pix.js
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
 
@@ -8,7 +9,8 @@ export default async function handler(req, res) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer d548c850-59df-43cf-aa38-13ef985463f7`
+                // Aqui o Node.js vai buscar a chave que você salvou no painel da Vercel
+                "Authorization": `Bearer ${process.env.SYNCPAY_SECRET_KEY}`
             },
             body: JSON.stringify({
                 amount: amount,

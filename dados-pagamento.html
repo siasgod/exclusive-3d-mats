@@ -81,7 +81,7 @@
                                 class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">WhatsApp</label>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">NÚMERO COMPLETO</label>
                             <input type="tel" id="phone" placeholder="(00) 00000-0000" required
                                 class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
@@ -274,56 +274,73 @@
             document.getElementById('resumo-frete-texto').innerText = frete === 0 ? "Grátis" : `R$ ${frete.toFixed(2).replace('.', ',')}`;
         }
 
-        // LÓGICA DE PAGAMENTO - ENVIO PARA O BACKEND (PHP)
+        // LÓGICA DE PAGAMENTO - ENVIO PARA A API (VERCEL)
         document.getElementById('form-checkout').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
+
+            // Feedback visual
             btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> GERANDO PIX...';
             btn.disabled = true;
 
-            const dadosPedido = {
-                nome: document.getElementById('nome').value,
-                email: document.getElementById('email').value,
-                cpf: document.getElementById('cpf').value,
-                phone: document.getElementById('phone').value,
-                valor: document.getElementById('total-final').innerText.replace('R$ ', '').replace('.', '').replace(',', '.'),
-                kit: params.get('kit')
+            // Prepara os dados para a nossa API segura
+            const valorDecimal = document.getElementById('total-final').innerText.replace('R$ ', '').replace('.', '').replace(',', '.').trim();
+            const valorCentavos = Math.round(parseFloat(valorDecimal) * 100);
+
+            const payload = {
+                customer: {
+                    name: document.getElementById('nome').value,
+                    email: document.getElementById('email').value,
+                    cpf_cnpj: document.getElementById('cpf').value.replace(/\D/g, '') // Remove pontos e traço
+                },
+                amount: valorCentavos,
+                kitName: params.get('kit') || 'Kit Soberano 3D'
             };
 
             try {
-                // Aqui chamamos o seu arquivo PHP que conterá o Token da SyncPay
-                const response = await fetch('processar-pix.php', {
+                // Chamamos a função serverless na Vercel
+                const response = await fetch('/api/gerar-pix', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dadosPedido)
+                    body: JSON.stringify(payload)
                 });
 
                 const result = await response.json();
 
-                if (result.success) {
-                    document.getElementById('pix-qr-code').src = result.qr_code_url;
-                    document.getElementById('pix-key').value = result.copy_paste_key;
+                // A Syncpay retorna os dados dentro de 'data' ou diretamente no objeto
+                // Ajuste conforme o retorno real da API
+                if (result.success || result.pix_qr_code) {
+                    // Preenche o QR Code e a chave Copia e Cola
+                    document.getElementById('pix-qr-code').src = result.pix_qr_code;
+                    document.getElementById('pix-key').value = result.pix_code;
 
+                    // Alterna as seções
                     document.getElementById('section-entrega').classList.add('hidden');
                     document.getElementById('section-pagamento').classList.remove('hidden');
+
+                    // Atualiza o Step
+                    document.getElementById('step-2').className = "text-gray-400 text-sm pb-1";
                     document.getElementById('step-3').className = "step-active pb-1 text-sm";
+
+                    window.scrollTo(0, 0);
                     startTimer();
                 } else {
-                    alert("Erro ao gerar PIX. Tente novamente.");
-                    btn.disabled = false;
-                    btn.innerText = "Tentar Novamente";
+                    throw new Error(result.message || "Erro na geração");
                 }
             } catch (err) {
-                alert("Erro de conexão.");
+                console.error("Erro detalhado:", err);
+                alert("Houve um problema ao gerar o PIX. Por favor, revise seus dados ou tente novamente.");
                 btn.disabled = false;
+                btn.innerText = "TENTAR NOVAMENTE";
             }
         });
 
         function copyPix() {
             const copyText = document.getElementById("pix-key");
             copyText.select();
-            document.execCommand("copy");
-            alert("Código copiado! Pague no seu banco.");
+            copyText.setSelectionRange(0, 99999); // Para mobile
+            navigator.clipboard.writeText(copyText.value);
+            alert("✅ Código PIX copiado!");
         }
 
         function startTimer() {
@@ -333,10 +350,9 @@
                 let minutes = Math.floor(duration / 60);
                 let seconds = duration % 60;
                 display.innerHTML = `<i class="fas fa-clock mr-2"></i> Aguardando Pagamento (${minutes}:${seconds < 10 ? '0' + seconds : seconds})`;
-                if (--duration < 0) clearInterval(timer);
+                if (--duration < 0) {
+                    clearInterval(timer);
+                    display.innerHTML = `<i class="fas fa-times mr-2"></i> Código Expirado`;
+                }
             }, 1000);
         }
-    </script>
-</body>
-
-</html>
