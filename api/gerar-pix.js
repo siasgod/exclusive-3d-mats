@@ -4,12 +4,14 @@ export default async function handler(req, res) {
     const { customer, amount, kitName } = req.body;
 
     try {
-        // A URL correta conforme a documentação SyncPay
-        const response = await fetch("https://api.syncpay.com.br/v1/checkout", {
+        // CORREÇÃO: O domínio correto geralmente é .com.br com 'payments' 
+        // ou o domínio .app. Vamos usar o oficial:
+        const urlOficial = "https://api.syncpayments.com.br/v1/payments";
+
+        const response = await fetch(urlOficial, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // Usando o nome exato da sua variável na Vercel
                 "x-api-key": process.env.SYNCPAY_SECRET_KEY
             },
             body: JSON.stringify({
@@ -18,7 +20,7 @@ export default async function handler(req, res) {
                 customer: {
                     name: customer.name,
                     email: customer.email,
-                    cpf_cnpj: customer.cpf_cnpj.replace(/\D/g, "") // Limpa CPF para enviar apenas números
+                    cpf_cnpj: customer.cpf_cnpj.replace(/\D/g, "")
                 },
                 items: [{
                     title: kitName,
@@ -28,29 +30,27 @@ export default async function handler(req, res) {
             })
         });
 
-        // Lógica para evitar o erro de "Unexpected token <"
         const responseText = await response.text();
 
         let data;
         try {
             data = JSON.parse(responseText);
         } catch (e) {
-            console.error("Erro: A API não retornou JSON. Resposta do servidor:", responseText.substring(0, 200));
             return res.status(500).json({
-                error: "Resposta inválida da API (HTML). Verifique se a URL ou a Chave estão corretas."
+                error: "Erro de DNS ou URL. O servidor retornou algo não esperado.",
+                debug: responseText.substring(0, 100)
             });
         }
 
-        if (!response.ok) {
-            console.error("Erro na SyncPay:", data);
-            return res.status(response.status).json(data);
-        }
+        if (!response.ok) return res.status(response.status).json(data);
 
-        // Retorna os dados do PIX (QR Code e Código)
         return res.status(200).json(data);
 
     } catch (error) {
-        console.error("Erro interno no servidor Vercel:", error);
-        return res.status(500).json({ error: error.message });
+        console.error("Erro de conexão (Fetch Failed):", error.message);
+        return res.status(500).json({
+            error: "Falha ao conectar na API. Verifique a URL.",
+            code: error.code
+        });
     }
 }
