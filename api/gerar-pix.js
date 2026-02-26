@@ -4,54 +4,44 @@ export default async function handler(req, res) {
     const { customer, amount, kitName } = req.body;
 
     try {
-        // Base URL oficial confirmada no seu painel
-        const url = "https://api.syncpayments.com.br/v1/payments";
+        // CORREÇÃO DO ENDPOINT: v1/checkout em vez de v1/payments
+        const url = "https://api.syncpayments.com.br/v1/checkout";
 
         const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                // Algumas integrações exigem 'x-api-key', outras 'Authorization'. 
-                // Vamos usar o x-api-key que é o padrão do painel Apidog.
+                // Chave atualizada conforme seu print da Vercel
                 "x-api-key": process.env.SYNCPAY_SECRET_KEY
             },
             body: JSON.stringify({
-                amount: parseInt(amount), // Garante que seja um número inteiro
+                amount: amount,
                 payment_method: "pix",
                 customer: {
                     name: customer.name,
                     email: customer.email,
-                    cpf_cnpj: customer.cpf_cnpj.replace(/\D/g, "") // Envia apenas os 11 ou 14 dígitos
+                    cpf_cnpj: customer.cpf_cnpj.replace(/\D/g, "")
                 },
                 items: [{
                     title: kitName,
-                    unit_price: parseInt(amount),
+                    unit_price: amount,
                     quantity: 1
                 }]
             })
         });
 
-        const responseText = await response.text();
+        const data = await response.json();
 
-        try {
-            const data = JSON.parse(responseText);
-            if (!response.ok) {
-                console.error("SyncPay Recusou:", data);
-                return res.status(response.status).json(data);
-            }
-            return res.status(200).json(data);
-        } catch (parseError) {
-            // Se cair aqui, a chave ou os dados causaram um erro de servidor (HTML)
-            console.error("HTML recebido em vez de JSON. Verifique a Secret Key.");
-            return res.status(500).json({
-                error: "A API de pagamentos rejeitou a requisição. Verifique se a sua Chave Privada está correta no painel da Vercel.",
-                debug: responseText.substring(0, 150)
-            });
+        if (!response.ok) {
+            console.error("Erro detalhado da SyncPay:", data);
+            return res.status(response.status).json(data);
         }
 
+        return res.status(200).json(data);
+
     } catch (error) {
-        console.error("Erro fatal:", error.message);
+        console.error("Erro fatal no servidor Vercel:", error.message);
         return res.status(500).json({ error: error.message });
     }
 }
