@@ -1,10 +1,4 @@
 export default async function handler(req, res) {
-    // 1. Verificação básica de segurança e variáveis
-    if (!process.env.SYNCPAY_SECRET_KEY) {
-        console.error("ERRO: A variável SYNCPAY_SECRET_KEY não foi encontrada no ambiente.");
-        return res.status(500).json({ error: "Configuração do servidor incompleta (Chave ausente)." });
-    }
-
     if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
 
     const { customer, amount, kitName } = req.body;
@@ -16,7 +10,9 @@ export default async function handler(req, res) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "x-api-key": process.env.SYNCPAY_SECRET_KEY.trim() // O .trim() remove espaços acidentais
+                "Accept": "application/json",
+                // A SyncPay costuma validar a chave diretamente no x-api-key
+                "x-api-key": process.env.SYNCPAY_SECRET_KEY
             },
             body: JSON.stringify({
                 amount: amount,
@@ -34,17 +30,22 @@ export default async function handler(req, res) {
             })
         });
 
-        const data = await response.json();
+        // Capturamos a resposta bruta primeiro
+        const text = await response.text();
 
-        if (!response.ok) {
-            console.error("Erro da API SyncPay:", data);
+        try {
+            const data = JSON.parse(text);
             return res.status(response.status).json(data);
+        } catch (err) {
+            // Se cair aqui, a API retornou um erro em HTML (o <!DOCTYPE)
+            console.error("Resposta não-JSON da API:", text.substring(0, 200));
+            return res.status(500).json({
+                error: "A API recusou a conexão. Verifique se sua Secret Key é válida.",
+                preview: text.substring(0, 100)
+            });
         }
 
-        return res.status(200).json(data);
-
     } catch (error) {
-        console.error("Erro fatal na função:", error.message);
-        return res.status(500).json({ error: "Falha interna ao processar pagamento." });
+        return res.status(500).json({ error: error.message });
     }
 }
