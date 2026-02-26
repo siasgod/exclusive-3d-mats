@@ -8,12 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .step-active {
-            color: #16a34a;
-            font-weight: bold;
-            border-bottom: 2px solid #16a34a;
-        }
-
         input:focus {
             border-color: #16a34a;
             outline: none;
@@ -43,7 +37,7 @@
 
 <body class="bg-gray-50 text-gray-900 font-sans">
 
-    <header class="bg-white border-bottom py-4 shadow-sm">
+    <header class="bg-white border-b py-4 shadow-sm">
         <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
             <h1 class="text-xl font-black text-gray-800 italic">SOBERANO <span class="text-green-600">3D</span></h1>
             <div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
@@ -52,16 +46,39 @@
         </div>
     </header>
 
-    <nav class="bg-white border-b">
-        <div class="max-w-4xl mx-auto flex justify-between px-6 py-4">
-            <div id="step-1" class="step-active pb-1 text-sm">1. DADOS</div>
-            <div id="step-2" class="text-gray-400 text-sm pb-1">2. ENTREGA</div>
-            <div id="step-3" class="text-gray-400 text-sm pb-1">3. PAGAMENTO</div>
+    <nav class="bg-white border-b py-6">
+        <div class="max-w-md mx-auto relative flex items-center justify-between px-6">
+            <div class="absolute left-10 right-10 top-5 h-0.5 bg-gray-200 -z-0"></div>
+            <div id="progress-line" class="absolute left-10 top-5 h-0.5 bg-black transition-all duration-500 -z-0"
+                style="width: 0%;"></div>
+
+            <div class="relative z-10 flex flex-col items-center gap-2">
+                <div id="step-1-circle"
+                    class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center border-4 border-white shadow-sm transition-all">
+                    <i class="fas fa-user-check text-sm"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-tighter">Identificação</span>
+            </div>
+
+            <div class="relative z-10 flex flex-col items-center gap-2">
+                <div id="step-2-circle"
+                    class="w-10 h-10 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center border-4 border-white shadow-sm transition-all">
+                    <i class="fas fa-truck text-sm"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-tighter text-gray-400">Entrega</span>
+            </div>
+
+            <div class="relative z-10 flex flex-col items-center gap-2">
+                <div id="step-3-circle"
+                    class="w-10 h-10 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center border-4 border-white shadow-sm transition-all">
+                    <i class="fas fa-credit-card text-sm"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-tighter text-gray-400">Pagamento</span>
+            </div>
         </div>
     </nav>
 
     <main class="max-w-4xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-
         <div class="md:col-span-2 space-y-6">
             <form id="form-checkout">
                 <section id="section-pessoal"
@@ -127,17 +144,15 @@
                         </div>
                     </div>
 
-                    <div class="space-y-3 mt-8">
-                        <label class="block text-sm font-bold text-gray-700 mb-3">Escolha o melhor frete:</label>
+                    <div id="container-fretes" class="hidden space-y-3 mt-8 border-t pt-6">
+                        <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-tighter">Escolha o
+                            modo de entrega:</label>
 
                         <label class="relative block">
                             <input type="radio" name="shipping" value="22.40" onchange="updateTotal(22.40)"
                                 class="peer hidden">
                             <div class="shipping-card p-4 rounded-xl flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <p class="text-sm font-bold text-gray-800 uppercase tracking-tighter">📦 FULL ⚡
-                                        JADLOG EXPRESS</p>
-                                </div>
+                                <p class="text-sm font-bold text-gray-800 uppercase">📦 FULL ⚡ JADLOG EXPRESS</p>
                                 <span class="font-bold text-gray-800">R$ 22,40</span>
                             </div>
                         </label>
@@ -146,30 +161,24 @@
                             <input type="radio" name="shipping" value="16.91" onchange="updateTotal(16.91)" checked
                                 class="peer hidden">
                             <div class="shipping-card p-4 rounded-xl flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <p class="text-sm font-bold text-gray-800 uppercase tracking-tighter">📦 SEDEX -
-                                        CORREIOS</p>
-                                </div>
+                                <p class="text-sm font-bold text-gray-800 uppercase">📦 SEDEX - CORREIOS</p>
                                 <span class="font-bold text-gray-800">R$ 16,91</span>
                             </div>
                         </label>
 
-                        <label class="relative block opacity-60">
+                        <label class="relative block">
                             <input type="radio" name="shipping" value="0" onchange="updateTotal(0)" class="peer hidden">
                             <div class="shipping-card p-4 rounded-xl flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <p class="text-sm font-bold text-gray-800 uppercase tracking-tighter">📦 FRETE
-                                        NORMAL (15 DIAS)</p>
-                                </div>
+                                <p class="text-sm font-bold text-gray-800 uppercase">📦 FRETE NORMAL (15 DIAS)</p>
                                 <span class="font-bold text-green-600">GRÁTIS</span>
                             </div>
                         </label>
-                    </div>
 
-                    <button type="submit" id="btn-submit"
-                        class="w-full bg-black hover:bg-gray-800 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-wider mt-6">
-                        Gerar PIX Seguro <i class="fas fa-chevron-right ml-2 text-xs"></i>
-                    </button>
+                        <button type="submit" id="btn-submit"
+                            class="w-full bg-black hover:bg-gray-800 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-wider mt-6">
+                            Gerar PIX Seguro <i class="fas fa-chevron-right ml-2 text-xs"></i>
+                        </button>
+                    </div>
                 </section>
 
                 <section id="section-pagamento"
@@ -182,21 +191,18 @@
                         <h2 class="text-xl font-black text-gray-800 italic uppercase">Pague via PIX</h2>
                         <p class="text-gray-500 text-sm">Aprovação imediata e envio prioritário.</p>
                     </div>
-
                     <div
                         class="flex justify-center border-4 border-gray-50 p-4 rounded-2xl bg-white max-w-[220px] mx-auto shadow-inner">
                         <img id="pix-qr-code" src="" alt="QR Code PIX">
                     </div>
-
                     <div class="space-y-2">
                         <label class="block text-[10px] font-bold text-gray-400 uppercase">Clique no código abaixo para
                             copiar</label>
                         <div class="relative group cursor-pointer" onclick="copyPix()">
                             <input type="text" id="pix-key" readonly
                                 class="w-full p-4 bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl text-xs font-mono text-center cursor-pointer group-hover:border-green-500 transition-all">
-                            <div class="absolute inset-y-0 right-4 flex items-center">
-                                <i class="fas fa-copy text-gray-400"></i>
-                            </div>
+                            <div class="absolute inset-y-0 right-4 flex items-center"><i
+                                    class="fas fa-copy text-gray-400"></i></div>
                         </div>
                     </div>
                 </section>
@@ -220,7 +226,7 @@
                     <div class="flex justify-between text-sm"><span class="text-gray-500">Subtotal</span><span
                             id="resumo-preco" class="font-bold">R$ 0,00</span></div>
                     <div class="flex justify-between text-sm"><span class="text-gray-500">Frete</span><span
-                            id="resumo-frete-texto" class="font-black italic">R$ 16,91</span></div>
+                            id="resumo-frete-texto" class="font-black italic text-gray-400">---</span></div>
                     <div class="pt-4 mt-4 border-t flex justify-between items-center"><span
                             class="font-bold text-gray-800">TOTAL</span><span id="total-final"
                             class="text-2xl font-black text-green-600 tracking-tighter">R$ 0,00</span></div>
@@ -230,31 +236,25 @@
     </main>
 
     <script>
-        // 1. Captura e Processamento dos Dados da URL
+        // 1. Captura Dados URL
         const params = new URLSearchParams(window.location.search);
-
-        // Limpeza rigorosa do preço para evitar NaN
         const precoRaw = params.get('preco') || "0,00";
         const valorBase = parseFloat(precoRaw.replace('R$', '').replace('.', '').replace(',', '.').trim()) || 0;
-
         const kitNome = params.get('kit') || 'Kit Selecionado';
         const veiculoNome = params.get('veiculo') || 'Veículo';
         const imagemUrl = params.get('imagem') || '';
 
-        // 2. Preenchimento do Resumo Visual
+        // 2. Preenchimento Inicial
         document.getElementById('resumo-kit').innerText = kitNome;
         document.getElementById('resumo-veiculo').innerText = veiculoNome;
         document.getElementById('resumo-preco').innerText = `R$ ${valorBase.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        document.getElementById('total-final').innerText = `R$ ${valorBase.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
-        // Insere a imagem real se ela existir
         if (imagemUrl) {
             document.getElementById('resumo-img-container').innerHTML = `<img src="${imagemUrl}" class="w-full h-full object-cover">`;
         }
 
-        // Inicializa o total com o frete padrão
-        updateTotal(16.91);
-
-        // 3. Mascaras de Campo
+        // 3. Máscaras
         const mask = (el, fn) => el && el.addEventListener('input', e => e.target.value = fn(e.target.value));
         mask(document.getElementById('cpf'), v => v.replace(/\D/g, "").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"));
         mask(document.getElementById('phone'), v => v.replace(/\D/g, "").replace(/^(\d{2})(\d)/g, "($1) $2").replace(/(\d)(\d{4})$/, "$1-$2"));
@@ -264,7 +264,7 @@
             return v;
         });
 
-        // 4. Navegação entre Steps
+        // 4. Navegação e Stepper
         function irParaEntrega() {
             const nome = document.getElementById('nome').value;
             const cpf = document.getElementById('cpf').value;
@@ -276,29 +276,61 @@
 
             document.getElementById('section-pessoal').classList.add('hidden');
             document.getElementById('section-entrega').classList.remove('hidden');
-            document.getElementById('step-2').className = "step-active pb-1 text-sm";
+
+            const s2 = document.getElementById('step-2-circle');
+            s2.classList.replace('bg-gray-100', 'bg-black');
+            s2.classList.replace('text-gray-400', 'text-white');
+            s2.nextElementSibling.classList.remove('text-gray-400');
+            document.getElementById('progress-line').style.width = "50%";
+
             window.scrollTo(0, 0);
         }
 
+        function ativarStepPagamento() {
+            const s3 = document.getElementById('step-3-circle');
+            s3.classList.replace('bg-gray-100', 'bg-black');
+            s3.classList.replace('text-gray-400', 'text-white');
+            s3.nextElementSibling.classList.remove('text-gray-400');
+            document.getElementById('progress-line').style.width = "100%";
+        }
+
+        // 5. Busca CEP e REVELA FRETE
         async function buscaCEP(cep) {
             try {
                 const res = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, "")}/json/`);
                 const data = await res.json();
+
                 if (!data.erro) {
                     document.getElementById('rua').value = data.logradouro;
                     document.getElementById('bairro').value = data.bairro;
                     document.getElementById('numero').focus();
+
+                    document.getElementById('container-fretes').classList.remove('hidden');
+                    updateTotal(16.91); // Ativa o frete padrão (Sedex)
+                } else {
+                    alert("CEP não encontrado.");
                 }
             } catch (e) { console.error("Erro CEP:", e); }
         }
 
+        // 6. Atualização de Valores
         function updateTotal(frete) {
-            const total = valorBase + frete;
+            const valorFrete = parseFloat(frete);
+            const total = valorBase + valorFrete;
+
+            const freteTexto = document.getElementById('resumo-frete-texto');
+            if (valorFrete === 0) {
+                freteTexto.innerText = "Grátis";
+                freteTexto.className = "font-black italic text-green-600";
+            } else {
+                freteTexto.innerText = `R$ ${valorFrete.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                freteTexto.className = "font-black italic text-gray-800";
+            }
+
             document.getElementById('total-final').innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            document.getElementById('resumo-frete-texto').innerText = frete === 0 ? "Grátis" : `R$ ${frete.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
         }
 
-        // 5. Finalização e Integração com API Vercel
+        // 7. Envio do Formulário (API)
         document.getElementById('form-checkout').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
@@ -335,9 +367,7 @@
                     document.getElementById('section-entrega').classList.add('hidden');
                     document.getElementById('section-pagamento').classList.remove('hidden');
 
-                    document.getElementById('step-2').className = "text-gray-400 text-sm pb-1";
-                    document.getElementById('step-3').className = "step-active pb-1 text-sm";
-
+                    ativarStepPagamento();
                     window.scrollTo(0, 0);
                     startTimer();
                 } else {
@@ -355,7 +385,7 @@
             const copyText = document.getElementById("pix-key");
             copyText.select();
             navigator.clipboard.writeText(copyText.value);
-            alert("✅ Código PIX copiado com sucesso!");
+            alert("✅ Código PIX copiado!");
         }
 
         function startTimer() {
