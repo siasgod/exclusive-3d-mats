@@ -199,34 +199,33 @@ window.closeDrawer = function () {
     document.body.style.overflow = '';
 };
 
-// --- REDIRECIONAMENTO PARA PÁGINA DE DADOS ---
 window.drawerConfirmPayment = () => {
     const btn = document.getElementById('drawer-pay-btn');
 
-    // Captura o nome do kit e o preço do Drawer
+    // 1. Pega os dados básicos do kit que estão aparecendo no Drawer
     const kitName = document.getElementById('drawer-kit-name')?.innerText || 'Kit';
     const priceRaw = document.getElementById('drawer-price')?.innerText || '0,00';
     const vehicle = document.getElementById('drawer-vehicle')?.innerText || 'Não informado';
 
-    // Limpa o preço para formato decimal (Ex: 79.90) para passar via URL
+    // 2. Limpa o preço (tira o R$ e formata)
     const priceFormatted = priceRaw.replace('R$', '').replace('.', '').replace(',', '.').trim();
 
+    // 3. Feedback visual no botão
     if (btn) {
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Carregando...';
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Encaminhando...';
         btn.disabled = true;
     }
 
-    // Monta os parâmetros para a próxima página ler
+    // 4. Prepara os parâmetros da URL
     const params = new URLSearchParams({
         kit: kitName,
         preco: priceFormatted,
         veiculo: vehicle
     });
 
-    // Redireciona o lead para a página onde ele preencherá o CPF, Email e Endereço
-    setTimeout(() => {
-        window.location.href = `dados-pagamento.html?${params.toString()}`;
-    }, 500);
+    // 5. REDIRECIONA sem pedir validação de Nome/CPF (isso fica para a próxima tela)
+    window.location.href = `dados-pagamento.html?${params.toString()}`;
+};
 };
 
 // --- FUNÇÃO AUXILIAR: CAPTURA DADOS DO SEU FORMULÁRIO ---
