@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     const { customer, amount, kitName } = req.body;
 
     try {
-        const response = await fetch("https://api.syncpay.com.br/v1/payments", {
+        const response = await fetch("https://api.syncpayments.com.br/v1/payments", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
