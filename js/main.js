@@ -202,19 +202,22 @@ window.drawerConfirmPayment = () => {
     const kitName = document.getElementById('drawer-kit-name')?.innerText || 'Kit';
     const priceRaw = document.getElementById('drawer-price')?.innerText || '0,00';
     const vehicle = document.getElementById('drawer-vehicle')?.innerText || 'Não informado';
+    const imgUrl = document.getElementById('drawer-kit-img')?.getAttribute('src') || '';
 
-    const priceFormatted = priceRaw.replace('R$', '').replace('.', '').replace(',', '.').trim();
+    // Limpa o preço para garantir que vá apenas números e ponto decimal
+    const priceFormatted = priceRaw.replace('R$', '').trim();
 
     if (btn) {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Encaminhando...';
         btn.disabled = true;
     }
 
-    const params = new URLSearchParams({
-        kit: kitName,
-        preco: priceFormatted,
-        veiculo: vehicle
-    });
+    // Criando os parâmetros para a URL
+    const params = new URLSearchParams();
+    params.append('kit', kitName);
+    params.append('preco', priceFormatted);
+    params.append('veiculo', vehicle);
+    params.append('imagem', imgUrl);
 
     window.location.href = `dados-pagamento.html?${params.toString()}`;
 };
