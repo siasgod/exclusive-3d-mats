@@ -169,13 +169,10 @@ window.selectKit = function (kitName, price) {
         priceEl.innerText = `R$ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
     }
 
-    // Define a imagem correta no Drawer
     if (imgEl) {
-        if (kitName.toLowerCase().includes("porta malas")) {
-            imgEl.src = "./assets/kit-complete-BFARBGDS.jpg";
-        } else {
-            imgEl.src = "./assets/kit-basic-Tk9H7iJ2.jpg";
-        }
+        imgEl.src = kitName.toLowerCase().includes("porta malas")
+            ? "./assets/kit-complete-BFARBGDS.jpg"
+            : "./assets/kit-basic-Tk9H7iJ2.jpg";
     }
 
     openDrawer();
@@ -199,142 +196,33 @@ window.closeDrawer = function () {
     document.body.style.overflow = '';
 };
 
+// --- REDIRECIONAMENTO (ÚNICA VERSÃO) ---
 window.drawerConfirmPayment = () => {
     const btn = document.getElementById('drawer-pay-btn');
-
-    // 1. Pega os dados básicos do kit que estão aparecendo no Drawer
     const kitName = document.getElementById('drawer-kit-name')?.innerText || 'Kit';
     const priceRaw = document.getElementById('drawer-price')?.innerText || '0,00';
     const vehicle = document.getElementById('drawer-vehicle')?.innerText || 'Não informado';
 
-    // 2. Limpa o preço (tira o R$ e formata)
     const priceFormatted = priceRaw.replace('R$', '').replace('.', '').replace(',', '.').trim();
 
-    // 3. Feedback visual no botão
     if (btn) {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Encaminhando...';
         btn.disabled = true;
     }
 
-    // 4. Prepara os parâmetros da URL
     const params = new URLSearchParams({
         kit: kitName,
         preco: priceFormatted,
         veiculo: vehicle
     });
 
-    // 5. REDIRECIONA sem pedir validação de Nome/CPF (isso fica para a próxima tela)
     window.location.href = `dados-pagamento.html?${params.toString()}`;
 };
-};
 
-// --- FUNÇÃO AUXILIAR: CAPTURA DADOS DO SEU FORMULÁRIO ---
-function getFormCustomerData() {
-    return {
-        name: document.getElementById('nome')?.value || "",
-        email: document.getElementById('email')?.value || "",
-        cpf: document.getElementById('cpf')?.value?.replace(/\D/g, '') || "",
-        cep: document.getElementById('cep')?.value || "",
-        street: document.getElementById('rua')?.value || "",
-        number: document.getElementById('numero')?.value || "",
-        neighborhood: document.getElementById('bairro')?.value || "",
-        city: document.getElementById('cidade')?.value || "",
-        state: document.getElementById('uf')?.value || ""
-    };
-}
-
-// --- INTEGRAÇÃO FINAL SYNCPAY (GERAÇÃO DE PIX) ---
-window.drawerConfirmPayment = async () => {
-    const btn = document.getElementById('drawer-pay-btn');
-    const customer = getFormCustomerData();
-
-    if (!customer.cpf || !customer.name || !customer.email) {
-        alert("⚠️ Por favor, preencha seus dados de contato e endereço antes de finalizar.");
-        return;
-    }
-
-    if (btn) {
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Gerando PIX...';
-        btn.disabled = true;
-    }
-
-    const kitName = document.getElementById('drawer-kit-name')?.innerText || 'Kit Tapetes';
-    const priceRaw = document.getElementById('drawer-price')?.innerText || '0,00';
-    const priceCentavos = Math.round(parseFloat(priceRaw.replace('R$', '').replace('.', '').replace(',', '.').trim()) * 100);
-
-    const payload = {
-        amount: priceCentavos,
-        payment_method: "pix",
-        customer: {
-            name: customer.name,
-            email: customer.email,
-            cpf_cnpj: customer.cpf
-        },
-        items: [{
-            name: kitName,
-            qty: 1,
-            amount: priceCentavos
-        }]
-    };
-
-    try {
-        // Agora chamamos a nossa própria API na Vercel para evitar erro de CORS
-        const response = await fetch("/api/gerar-pix", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-
-        const data = await response.json();
-
-        if (data.success || data.pix_qr_code) {
-            renderPixResult(data.pix_qr_code, data.pix_code);
-        } else {
-            throw new Error(data.message || "Erro ao processar pagamento");
-        }
-    } catch (error) {
-        console.error("Erro no processamento:", error);
-        alert("Houve um erro ao gerar o PIX. Verifique os dados e tente novamente.");
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = 'FINALIZAR PAGAMENTO <i class="fas fa-arrow-right"></i>';
-        }
-    }
-};
-
-// --- RENDERIZA O RESULTADO DO PIX NO DRAWER ---
-function renderPixResult(qrCode, copiaCola) {
-    const drawerArea = document.querySelector('#checkout-drawer .padding-24') || document.getElementById('checkout-drawer');
-
-    drawerArea.innerHTML = `
-        <div style="text-align:center; padding: 10px; animation: fadeIn 0.5s ease;">
-            <h3 style="color:#111; margin-bottom:15px;">Pague com PIX</h3>
-            <div style="background:#fff; padding:10px; border:2px solid #22c55e; border-radius:12px; display:inline-block; margin-bottom:15px;">
-                <img src="${qrCode}" style="width:200px; height:200px; display:block;">
-            </div>
-            <p style="font-size:12px; color:#666; margin-bottom:10px;">Escaneie o código ou copie a chave abaixo:</p>
-            <input type="text" id="pixCopiaCola" value="${copiaCola}" readonly 
-                style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; font-size:11px; text-align:center; background:#f9f9f9; margin-bottom:15px;">
-            <button onclick="copyPixCode()" id="btnCopy" style="width:100%; padding:18px; background:#22c55e; color:#000; border:none; border-radius:12px; font-weight:900; cursor:pointer;">
-                <i class="far fa-copy"></i> COPIAR CÓDIGO PIX
-            </button>
-            <p style="margin-top:15px; font-size:10px; color:#999;">A aprovação é imediata após o pagamento.</p>
-        </div>
-    `;
-}
-
-window.copyPixCode = function () {
-    const input = document.getElementById('pixCopiaCola');
-    input.select();
-    navigator.clipboard.writeText(input.value);
-    const btn = document.getElementById('btnCopy');
-    btn.innerHTML = '<i class="fas fa-check"></i> COPIADO COM SUCESSO!';
-    setTimeout(() => { btn.innerHTML = '<i class="far fa-copy"></i> COPIAR CÓDIGO PIX'; }, 3000);
-};
-
-window.onload = () => {
+// --- INICIALIZAÇÃO AO CARREGAR A PÁGINA ---
+window.addEventListener('DOMContentLoaded', () => {
     initCarousel();
     initFipe();
     const timerDisplay = document.querySelector('#timer');
     if (timerDisplay) startTimer(15 * 60, timerDisplay);
-};
+});
