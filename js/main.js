@@ -55,9 +55,7 @@ document.getElementById('sel-brand')?.addEventListener('change', async (e) => {
         return;
     }
 
-    // Ativa o botão de modelo
     if (modelTrigger) modelTrigger.disabled = false;
-
     selection.brandId = id;
     selection.brandName = e.target.options[e.target.selectedIndex].text;
 
@@ -66,7 +64,7 @@ document.getElementById('sel-brand')?.addEventListener('change', async (e) => {
     try {
         const res = await fetch(`${API_BASE}/marcas/${id}/modelos`);
         const data = await res.json();
-        window.allModels = data.modelos; // Guarda para o filtro de busca
+        window.allModels = data.modelos;
         renderModels(window.allModels);
         if (label) label.innerText = "Selecione o Modelo";
     } catch (error) {
@@ -75,12 +73,10 @@ document.getElementById('sel-brand')?.addEventListener('change', async (e) => {
     }
 });
 
-// --- RENDERIZAR E FILTRAR MODELOS NO POPOVER ---
 function renderModels(list) {
     const container = document.getElementById('model-results');
     if (!container) return;
     container.innerHTML = '';
-
     list.forEach(m => {
         const btn = document.createElement('button');
         btn.innerText = m.nome;
@@ -90,17 +86,13 @@ function renderModels(list) {
     });
 }
 
-// Lógica de Busca no Popover
 document.getElementById('model-search')?.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
     if (!window.allModels) return;
-    const filtered = window.allModels.filter(m =>
-        m.nome.toLowerCase().includes(term)
-    );
+    const filtered = window.allModels.filter(m => m.nome.toLowerCase().includes(term));
     renderModels(filtered);
 });
 
-// Abrir/Fechar Popover
 document.getElementById('model-trigger')?.addEventListener('click', (e) => {
     e.stopPropagation();
     const popover = document.getElementById('model-popover');
@@ -110,11 +102,10 @@ document.getElementById('model-trigger')?.addEventListener('click', (e) => {
     }
 });
 
-// Fechar popover ao clicar fora
 document.addEventListener('click', (e) => {
     const popover = document.getElementById('model-popover');
     const trigger = document.getElementById('model-trigger');
-    if (popover && !trigger.contains(e.target) && !popover.contains(e.target)) {
+    if (popover && !trigger?.contains(e.target) && !popover.contains(e.target)) {
         popover.classList.remove('show');
     }
 });
@@ -122,24 +113,17 @@ document.addEventListener('click', (e) => {
 function selectModel(id, name) {
     selection.modelId = id;
     selection.modelName = name;
-
     const modelSelectedText = document.getElementById('model-selected-text');
     if (modelSelectedText) modelSelectedText.innerText = name;
-
-    const modelPopover = document.getElementById('model-popover');
-    if (modelPopover) modelPopover.classList.remove('show');
-
+    document.getElementById('model-popover')?.classList.remove('show');
     loadYears(id);
 }
 
-// --- CARREGAR ANOS ---
 async function loadYears(modelId) {
     const selYear = document.getElementById('sel-year');
     if (!selYear) return;
-
     selYear.disabled = false;
     selYear.innerHTML = '<option>Carregando anos...</option>';
-
     try {
         const res = await fetch(`${API_BASE}/marcas/${selection.brandId}/modelos/${modelId}/anos`);
         const years = await res.json();
@@ -155,90 +139,167 @@ async function loadYears(modelId) {
     }
 }
 
-// --- CONFIRMAÇÃO DO VEÍCULO ---
 document.getElementById('sel-year')?.addEventListener('change', (e) => {
     if (!e.target.value) return;
     selection.yearId = e.target.value;
     selection.yearName = e.target.options[e.target.selectedIndex].text;
-
     const full = `${selection.brandName} ${selection.modelName} (${selection.yearName})`;
-
     const confVehicleText = document.getElementById('conf-vehicle-text');
     if (confVehicleText) confVehicleText.innerText = full;
-
-    const confirmBox = document.getElementById('confirm-box');
-    if (confirmBox) confirmBox.classList.remove('hidden');
-
+    document.getElementById('confirm-box')?.classList.remove('hidden');
     const drawerVehicle = document.getElementById('drawer-vehicle');
     if (drawerVehicle) drawerVehicle.innerText = full;
 });
 
-// --- CONTROLE DO DRAWER ---
+// --- CONTROLE DO DRAWER (IMAGEM E PREÇO) ---
 window.selectKit = function (kitName, price) {
     if (!selection.yearId) {
         alert("⚠️ Selecione seu veículo primeiro para garantir o encaixe perfeito!");
-        const comprarSection = document.getElementById('comprar');
-        if (comprarSection) comprarSection.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('kit-section')?.scrollIntoView({ behavior: 'smooth' });
         return;
     }
 
     const kitNameEl = document.getElementById('drawer-kit-name');
     const priceEl = document.getElementById('drawer-price');
+    const imgEl = document.getElementById('drawer-kit-img');
 
     if (kitNameEl) kitNameEl.textContent = kitName;
-    if (priceEl) priceEl.innerText = `R$ ${price.toFixed(2)}`;
+
+    if (priceEl) {
+        priceEl.innerText = `R$ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
+    }
+
+    if (imgEl) {
+        if (kitName.toLowerCase().includes("porta malas")) {
+            imgEl.src = "./assets/kit-complete-BFARBGDS.jpg";
+        } else {
+            imgEl.src = "./assets/kit-basic-Tk9H7iJ2.jpg";
+        }
+    }
 
     openDrawer();
 };
 
 function openDrawer() {
     const drawer = document.getElementById('checkout-drawer');
-    const overlay = document.getElementById('drawer-backdrop') || document.getElementById('drawer-overlay');
-
     if (drawer) {
-        drawer.classList.add('drawer-open');
         drawer.classList.remove('drawer-hidden');
+        drawer.classList.add('drawer-visible');
     }
-    if (overlay) overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
 }
 
 window.closeDrawer = function () {
     const drawer = document.getElementById('checkout-drawer');
-    const overlay = document.getElementById('drawer-backdrop') || document.getElementById('drawer-overlay');
-
     if (drawer) {
-        drawer.classList.remove('drawer-open');
+        drawer.classList.remove('drawer-visible');
         drawer.classList.add('drawer-hidden');
     }
-    if (overlay) overlay.style.display = 'none';
     document.body.style.overflow = '';
 };
 
-// --- REDIRECIONAMENTO FINAL ---
-window.drawerConfirmPayment = () => {
+// --- FUNÇÃO AUXILIAR: CAPTURA DADOS DO SEU FORMULÁRIO ---
+function getFormCustomerData() {
+    return {
+        name: document.getElementById('nome')?.value || "",
+        email: document.getElementById('email')?.value || "",
+        cpf: document.getElementById('cpf')?.value?.replace(/\D/g, '') || "",
+        cep: document.getElementById('cep')?.value || "",
+        street: document.getElementById('rua')?.value || "",
+        number: document.getElementById('numero')?.value || "",
+        neighborhood: document.getElementById('bairro')?.value || "",
+        city: document.getElementById('cidade')?.value || "",
+        state: document.getElementById('uf')?.value || ""
+    };
+}
+
+// --- INTEGRAÇÃO FINAL SYNCPAY (GERAÇÃO DE PIX) ---
+window.drawerConfirmPayment = async () => {
     const btn = document.getElementById('drawer-pay-btn');
+    const customer = getFormCustomerData();
+
+    if (!customer.cpf || !customer.name || !customer.email) {
+        alert("⚠️ Por favor, preencha seus dados de contato e endereço antes de finalizar.");
+        return;
+    }
+
     if (btn) {
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Redirecionando...';
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Gerando PIX...';
         btn.disabled = true;
     }
 
-    const kitEl = document.getElementById('drawer-kit-name');
-    const priceEl = document.getElementById('drawer-price');
-    const vehicleEl = document.getElementById('drawer-vehicle');
+    const kitName = document.getElementById('drawer-kit-name')?.innerText || 'Kit Tapetes';
+    const priceRaw = document.getElementById('drawer-price')?.innerText || '0,00';
+    const priceCentavos = Math.round(parseFloat(priceRaw.replace('R$', '').replace('.', '').replace(',', '.').trim()) * 100);
 
-    // Limpa o preço para enviar apenas números/ponto
-    const precoLimpo = priceEl ? priceEl.innerText.replace('R$', '').trim() : '0.00';
+    const payload = {
+        amount: priceCentavos,
+        payment_method: "pix",
+        customer: {
+            name: customer.name,
+            email: customer.email,
+            cpf_cnpj: customer.cpf
+        },
+        items: [{
+            name: kitName,
+            qty: 1,
+            amount: priceCentavos
+        }]
+    };
 
-    const params = new URLSearchParams({
-        kit: kitEl ? (kitEl.innerText || kitEl.textContent) : 'Kit Padrão',
-        preco: precoLimpo,
-        veiculo: vehicleEl ? (vehicleEl.innerText || vehicleEl.textContent) : 'Veículo não selecionado'
-    });
+    try {
+        // Agora chamamos a nossa própria API na Vercel para evitar erro de CORS
+        const response = await fetch("/api/gerar-pix", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
 
-    setTimeout(() => {
-        window.location.href = `dados-pagamento.html?${params.toString()}`;
-    }, 1000);
+        const data = await response.json();
+
+        if (data.success || data.pix_qr_code) {
+            renderPixResult(data.pix_qr_code, data.pix_code);
+        } else {
+            throw new Error(data.message || "Erro ao processar pagamento");
+        }
+    } catch (error) {
+        console.error("Erro no processamento:", error);
+        alert("Houve um erro ao gerar o PIX. Verifique os dados e tente novamente.");
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = 'FINALIZAR PAGAMENTO <i class="fas fa-arrow-right"></i>';
+        }
+    }
+};
+
+// --- RENDERIZA O RESULTADO DO PIX NO DRAWER ---
+function renderPixResult(qrCode, copiaCola) {
+    const drawerArea = document.querySelector('#checkout-drawer .padding-24') || document.getElementById('checkout-drawer');
+
+    drawerArea.innerHTML = `
+        <div style="text-align:center; padding: 10px; animation: fadeIn 0.5s ease;">
+            <h3 style="color:#111; margin-bottom:15px;">Pague com PIX</h3>
+            <div style="background:#fff; padding:10px; border:2px solid #22c55e; border-radius:12px; display:inline-block; margin-bottom:15px;">
+                <img src="${qrCode}" style="width:200px; height:200px; display:block;">
+            </div>
+            <p style="font-size:12px; color:#666; margin-bottom:10px;">Escaneie o código ou copie a chave abaixo:</p>
+            <input type="text" id="pixCopiaCola" value="${copiaCola}" readonly 
+                style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; font-size:11px; text-align:center; background:#f9f9f9; margin-bottom:15px;">
+            <button onclick="copyPixCode()" id="btnCopy" style="width:100%; padding:18px; background:#22c55e; color:#000; border:none; border-radius:12px; font-weight:900; cursor:pointer;">
+                <i class="far fa-copy"></i> COPIAR CÓDIGO PIX
+            </button>
+            <p style="margin-top:15px; font-size:10px; color:#999;">A aprovação é imediata após o pagamento.</p>
+        </div>
+    `;
+}
+
+window.copyPixCode = function () {
+    const input = document.getElementById('pixCopiaCola');
+    input.select();
+    navigator.clipboard.writeText(input.value);
+    const btn = document.getElementById('btnCopy');
+    btn.innerHTML = '<i class="fas fa-check"></i> COPIADO COM SUCESSO!';
+    setTimeout(() => { btn.innerHTML = '<i class="far fa-copy"></i> COPIAR CÓDIGO PIX'; }, 3000);
 };
 
 window.onload = () => {
