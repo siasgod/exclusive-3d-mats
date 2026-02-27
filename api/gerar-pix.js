@@ -3,18 +3,16 @@ export default async function handler(req, res) {
 
     const { customer, amount, kitName } = req.body;
 
-    // Conforme seu painel, a Base URL é https://api.syncpayments.com.br/
-    // O erro 404 indica que o servidor Laravel não reconhece o sufixo da rota.
-    const baseUrl = "https://api.syncpayments.com.br";
-    const endpoint = "/api/v2/payments"; // Mudança para v2, comum em sistemas Dubai Whitelabel
-
     try {
-        const response = await fetch(`${baseUrl}${endpoint}`, {
+        // Rota padrão para o sistema Dubai Whitelabel quando v1/v2 falham
+        const url = "https://api.syncpayments.com.br/api/payments";
+
+        const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "x-api-key": process.env.SYNCPAY_SECRET_KEY // Sua variável da Vercel
+                "x-api-key": process.env.SYNCPAY_SECRET_KEY
             },
             body: JSON.stringify({
                 amount: amount,
@@ -24,14 +22,18 @@ export default async function handler(req, res) {
                     email: customer.email,
                     cpf_cnpj: customer.cpf_cnpj.replace(/\D/g, "")
                 },
-                items: [{ title: kitName, unit_price: amount, quantity: 1 }]
+                items: [{
+                    title: kitName,
+                    unit_price: amount,
+                    quantity: 1
+                }]
             })
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            console.error(`Erro na rota ${endpoint}:`, data);
+            console.error("Tentativa final falhou:", data);
             return res.status(response.status).json(data);
         }
 
