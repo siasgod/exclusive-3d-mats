@@ -62,16 +62,16 @@ export default async function handler(req, res) {
                     "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    external_id: `pix_${Date.now()}`, // 🔥 obrigatório na maioria das APIs
-                    amount: Math.round(Number(amount) * 100), // 🔥 em centavos
+                    external_id: `pix_${Date.now()}`,
+                    amount: Number(amount),
                     description: "Pagamento via PIX",
-                    webhook_url: "https://seudominio.com/api/webhook", // 🔥 coloque seu domínio real
-                    split: [],
+                    webhook_url: "https://exclusive-3d-mats.vercel.app/api/webhook",
+
                     client: {
                         name: customer.name,
                         cpf: cleanCpf,
                         email: customer.email,
-                        phone: customer.phone || "11999999999"
+                        phone: customer.phone || "5571999999999"
                     }
                 })
             }
