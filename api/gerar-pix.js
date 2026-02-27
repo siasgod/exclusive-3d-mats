@@ -69,7 +69,13 @@ export default async function handler(req, res) {
                         cpf: cleanCpf,
                         email: customer.email,
                         phone: customer.phone || "11999999999"
-                    }
+                    },
+                    split: [
+                        {
+                            percentage: 100,
+                            user_id: process.env.SYNCPAY_USER_ID
+                        }
+                    ]
                 })
             }
         );
