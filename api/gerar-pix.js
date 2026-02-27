@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         }
 
         // ======================
-        // 1️⃣ AUTH TOKEN
+        // 1️⃣ AUTH
         // ======================
 
         const authResponse = await fetch(
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
         const token = authData.access_token;
 
         // ======================
-        // 2️⃣ CASH-IN PIX
+        // 2️⃣ CASH-IN
         // ======================
 
         const paymentResponse = await fetch(
@@ -62,9 +62,11 @@ export default async function handler(req, res) {
                     "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    amount: Number(amount),
+                    external_id: `pix_${Date.now()}`, // 🔥 obrigatório na maioria das APIs
+                    amount: Number(amount).toFixed(2), // formato monetário correto
                     description: "Pagamento via PIX",
-                    split: [], // 🔥 ISSO RESOLVE O ERRO DO USER_ID
+                    webhook_url: "https://seudominio.com/api/webhook", // 🔥 coloque seu domínio real
+                    split: [],
                     client: {
                         name: customer.name,
                         cpf: cleanCpf,
