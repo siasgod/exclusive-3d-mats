@@ -6,57 +6,88 @@ export default async function handler(req, res) {
     try {
         const { customer, amount, kitName } = req.body;
 
-        // 🔎 Validação básica
         if (!customer || !amount || !kitName) {
             return res.status(400).json({
                 error: "Dados obrigatórios não enviados"
             });
         }
 
-        if (!customer.name || !customer.email || !customer.cpf_cnpj) {
+        const cleanDocument = String(customer.cpf_cnpj || "").replace(/\D/g, "");
+
+        if (!cleanDocument) {
             return res.status(400).json({
-                error: "Dados do cliente incompletos"
+                error: "CPF/CNPJ inválido"
             });
         }
 
-        // 🔐 Limpa CPF/CNPJ com segurança
-        const cleanDocument = String(customer.cpf_cnpj).replace(/\D/g, "");
+        // =========================
+        // 1️⃣ GERAR TOKEN
+        // =========================
 
-        const url = "https://api.syncpayments.com.br/v1/payments";
-
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "x-api-key": process.env.SYNCPAY_SECRET_KEY
-            },
-            body: JSON.stringify({
-                amount: Number(amount), // garante número
-                payment_method: "pix",
-                customer: {
-                    name: customer.name,
-                    email: customer.email,
-                    cpf_cnpj: cleanDocument
+        const authResponse = await fetch(
+            "https://api.syncpayments.com.br/api/partner/v1/auth-token",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
-                items: [
-                    {
-                        title: kitName,
-                        unit_price: Number(amount),
-                        quantity: 1
-                    }
-                ]
-            })
-        });
+                body: JSON.stringify({
+                    client_id: process.env.SYNCPAY_CLIENT_ID,
+                    client_secret: process.env.SYNCPAY_SECRET_KEY
+                })
+            }
+        );
 
-        const data = await response.json();
+        const authData = await authResponse.json();
 
-        if (!response.ok) {
-            console.error("Erro SyncPay:", data);
-            return res.status(response.status).json(data);
+        if (!authResponse.ok) {
+            console.error("Erro ao gerar token:", authData);
+            return res.status(authResponse.status).json(authData);
         }
 
-        return res.status(200).json(data);
+        const accessToken = authData.access_token;
+
+        // =========================
+        // 2️⃣ CRIAR PAGAMENTO PIX
+        // =========================
+
+        const paymentResponse = await fetch(
+            "https://api.syncpayments.com.br/api/partner/v1/payments",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    amount: Number(amount),
+                    payment_method: "pix",
+                    customer: {
+                        name: customer.name,
+                        email: customer.email,
+                        cpf_cnpj: cleanDocument
+                    },
+                    items: [
+                        {
+                            title: kitName,
+                            unit_price: Number(amount),
+                            quantity: 1
+                        }
+                    ]
+                })
+            }
+        );
+
+        const paymentData = await paymentResponse.json();
+
+        if (!paymentResponse.ok) {
+            console.error("Erro SyncPay:", paymentData);
+            return res.status(paymentResponse.status).json(paymentData);
+        }
+
+        return res.status(200).json(paymentData);
 
     } catch (error) {
         console.error("Erro interno:", error);
