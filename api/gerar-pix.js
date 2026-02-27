@@ -71,7 +71,7 @@ export default async function handler(req, res) {
                         name: customer.name,
                         cpf: cleanCpf,
                         email: customer.email,
-                        phone: customer.phone || "5571999999999"
+                        phone: customer.phone || "71999999999"
                     }
                 })
             }
