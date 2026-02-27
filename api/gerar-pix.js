@@ -14,14 +14,14 @@ export default async function handler(req, res) {
 
         const cleanCpf = String(customer.cpf_cnpj || "").replace(/\D/g, "");
 
-        if (!cleanCpf) {
+        if (!cleanCpf || cleanCpf.length < 11) {
             return res.status(400).json({
                 error: "CPF inválido"
             });
         }
 
         // ======================
-        // 1️⃣ GERAR TOKEN
+        // 1️⃣ AUTH TOKEN
         // ======================
 
         const authResponse = await fetch(
@@ -41,15 +41,15 @@ export default async function handler(req, res) {
 
         const authData = await authResponse.json();
 
-        if (!authResponse.ok) {
+        if (!authResponse.ok || !authData.access_token) {
             console.error("Erro ao gerar token:", authData);
-            return res.status(authResponse.status).json(authData);
+            return res.status(401).json(authData);
         }
 
         const token = authData.access_token;
 
         // ======================
-        // 2️⃣ CASH-IN (PIX)
+        // 2️⃣ CASH-IN PIX
         // ======================
 
         const paymentResponse = await fetch(
@@ -64,18 +64,13 @@ export default async function handler(req, res) {
                 body: JSON.stringify({
                     amount: Number(amount),
                     description: "Pagamento via PIX",
+                    split: [], // 🔥 ISSO RESOLVE O ERRO DO USER_ID
                     client: {
                         name: customer.name,
                         cpf: cleanCpf,
                         email: customer.email,
                         phone: customer.phone || "11999999999"
-                    },
-                    split: [
-                        {
-                            percentage: 100,
-                            user_id: process.env.SYNCPAY_USER_ID
-                        }
-                    ]
+                    }
                 })
             }
         );
