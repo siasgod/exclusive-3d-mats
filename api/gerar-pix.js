@@ -63,7 +63,7 @@ export default async function handler(req, res) {
                 },
                 body: JSON.stringify({
                     external_id: `pix_${Date.now()}`, // 🔥 obrigatório na maioria das APIs
-                    amount: Number(amount).toFixed(2), // formato monetário correto
+                    amount: Math.round(Number(amount) * 100), // 🔥 em centavos
                     description: "Pagamento via PIX",
                     webhook_url: "https://seudominio.com/api/webhook", // 🔥 coloque seu domínio real
                     split: [],
