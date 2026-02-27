@@ -4,25 +4,25 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { customer, amount, kitName } = req.body;
+        const { customer, amount } = req.body;
 
-        if (!customer || !amount || !kitName) {
+        if (!customer || !amount) {
             return res.status(400).json({
                 error: "Dados obrigatórios não enviados"
             });
         }
 
-        const cleanDocument = String(customer.cpf_cnpj || "").replace(/\D/g, "");
+        const cleanCpf = String(customer.cpf_cnpj || "").replace(/\D/g, "");
 
-        if (!cleanDocument) {
+        if (!cleanCpf) {
             return res.status(400).json({
-                error: "CPF/CNPJ inválido"
+                error: "CPF inválido"
             });
         }
 
-        // =========================
+        // ======================
         // 1️⃣ GERAR TOKEN
-        // =========================
+        // ======================
 
         const authResponse = await fetch(
             "https://api.syncpayments.com.br/api/partner/v1/auth-token",
@@ -46,36 +46,30 @@ export default async function handler(req, res) {
             return res.status(authResponse.status).json(authData);
         }
 
-        const accessToken = authData.access_token;
+        const token = authData.access_token;
 
-        // =========================
-        // 2️⃣ CRIAR PAGAMENTO PIX
-        // =========================
+        // ======================
+        // 2️⃣ CASH-IN (PIX)
+        // ======================
 
         const paymentResponse = await fetch(
-            "https://api.syncpayments.com.br/api/partner/v1/payments",
+            "https://api.syncpayments.com.br/api/partner/v1/cash-in",
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",
-                    "Authorization": `Bearer ${accessToken}`
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     amount: Number(amount),
-                    payment_method: "pix",
-                    customer: {
+                    description: "Pagamento via PIX",
+                    client: {
                         name: customer.name,
+                        cpf: cleanCpf,
                         email: customer.email,
-                        cpf_cnpj: cleanDocument
-                    },
-                    items: [
-                        {
-                            title: kitName,
-                            unit_price: Number(amount),
-                            quantity: 1
-                        }
-                    ]
+                        phone: customer.phone || "11999999999"
+                    }
                 })
             }
         );
