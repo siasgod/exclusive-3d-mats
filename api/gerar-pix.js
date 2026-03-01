@@ -95,6 +95,9 @@ module.exports = async function handler(req, res) {
 
         const token = authData.access_token;
 
+        console.log("customer.phone:", customer.phone);
+        console.log("cleanPhone:", cleanPhone);
+
         // ======================
         // 2️⃣ CASH-IN (GERAR PIX)
         // ======================
