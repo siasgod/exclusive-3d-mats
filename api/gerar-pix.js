@@ -62,21 +62,18 @@ export default async function handler(req, res) {
                     "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    external_id: `pix_${Date.now()}`,
-                    amount: Number(amount),
+                    amount: parseFloat(String(amount).replace(",", ".")),
                     description: "Pagamento via PIX",
                     webhook_url: "https://exclusive-3d-mats.vercel.app/api/webhook",
-
                     client: {
                         name: customer.name,
                         cpf: cleanCpf,
                         email: customer.email,
-                        phone: customer.phone || "71999999999"
+                        phone: customer.phone.replace(/\D/g, "")
                     }
                 })
             }
         );
-
         const paymentData = await paymentResponse.json();
 
         if (!paymentResponse.ok) {
