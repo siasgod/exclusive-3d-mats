@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({ error: "Method Not Allowed" });
     }
@@ -12,11 +12,31 @@ export default async function handler(req, res) {
             });
         }
 
-        const cleanCpf = String(customer.cpf_cnpj || "").replace(/\D/g, "");
+        const cleanCpf = String(customer.cpf_cnpj || "")
+            .replace(/\D/g, "");
 
         if (!cleanCpf || cleanCpf.length < 11) {
             return res.status(400).json({
                 error: "CPF inválido"
+            });
+        }
+
+        const cleanPhone = String(customer.phone || "")
+            .replace(/\D/g, "");
+
+        if (!cleanPhone || cleanPhone.length < 10) {
+            return res.status(400).json({
+                error: "Telefone inválido"
+            });
+        }
+
+        const parsedAmount = parseFloat(
+            String(amount).replace(",", ".")
+        );
+
+        if (!parsedAmount || parsedAmount <= 0) {
+            return res.status(400).json({
+                error: "Valor inválido"
             });
         }
 
@@ -62,18 +82,19 @@ export default async function handler(req, res) {
                     "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    amount: parseFloat(String(amount).replace(",", ".")),
+                    amount: parsedAmount,
                     description: "Pagamento via PIX",
                     webhook_url: "https://exclusive-3d-mats.vercel.app/api/webhook",
                     client: {
                         name: customer.name,
                         cpf: cleanCpf,
                         email: customer.email,
-                        const cleanPhone = String(customer.phone || "").replace(/\D/g, "");
+                        phone: cleanPhone
                     }
                 })
             }
         );
+
         const paymentData = await paymentResponse.json();
 
         if (!paymentResponse.ok) {
@@ -90,4 +111,4 @@ export default async function handler(req, res) {
             details: error.message
         });
     }
-}
+};
