@@ -4,53 +4,70 @@ export default async function handler(req, res) {
     const { customer, amount, kitName } = req.body;
 
     try {
-        // Log para conferência no painel Vercel
-        console.log("Iniciando Checkout SyncPay para:", customer.email);
+        console.log("Iniciando Checkout SyncPay para:", customer?.email);
 
-        const response = await fetch("https://api.syncpay.com.br/v1/checkout", {
+        // 1. TRATAMENTO DE VALOR (Garante formato decimal R$ 102.30)
+        let parsedAmount = parseFloat(String(amount).replace(",", "."));
+        // Se o valor vier como centavos inteiros (ex: 10230), converte para decimal (102.30)
+        if (Number.isInteger(amount) && amount > 1000) {
+            parsedAmount = amount / 100;
+        }
+
+        const cleanCpf = String(customer.cpf_cnpj || "").replace(/\D/g, "");
+        const cleanPhone = String(customer.phone || "").replace(/\D/g, "") || "11999999999";
+
+        // 2. ETAPA DE AUTENTICAÇÃO (Obter o Bearer Token)
+        // A documentação diz que para /auth-token deve-se usar client_id e client_secret
+        const authResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/auth-token", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                // Usa o nome da variável que está no seu painel Vercel
-                "x-api-key": process.env.syncpay
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                amount: amount, // Ex: 9681 (centavos)
-                payment_method: "pix",
-                customer: {
-                    name: customer.name,
-                    email: customer.email,
-                    cpf_cnpj: customer.cpf_cnpj.replace(/\D/g, "") // Apenas números
-                },
-                items: [{
-                    title: kitName,
-                    unit_price: amount,
-                    quantity: 1
-                }]
+                client_id: process.env.SYNCPAY_CLIENT_ID,
+                client_secret: process.env.SYNCPAY_SECRET_KEY
             })
         });
 
-        // Captura o texto da resposta antes de converter para JSON para evitar o erro de 'Unexpected token <'
-        const responseText = await response.text();
+        const authData = await authResponse.json();
 
-        let data;
-        try {
-            data = JSON.parse(responseText);
-        } catch (e) {
-            console.error("A API retornou HTML em vez de JSON. Resposta:", responseText.substring(0, 200));
-            return res.status(500).json({ error: "Erro na comunicação com a SyncPay (Resposta Inválida)." });
+        if (!authResponse.ok || !authData.access_token) {
+            console.error("Erro na Autenticação:", authData);
+            return res.status(401).json({ error: "Falha na autenticação com a SyncPay" });
         }
 
-        if (!response.ok) {
-            console.error("Erro retornado pela SyncPay:", data);
-            return res.status(response.status).json(data);
+        // 3. ETAPA DE GERAÇÃO DO PIX (Cash-In)
+        // Agora usamos o token recebido no passo anterior
+        const paymentResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/cash-in", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Bearer ${authData.access_token}`
+            },
+            body: JSON.stringify({
+                amount: parsedAmount,
+                description: kitName || "Compra Exclusive 3D Mats",
+                webhook_url: "https://exclusive-3d-mats.vercel.app/api/webhook",
+                client: {
+                    name: customer.name,
+                    email: customer.email,
+                    cpf: cleanCpf,
+                    phone: cleanPhone
+                }
+            })
+        });
+
+        const paymentData = await paymentResponse.json();
+
+        if (!paymentResponse.ok) {
+            console.error("Erro ao gerar PIX:", paymentData);
+            return res.status(paymentResponse.status).json(paymentData);
         }
 
-        // Retorna os dados para o seu front-end (pix_qr_code e pix_code)
-        return res.status(200).json(data);
+        // Retorna o sucesso (QR Code e dados do Pix)
+        return res.status(200).json(paymentData);
 
     } catch (error) {
         console.error("Erro fatal no servidor:", error);
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: "Erro interno", details: error.message });
     }
 }
