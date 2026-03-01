@@ -6,7 +6,6 @@ module.exports = async function handler(req, res) {
 
     try {
 
-        // Garante que o body existe
         const body = req.body || {};
         const customer = body.customer || null;
         const amount = body.amount || null;
@@ -25,6 +24,10 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: "Amount não enviado" });
         }
 
+        if (!customer.phone) {
+            return res.status(400).json({ error: "Telefone é obrigatório" });
+        }
+
         const cleanCpf = String(customer.cpf_cnpj || "")
             .replace(/\D/g, "");
 
@@ -32,11 +35,12 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: "CPF inválido" });
         }
 
-        const cleanPhone = String(customer.phone || "")
+        const cleanPhone = String(customer.phone)
             .replace(/\D/g, "");
 
-        if (!cleanPhone || cleanPhone.length < 10) {
-            return res.status(400).json({ error: "Telefone inválido" });
+        // Telefone brasileiro válido (10 ou 11 dígitos sem 55)
+        if (!cleanPhone || cleanPhone.length < 10 || cleanPhone.length > 11) {
+            return res.status(400).json({ error: "Telefone inválido. Envie com DDD e sem +55" });
         }
 
         const parsedAmount = parseFloat(
@@ -72,14 +76,7 @@ module.exports = async function handler(req, res) {
             }
         );
 
-        let authData;
-        try {
-            authData = await authResponse.json();
-        } catch {
-            return res.status(500).json({
-                error: "Erro ao interpretar resposta de autenticação"
-            });
-        }
+        const authData = await authResponse.json();
 
         if (!authResponse.ok || !authData.access_token) {
             console.error("Erro ao gerar token:", authData);
@@ -103,7 +100,7 @@ module.exports = async function handler(req, res) {
                 },
                 body: JSON.stringify({
                     amount: parsedAmount,
-                    description: "Pagamento via PIX",
+                    description: body.kitName || "Pagamento via PIX",
                     webhook_url: "https://exclusive-3d-mats.vercel.app/api/webhook",
                     client: {
                         name: customer.name || "",
@@ -115,14 +112,7 @@ module.exports = async function handler(req, res) {
             }
         );
 
-        let paymentData;
-        try {
-            paymentData = await paymentResponse.json();
-        } catch {
-            return res.status(500).json({
-                error: "Erro ao interpretar resposta de pagamento"
-            });
-        }
+        const paymentData = await paymentResponse.json();
 
         if (!paymentResponse.ok) {
             console.error("Erro SyncPay:", paymentData);
