@@ -35,12 +35,14 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: "CPF inválido" });
         }
 
-        const cleanPhone = String(customer.phone)
+        const cleanPhone = String(customer.phone || "")
             .replace(/\D/g, "");
 
-        // Telefone brasileiro válido (10 ou 11 dígitos sem 55)
+        // Telefone brasileiro válido (10 ou 11 dígitos sem +55)
         if (!cleanPhone || cleanPhone.length < 10 || cleanPhone.length > 11) {
-            return res.status(400).json({ error: "Telefone inválido. Envie com DDD e sem +55" });
+            return res.status(400).json({
+                error: "Telefone inválido. Envie com DDD e sem +55"
+            });
         }
 
         const parsedAmount = parseFloat(
@@ -76,17 +78,25 @@ module.exports = async function handler(req, res) {
             }
         );
 
-        const authData = await authResponse.json();
+        let authData;
+
+        try {
+            authData = await authResponse.json();
+        } catch (err) {
+            return res.status(500).json({
+                error: "Erro ao interpretar resposta de autenticação"
+            });
+        }
 
         if (!authResponse.ok || !authData.access_token) {
             console.error("Erro ao gerar token:", authData);
-            return res.status(401).json(authData);
+            return res.status(authResponse.status || 401).json(authData);
         }
 
         const token = authData.access_token;
 
         // ======================
-        // 2️⃣ CASH-IN
+        // 2️⃣ CASH-IN (GERAR PIX)
         // ======================
 
         const paymentResponse = await fetch(
@@ -112,7 +122,15 @@ module.exports = async function handler(req, res) {
             }
         );
 
-        const paymentData = await paymentResponse.json();
+        let paymentData;
+
+        try {
+            paymentData = await paymentResponse.json();
+        } catch (err) {
+            return res.status(500).json({
+                error: "Erro ao interpretar resposta de pagamento"
+            });
+        }
 
         if (!paymentResponse.ok) {
             console.error("Erro SyncPay:", paymentData);
