@@ -69,7 +69,7 @@ export default async function handler(req, res) {
                         name: customer.name,
                         cpf: cleanCpf,
                         email: customer.email,
-                        phone: customer.phone.replace(/\D/g, "")
+                        const cleanPhone = String(customer.phone || "").replace(/\D/g, "");
                     }
                 })
             }
