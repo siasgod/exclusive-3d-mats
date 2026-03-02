@@ -6,9 +6,8 @@ export default async function handler(req, res) {
     try {
         console.log("Iniciando Checkout SyncPay para:", customer?.email);
 
-        // 1. TRATAMENTO DE VALOR (Garante formato decimal R$ 102.30)
+        // 1. TRATAMENTO DE VALOR (Garante R$ 102.30)
         let parsedAmount = parseFloat(String(amount).replace(",", "."));
-        // Se o valor vier como centavos inteiros (ex: 10230), converte para decimal (102.30)
         if (Number.isInteger(amount) && amount > 1000) {
             parsedAmount = amount / 100;
         }
@@ -16,8 +15,7 @@ export default async function handler(req, res) {
         const cleanCpf = String(customer.cpf_cnpj || "").replace(/\D/g, "");
         const cleanPhone = String(customer.phone || "").replace(/\D/g, "") || "11999999999";
 
-        // 2. ETAPA DE AUTENTICAÇÃO (Obter o Bearer Token)
-        // A documentação diz que para /auth-token deve-se usar client_id e client_secret
+        // 2. ETAPA DE AUTENTICAÇÃO
         const authResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/auth-token", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -28,14 +26,11 @@ export default async function handler(req, res) {
         });
 
         const authData = await authResponse.json();
-
         if (!authResponse.ok || !authData.access_token) {
-            console.error("Erro na Autenticação:", authData);
-            return res.status(401).json({ error: "Falha na autenticação com a SyncPay" });
+            return res.status(401).json({ error: "Falha na autenticação SyncPay" });
         }
 
-        // 3. ETAPA DE GERAÇÃO DO PIX (Cash-In)
-        // Agora usamos o token recebido no passo anterior
+        // 3. GERAÇÃO DO PIX (CASH-IN)
         const paymentResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/cash-in", {
             method: "POST",
             headers: {
@@ -59,15 +54,17 @@ export default async function handler(req, res) {
         const paymentData = await paymentResponse.json();
 
         if (!paymentResponse.ok) {
-            console.error("Erro ao gerar PIX:", paymentData);
+            console.error("Erro no Cash-In:", paymentData);
             return res.status(paymentResponse.status).json(paymentData);
         }
 
-        // Retorna o sucesso (QR Code e dados do Pix)
-        return res.status(200).json(paymentData);
+        // 4. RETORNO PARA O FRONT-END
+        // Baseado no seu log, a SyncPay retorna os dados dentro de 'data'
+        // Enviamos o objeto completo para o seu site exibir o QR Code
+        return res.status(200).json(paymentData.data);
 
     } catch (error) {
-        console.error("Erro fatal no servidor:", error);
+        console.error("Erro fatal:", error);
         return res.status(500).json({ error: "Erro interno", details: error.message });
     }
 }
