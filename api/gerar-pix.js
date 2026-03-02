@@ -4,9 +4,7 @@ export default async function handler(req, res) {
     const { customer, amount, kitName } = req.body;
 
     try {
-        console.log("Iniciando Checkout SyncPay para:", customer?.email);
-
-        // 1. TRATAMENTO DE VALOR (Garante R$ 102.30)
+        // 1. TRATAMENTO DE VALOR
         let parsedAmount = parseFloat(String(amount).replace(",", "."));
         if (Number.isInteger(amount) && amount > 1000) {
             parsedAmount = amount / 100;
@@ -15,7 +13,7 @@ export default async function handler(req, res) {
         const cleanCpf = String(customer.cpf_cnpj || "").replace(/\D/g, "");
         const cleanPhone = String(customer.phone || "").replace(/\D/g, "") || "11999999999";
 
-        // 2. ETAPA DE AUTENTICAÇÃO
+        // 2. AUTENTICAÇÃO
         const authResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/auth-token", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -27,10 +25,10 @@ export default async function handler(req, res) {
 
         const authData = await authResponse.json();
         if (!authResponse.ok || !authData.access_token) {
-            return res.status(401).json({ error: "Falha na autenticação SyncPay" });
+            return res.status(401).json({ error: "Erro na autenticação SyncPay" });
         }
 
-        // 3. GERAÇÃO DO PIX (CASH-IN)
+        // 3. GERAÇÃO DO PIX
         const paymentResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/cash-in", {
             method: "POST",
             headers: {
@@ -54,17 +52,28 @@ export default async function handler(req, res) {
         const paymentData = await paymentResponse.json();
 
         if (!paymentResponse.ok) {
-            console.error("Erro no Cash-In:", paymentData);
             return res.status(paymentResponse.status).json(paymentData);
         }
 
-        // 4. RETORNO PARA O FRONT-END
-        // Baseado no seu log, a SyncPay retorna os dados dentro de 'data'
-        // Enviamos o objeto completo para o seu site exibir o QR Code
-        return res.status(200).json(paymentData.data);
+        // 4. MAPEAMENTO DE RESPOSTA (O segredo para o QR Code aparecer)
+        // Criamos um objeto que atende a vários nomes de variáveis comuns em checkouts
+        const pixData = paymentData.data;
+
+        const responsePayload = {
+            success: true,
+            id: pixData.id,
+            // Mapeamos para todos os nomes prováveis que seu Front-end usa:
+            pix_code: pixData.pix_code,
+            qrcode: pixData.pix_code,
+            pix_copy_and_paste: pixData.pix_code,
+            copy_paste: pixData.pix_code,
+            amount: pixData.amount,
+            status: pixData.status
+        };
+
+        return res.status(200).json(responsePayload);
 
     } catch (error) {
-        console.error("Erro fatal:", error);
         return res.status(500).json({ error: "Erro interno", details: error.message });
     }
 }
