@@ -194,7 +194,7 @@
                     </div>
                     <div
                         class="flex justify-center border-4 border-gray-50 p-4 rounded-2xl bg-white max-w-[220px] mx-auto shadow-inner">
-                        <img id="pix-qr-code" src="" alt="QR Code PIX">
+                        <img id="pix-qr-code" src="" alt="QR Code PIX" class="max-w-full h-auto">
                     </div>
                     <div class="space-y-2">
                         <label class="block text-[10px] font-bold text-gray-400 uppercase">Clique no código abaixo para
@@ -245,7 +245,6 @@
         const veiculoNome = params.get('veiculo') || 'Veículo';
         const imagemUrl = params.get('imagem') || '';
 
-        // Preenchimento
         document.getElementById('resumo-kit').innerText = kitNome;
         document.getElementById('resumo-veiculo').innerText = veiculoNome;
         document.getElementById('resumo-preco').innerText = `R$ ${valorBase.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
@@ -260,7 +259,6 @@
         mask(document.getElementById('cpf'), v => v.replace(/\D/g, "").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"));
         mask(document.getElementById('phone'), v => v.replace(/\D/g, "").replace(/^(\d{2})(\d)/g, "($1) $2").replace(/(\d)(\d{4})$/, "$1-$2"));
 
-        // CORREÇÃO CEP: Busca apenas ao completar 9 caracteres
         mask(document.getElementById('cep'), v => {
             v = v.replace(/\D/g, "").replace(/^(\d{5})(\d)/, "$1-$2");
             if (v.length === 9) buscaCEP(v);
@@ -277,7 +275,6 @@
                 return alert("⚠️ Preencha os dados corretamente.");
             }
 
-            // SALVA PARA O UPSELL
             localStorage.setItem('user_name', nome);
             localStorage.setItem('user_email', email);
             localStorage.setItem('user_cpf', cpf);
@@ -293,26 +290,22 @@
             window.scrollTo(0, 0);
         }
 
-        // 4. BUSCA CEP CORRIGIDA
+        // 4. BUSCA CEP
         async function buscaCEP(cep) {
             const cleanCep = cep.replace(/\D/g, "");
             try {
                 const res = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
                 const data = await res.json();
-
                 if (!data.erro) {
                     document.getElementById('rua').value = data.logradouro;
                     document.getElementById('bairro').value = data.bairro;
                     document.getElementById('numero').focus();
-
                     document.getElementById('container-fretes').classList.remove('hidden');
                     updateTotal(16.91);
                 } else {
                     alert("CEP não encontrado.");
                 }
             } catch (e) {
-                console.error("Erro CEP:", e);
-                // Fallback: Libera campos em caso de erro na API
                 document.getElementById('container-fretes').classList.remove('hidden');
             }
         }
@@ -321,7 +314,6 @@
         function updateTotal(frete) {
             const valorFrete = parseFloat(frete);
             const total = valorBase + valorFrete;
-
             const freteTexto = document.getElementById('resumo-frete-texto');
             if (valorFrete === 0) {
                 freteTexto.innerText = "Grátis";
@@ -330,15 +322,14 @@
                 freteTexto.innerText = `R$ ${valorFrete.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
                 freteTexto.className = "font-black italic text-gray-800";
             }
-
             document.getElementById('total-final').innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
         }
 
-        // 6. SUBMIT E PIX
+        // 6. SUBMIT E GERAÇÃO PIX (CORRIGIDO PARA ESTRUTURA SYNC PAY)
         document.getElementById('form-checkout').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> GERANDO PIX...';
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> PROCESSANDO...';
             btn.disabled = true;
 
             const totalFinalStr = document.getElementById('total-final').innerText;
@@ -363,10 +354,15 @@
 
                 const result = await response.json();
 
-                if (result.pix_qr_code || result.success) {
-                    // Se a API devolver URL direta (Google Charts), funciona. Se devolver Base64, coloque prefixo.
-                    document.getElementById('pix-qr-code').src = result.pix_qr_code.startsWith('http') ? result.pix_qr_code : `data:image/png;base64,${result.pix_qr_code}`;
-                    document.getElementById('pix-key').value = result.pix_code;
+                // DATA WRAPPER: A SyncPay envia dentro do objeto .data
+                const pixData = result.data || result;
+
+                if (pixData.pix_code) {
+                    // SE A API NÃO MANDAR IMAGEM, GERAMOS VIA GOOGLE CHARTS COM O PIX_CODE
+                    const qrCodeUrl = `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(pixData.pix_code)}&chs=300x300&chld=L|1`;
+
+                    document.getElementById('pix-qr-code').src = qrCodeUrl;
+                    document.getElementById('pix-key').value = pixData.pix_code;
 
                     document.getElementById('section-entrega').classList.add('hidden');
                     document.getElementById('section-pagamento').classList.remove('hidden');
@@ -379,14 +375,17 @@
 
                     window.scrollTo(0, 0);
                     startTimer();
-                    verificarPagamento(result.transaction_id || result.id);
+
+                    // Usa o ID retornado dentro de 'data'
+                    verificarPagamento(pixData.id);
                 } else {
-                    throw new Error("Erro na geração");
+                    throw new Error("Erro na geração: pix_code ausente");
                 }
             } catch (err) {
-                alert("Erro ao processar. Tente novamente.");
+                console.error(err);
+                alert("Erro ao processar pagamento. Tente novamente.");
                 btn.disabled = false;
-                btn.innerText = "GERAR PIX SEGURO";
+                btn.innerHTML = "Gerar PIX Seguro <i class='fas fa-chevron-right ml-2 text-xs'></i>";
             }
         });
 
@@ -394,7 +393,7 @@
             const key = document.getElementById("pix-key");
             key.select();
             navigator.clipboard.writeText(key.value);
-            alert("Código PIX Copiado!");
+            alert("✅ Código PIX Copiado!");
         }
 
         function startTimer() {
