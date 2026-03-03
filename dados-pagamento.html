@@ -98,7 +98,8 @@
                                 class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">NÚMERO COMPLETO</label>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Número de
+                                Celular</label>
                             <input type="tel" id="phone" placeholder="(00) 00000-0000" required
                                 class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
@@ -330,7 +331,7 @@
             document.getElementById('total-final').innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
         }
 
-        // 7. Envio do Formulário (API)
+        // 7. Envio do Formulário e Vigília
         document.getElementById('form-checkout').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
@@ -370,12 +371,15 @@
                     ativarStepPagamento();
                     window.scrollTo(0, 0);
                     startTimer();
+
+                    // Inicia a verificação automática de pagamento
+                    verificarPagamento(result.transaction_id || result.id);
                 } else {
                     throw new Error(result.message || "Falha na API");
                 }
             } catch (err) {
                 console.error("Erro Pagamento:", err);
-                alert("❌ Erro ao gerar PIX. Tente novamente ou use outro CPF.");
+                alert("❌ Erro ao gerar PIX. Tente novamente.");
                 btn.disabled = false;
                 btn.innerText = "TENTAR NOVAMENTE";
             }
@@ -400,6 +404,24 @@
                     display.innerHTML = `<i class="fas fa-times mr-2"></i> Código Expirado`;
                 }
             }, 1000);
+        }
+
+        // NOVA FUNÇÃO: Vigília de Pagamento
+        async function verificarPagamento(id) {
+            const interval = setInterval(async () => {
+                try {
+                    const res = await fetch(`/api/verificar-pagamento/${id}`);
+                    const data = await res.json();
+
+                    if (data.status === 'paid' || data.status === 'concluded' || data.success === true) {
+                        clearInterval(interval);
+                        // Redireciona para página de sucesso ou obrigado
+                        window.location.href = "obrigado.html";
+                    }
+                } catch (e) {
+                    console.log("Aguardando confirmação...");
+                }
+            }, 5000); // Checa a cada 5 segundos
         }
     </script>
 </body>

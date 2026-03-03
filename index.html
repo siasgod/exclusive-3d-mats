@@ -1192,6 +1192,61 @@
         }
     </script>
     <script type="module" src="./js/main.js"></script>
+
+    <script>
+        // 1. Função que fica perguntando à API se o pagamento foi feito
+        function iniciarVigiliaPagamento(transactionId) {
+            console.log("Monitorando pagamento ID:", transactionId);
+
+            const checkInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/consultar-pagamento?id=${transactionId}`);
+                    const data = await response.json();
+
+                    if (data.pago) {
+                        clearInterval(checkInterval); // Para o relógio
+                        window.location.href = "/obrigado.html"; // Redireciona para a tela de agradecimento
+                    }
+                } catch (err) {
+                    console.error("Erro ao consultar status do PIX:", err);
+                }
+            }, 5000); // Tenta a cada 5 segundos
+        }
+
+        // 2. Esta é a função que dispara quando o usuário clica para pagar
+        // Você deve chamar esta função no evento de clique do seu botão final de checkout
+        async function processarPagamento(dadosCliente) {
+            try {
+                const response = await fetch('/api/gerar-pix', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosCliente)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // EXIBIÇÃO NA TELA:
+                    // Esconde o formulário e mostra o QR Code
+                    // Substitua os IDs abaixo pelos IDs reais dos seus elementos
+                    document.getElementById('checkout-form').classList.add('hidden');
+                    document.getElementById('payment-area').classList.remove('hidden');
+
+                    // Injeta a imagem gerada pelo Google Charts que configuramos no gerar-pix.js
+                    document.getElementById('qr-code-img').src = result.qrcode_image;
+                    document.getElementById('pix-copy-paste').value = result.pix_code;
+
+                    // INICIA A VIGÍLIA:
+                    iniciarVigiliaPagamento(result.id);
+                } else {
+                    alert("Erro ao gerar PIX. Tente novamente.");
+                }
+            } catch (error) {
+                console.error("Erro no checkout:", error);
+            }
+        }
+    </script>
+
 </body>
 
 </html>

@@ -6,17 +6,37 @@ export default async function handler(req, res) {
 
     const data = req.body;
 
-    // Log para você debugar no painel da Vercel se o aviso está chegando
-    console.log("Evento recebido da Syncpay:", data);
+    // Log detalhado para monitorar no painel da Vercel
+    console.log("Evento recebido da Syncpay:", JSON.stringify(data, null, 2));
 
-    // Na Syncpay, o status costuma ser 'paid' ou 'approved'
-    // Verifique o campo exato na doc: geralmente é data.status ou data.event
-    if (data.status === 'paid' || data.event === 'transaction.paid') {
-        console.log(`Pagamento confirmado para o cliente: ${data.customer?.email}`);
+    // A SyncPay envia os dados dentro de 'data' ou na raiz, dependendo da versão
+    const paymentStatus = data.status || data.data?.status;
+    const paymentId = data.id || data.data?.id;
+    const description = data.description || data.data?.description || "";
+    const customerEmail = data.customer?.email || data.data?.client?.email;
 
-        // Aqui você pode adicionar lógica futura (enviar e-mail, etc)
+    // 1. VERIFICAÇÃO DE PAGAMENTO CONFIRMADO
+    if (paymentStatus === 'paid' || paymentStatus === 'concluded') {
+
+        // 2. IDENTIFICAÇÃO DO TIPO DE PRODUTO
+        if (description.includes("UPSELL") || description.includes("Kit Lavagem")) {
+            console.log(`✅ [UPSELL CONFIRMADO]: O cliente ${customerEmail} adicionou o Kit de Limpeza ao pedido.`);
+
+            // LÓGICA: Aqui você pode disparar uma notificação interna (ex: Slack ou E-mail)
+            // informando que esse pedido específico deve incluir o Kit de Limpeza na caixa.
+        } else {
+            console.log(`✅ [VENDA PRINCIPAL]: O cliente ${customerEmail} pagou os Tapetes 3D.`);
+
+            // LÓGICA: Iniciar fluxo padrão de separação de estoque.
+        }
+
+        // 3. LOG DE SEGURANÇA
+        console.log(`ID da Transação: ${paymentId} | Valor: ${data.amount || data.data?.amount}`);
     }
 
-    // A Syncpay PRECISA receber um status 200, senão ela fica tentando reenviar
-    return res.status(200).json({ received: true });
+    // A Syncpay PRECISA do status 200 para parar de enviar o webhook
+    return res.status(200).json({
+        received: true,
+        message: "Webhook processado pela Soberano 3D"
+    });
 }
