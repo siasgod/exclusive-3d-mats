@@ -1,21 +1,27 @@
 export default async function handler(req, res) {
-    if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
+    if (req.method !== 'POST') {
+        return res.status(405).send('Method Not Allowed');
+    }
 
-    // Adicionamos 'description' e 'isUpsell' para dar flexibilidade
     const { customer, amount, kitName, description, isUpsell } = req.body;
 
     try {
+
+        // ===============================
         // 1. TRATAMENTO DE VALOR
-        // Aceita tanto centavos (8990) quanto decimal (89.90)
+        // ===============================
         let parsedAmount = parseFloat(String(amount).replace(",", "."));
+
         if (Number.isInteger(amount) && amount > 1000) {
             parsedAmount = amount / 100;
         }
 
-        const cleanCpf = String(customer.cpf_cnpj || "").replace(/\D/g, "");
-        const cleanPhone = String(customer.phone || "").replace(/\D/g, "") || "11999999999";
+        const cleanCpf = String(customer?.cpf_cnpj || "").replace(/\D/g, "");
+        const cleanPhone = String(customer?.phone || "").replace(/\D/g, "") || "11999999999";
 
+        // ===============================
         // 2. AUTENTICAÇÃO
+        // ===============================
         const authResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/auth-token", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -26,15 +32,25 @@ export default async function handler(req, res) {
         });
 
         const authData = await authResponse.json();
+
         if (!authResponse.ok || !authData.access_token) {
             console.error("Erro na autenticação SyncPay:", authData);
             return res.status(401).json({ error: "Erro na autenticação SyncPay" });
         }
 
-        // 3. DEFINIÇÃO DA DESCRIÇÃO (Prioriza o que vem do front-end)
-        const finalDescription = description || kitName || (isUpsell ? "Upsell: Kit Limpeza Soberano" : "Compra Exclusive 3D Mats");
+        // ===============================
+        // 3. DESCRIÇÃO FINAL
+        // ===============================
+        const finalDescription =
+            description ||
+            kitName ||
+            (isUpsell
+                ? "Upsell: Kit Limpeza Soberano"
+                : "Compra Exclusive 3D Mats");
 
-        // 4. GERAÇÃO DO PIX (Cash-In)
+        // ===============================
+        // 4. GERAÇÃO DO PIX
+        // ===============================
         const paymentResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/cash-in", {
             method: "POST",
             headers: {
@@ -47,8 +63,8 @@ export default async function handler(req, res) {
                 description: finalDescription,
                 webhook_url: "https://exclusive-3d-mats.vercel.app/api/webhook",
                 client: {
-                    name: customer.name,
-                    email: customer.email,
+                    name: customer?.name,
+                    email: customer?.email,
                     cpf: cleanCpf,
                     phone: cleanPhone
                 }
@@ -62,27 +78,58 @@ export default async function handler(req, res) {
             return res.status(paymentResponse.status).json(paymentData);
         }
 
-        const pixRaw = paymentData.data;
+        // ===============================
+        // 5. TRATAMENTO DO RETORNO
+        // ===============================
+        const pixRaw = paymentData?.data;
 
-        // Geramos a URL da imagem usando a API do Google Charts
-        const qrCodeImageUrl = `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${encodeURIComponent(pixRaw.pix_code)}`;
+        if (!pixRaw) {
+            console.error("Resposta inesperada da SyncPay:", paymentData);
+            return res.status(500).json({ error: "Resposta inválida da SyncPay" });
+        }
 
-        // 5. MAPEAMENTO DE RESPOSTA (Ajustado para o seu obrigado.html)
+        // SyncPay pode retornar com nomes diferentes
+        const pixCode =
+            pixRaw.pix_code ||
+            pixRaw.paymentcode ||
+            null;
+
+        if (!pixCode) {
+            console.error("PIX não retornado corretamente:", pixRaw);
+            return res.status(500).json({ error: "PIX não retornado pela SyncPay" });
+        }
+
+        // PRIORIDADE: usar base64 se existir (melhor que Google Charts)
+        let qrCodeImageUrl;
+
+        if (pixRaw.paymentCodeBase64) {
+            qrCodeImageUrl = `data:image/png;base64,${pixRaw.paymentCodeBase64}`;
+        } else {
+            qrCodeImageUrl = `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${encodeURIComponent(pixCode)}`;
+        }
+
+        // ===============================
+        // 6. RESPOSTA PARA O FRONT
+        // ===============================
         const responsePayload = {
             success: true,
             id: pixRaw.id,
-            pix_code: pixRaw.pix_code,
-            pix_qr_code: qrCodeImageUrl, // <--- ADICIONADO PARA BATER COM O SCRIPT DO OBRIGADO.HTML
+            pix_code: pixCode,
+            pix_qr_code: qrCodeImageUrl,
             qrcode_image: qrCodeImageUrl,
             amount: pixRaw.amount,
             status: pixRaw.status
         };
 
         console.log(`PIX ${isUpsell ? 'Upsell' : 'Principal'} Gerado:`, pixRaw.id);
+
         return res.status(200).json(responsePayload);
 
     } catch (error) {
-        console.error("Erro interno no servidor:", error.message);
-        return res.status(500).json({ error: "Erro interno", details: error.message });
+        console.error("Erro interno no servidor:", error);
+        return res.status(500).json({
+            error: "Erro interno no servidor",
+            details: error.message
+        });
     }
 }
