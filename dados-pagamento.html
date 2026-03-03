@@ -386,14 +386,13 @@
                 if (!response.ok)
                     throw new Error(result.error || "Erro na API");
 
-                const pixCode = result.data?.pix_code;
-                const transactionId = result.data?.id;
+                const pixCode = result.pix_code;
+                const transactionId = result.id;
 
                 if (!pixCode)
                     throw new Error("PIX não retornado");
 
-                document.getElementById('pix-qr-code').src =
-                    `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(pixCode)}&chs=300x300&chld=L|1`;
+                document.getElementById('pix-qr-code').src = result.pix_qr_code;
 
                 document.getElementById('pix-key').value = pixCode;
 
