@@ -238,11 +238,13 @@
         // 1. DADOS URL
         const params = new URLSearchParams(window.location.search);
         const precoRaw = params.get('preco') || "0,00";
-        const valorBase = parseFloat(precoRaw.replace('R$', '').replace('.', '').replace(',', '.').trim()) || 0;
+        // Correção no replace para não dar erro em valores com ponto e vírgula
+        const valorBase = parseFloat(precoRaw.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
         const kitNome = params.get('kit') || 'Kit Selecionado';
         const veiculoNome = params.get('veiculo') || 'Veículo';
         const imagemUrl = params.get('imagem') || '';
 
+        // Preenchimento inicial
         document.getElementById('resumo-kit').innerText = kitNome;
         document.getElementById('resumo-veiculo').innerText = veiculoNome;
         document.getElementById('resumo-preco').innerText = `R$ ${valorBase.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
@@ -250,17 +252,7 @@
 
         if (imagemUrl) document.getElementById('resumo-img-container').innerHTML = `<img src="${imagemUrl}" class="w-full h-full object-cover">`;
 
-        // 2. MÁSCARAS
-        const mask = (el, fn) => el && el.addEventListener('input', e => e.target.value = fn(e.target.value));
-        mask(document.getElementById('cpf'), v => v.replace(/\D/g, "").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"));
-        mask(document.getElementById('phone'), v => v.replace(/\D/g, "").replace(/^(\d{2})(\d)/g, "($1) $2").replace(/(\d)(\d{4})$/, "$1-$2"));
-        mask(document.getElementById('cep'), v => {
-            v = v.replace(/\D/g, "").replace(/^(\d{5})(\d)/, "$1-$2");
-            if (v.length === 9) buscaCEP(v);
-            return v;
-        });
-
-        // 3. NAVEGAÇÃO
+        // 2. NAVEGAÇÃO (Movido para cima para evitar erro de "not defined")
         function irParaEntrega() {
             const nome = document.getElementById('nome').value;
             const email = document.getElementById('email').value;
@@ -275,6 +267,16 @@
             document.getElementById('progress-line').style.width = "50%";
             window.scrollTo(0, 0);
         }
+
+        // 3. MÁSCARAS
+        const mask = (el, fn) => el && el.addEventListener('input', e => e.target.value = fn(e.target.value));
+        mask(document.getElementById('cpf'), v => v.replace(/\D/g, "").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"));
+        mask(document.getElementById('phone'), v => v.replace(/\D/g, "").replace(/^(\d{2})(\d)/g, "($1) $2").replace(/(\d)(\d{4})$/, "$1-$2"));
+        mask(document.getElementById('cep'), v => {
+            v = v.replace(/\D/g, "").replace(/^(\d{5})(\d)/, "$1-$2");
+            if (v.length === 9) buscaCEP(v);
+            return v;
+        });
 
         // 4. BUSCA CEP
         async function buscaCEP(cep) {
@@ -297,18 +299,16 @@
             document.getElementById('total-final').innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
         }
 
-        // 6. GERAÇÃO PIX (Sincronizado com o seu backend gerar-pix.js)
+        // 6. GERAÇÃO PIX
         document.getElementById('form-checkout').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
-
-            // Feedback visual
             btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> PROCESSANDO...';
             btn.disabled = true;
 
-            // Pega o valor total e converte para centavos (Ex: 96.81 -> 9681)
             const totalStr = document.getElementById('total-final').innerText;
-            const valorCentavos = Math.round(parseFloat(totalStr.replace('R$', '').replace('.', '').replace(',', '.').trim()) * 100);
+            // Ajustado regex para garantir que o número seja convertido corretamente
+            const valorCentavos = Math.round(parseFloat(totalStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()) * 100);
 
             try {
                 const response = await fetch('/api/gerar-pix', {
@@ -321,30 +321,20 @@
                             cpf_cnpj: document.getElementById('cpf').value.replace(/\D/g, ''),
                             phone: document.getElementById('phone').value.replace(/\D/g, '')
                         },
-                        amount: valorCentavos, // Corrigido de valorCentCentavos
+                        amount: valorCentavos, // Corrigido aqui
                         description: kitNome + " - " + veiculoNome,
                         kitName: kitNome
                     })
                 });
 
                 const result = await response.json();
-                console.log("Resposta do Backend:", result);
-
-                // O seu backend já retorna os dados prontos na raiz (success, pix_code, id)
                 if (result.success && result.pix_code) {
-
-                    // Injeta o QR Code gerado pelo seu backend ou gera via Google Charts
-                    // Preferimos result.pix_qr_code que você já configurou no backend
                     document.getElementById('pix-qr-code').src = result.pix_qr_code || `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(result.pix_code)}&chs=300x300&chld=L|1`;
-
-                    // Injeta a chave Copia e Cola
                     document.getElementById('pix-key').value = result.pix_code;
 
-                    // Troca de tela: Entrega -> Pagamento
                     document.getElementById('section-entrega').classList.add('hidden');
                     document.getElementById('section-pagamento').classList.remove('hidden');
 
-                    // Atualiza Step 3 e Barra de Progresso
                     const s3 = document.getElementById('step-3-circle');
                     s3.classList.replace('bg-gray-100', 'bg-black');
                     s3.classList.replace('text-gray-400', 'text-white');
@@ -352,25 +342,21 @@
 
                     window.scrollTo(0, 0);
                     startTimer();
-
-                    // Inicia verificação do status usando o ID limpo
                     verificarPagamento(result.id);
                 } else {
-                    throw new Error(result.error || "Falha ao gerar pix_code");
+                    throw new Error(result.error || "Erro");
                 }
             } catch (err) {
-                console.error("Erro no Processamento:", err);
-                alert("Erro ao processar o PIX. Verifique sua conexão ou os dados informados.");
                 btn.disabled = false;
-                btn.innerHTML = "Gerar PIX Seguro <i class='fas fa-chevron-right ml-2 text-xs'></i>";
+                btn.innerHTML = "Gerar PIX Seguro";
+                alert("Erro ao processar. Verifique os dados.");
             }
         });
 
-        // FUNÇÕES AUXILIARES
+        // FUNÇÕES AUXILIARES (Copy, Timer, Verificar)
         function copyPix() {
             const key = document.getElementById("pix-key");
             key.select();
-            key.setSelectionRange(0, 99999); // Para mobile
             navigator.clipboard.writeText(key.value);
             alert("✅ Código PIX Copiado!");
         }
@@ -391,14 +377,11 @@
                 try {
                     const res = await fetch(`/api/verificar-pagamento/${id}`);
                     const data = await res.json();
-
-                    // Se o status for pago ou sucesso, redireciona
                     if (data.status === 'paid' || data.success === true) {
                         clearInterval(checkInterval);
                         window.location.href = "obrigado.html";
                     }
-                } catch (e) {
-                    console.warn("Aguardando verificação...");
-                }
+                } catch (e) { }
             }, 5000);
         }
+    </script>
