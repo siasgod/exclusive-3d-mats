@@ -81,17 +81,21 @@ export default async function handler(req, res) {
         // ===============================
         // 5. TRATAMENTO DO RETORNO
         // ===============================
-        const pixRaw = paymentData?.data;
+
+        // Se vier dentro de "data", usa ele
+        // Senão, usa o objeto direto
+        const pixRaw = paymentData?.data || paymentData;
 
         if (!pixRaw) {
             console.error("Resposta inesperada da SyncPay:", paymentData);
             return res.status(500).json({ error: "Resposta inválida da SyncPay" });
         }
 
-        // SyncPay pode retornar com nomes diferentes
+        // Aceita múltiplos nomes possíveis
         const pixCode =
             pixRaw.pix_code ||
             pixRaw.paymentcode ||
+            pixRaw.paymentCode ||
             null;
 
         if (!pixCode) {
@@ -99,13 +103,20 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: "PIX não retornado pela SyncPay" });
         }
 
-        // PRIORIDADE: usar base64 se existir (melhor que Google Charts)
+        // ID pode vir como id ou identifier
+        const transactionId =
+            pixRaw.id ||
+            pixRaw.identifier ||
+            pixRaw.idtransaction ||
+            null;
+
+        // QR Code
         let qrCodeImageUrl;
 
         if (pixRaw.paymentCodeBase64) {
             qrCodeImageUrl = `data:image/png;base64,${pixRaw.paymentCodeBase64}`;
         } else {
-            qrCodeImageUrl = `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${encodeURIComponent(pixCode)}`;
+            qrCodeImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pixCode)}`;
         }
 
         // ===============================
@@ -113,12 +124,12 @@ export default async function handler(req, res) {
         // ===============================
         const responsePayload = {
             success: true,
-            id: pixRaw.id,
+            id: transactionId,
             pix_code: pixCode,
             pix_qr_code: qrCodeImageUrl,
             qrcode_image: qrCodeImageUrl,
-            amount: pixRaw.amount,
-            status: pixRaw.status
+            amount: pixRaw.amount || parsedAmount,
+            status: pixRaw.status || "WAITING_FOR_APPROVAL"
         };
 
         console.log(`PIX ${isUpsell ? 'Upsell' : 'Principal'} Gerado:`, pixRaw.id);
