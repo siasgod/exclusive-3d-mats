@@ -443,17 +443,88 @@
             }, 1000);
         }
 
-        async function verificarPagamento(id) {
+        async function verificarPagamento(transactionId) {
+
+            const statusBox = document.getElementById("pix-timer");
+
+            let tentativas = 0;
+            const MAX_TENTATIVAS = 90; // ~7 minutos
+
             const checkInterval = setInterval(async () => {
+
                 try {
-                    const res = await fetch(`/api/verificar-pagamento/${id}`);
+
+                    tentativas++;
+
+                    const res = await fetch(`/api/verificar-pagamento/${transactionId}`);
+
+                    if (!res.ok) return;
+
                     const data = await res.json();
 
-                    if (data.status === 'paid' || data.success === true) {
+                    const status = String(data.status || "").toUpperCase();
+
+                    console.log("STATUS PAGAMENTO:", status);
+
+                    // =========================
+                    // PAGAMENTO APROVADO
+                    // =========================
+
+                    if (status === "PAID" || status === "APPROVED" || status === "CONFIRMED") {
+
                         clearInterval(checkInterval);
-                        window.location.href = "obrigado.html";
+
+                        statusBox.innerHTML =
+                            `<i class="fas fa-check-circle mr-2"></i> Pagamento confirmado!`;
+
+                        statusBox.classList.remove("bg-green-100", "text-green-700");
+                        statusBox.classList.add("bg-green-600", "text-white");
+
+                        setTimeout(() => {
+                            window.location.href = "/obrigado.html";
+                        }, 1500);
+
+                        return;
                     }
-                } catch (e) { }
-            }, 5000);
+
+                    // =========================
+                    // PAGAMENTO EXPIRADO
+                    // =========================
+
+                    if (status === "EXPIRED" || status === "CANCELED") {
+
+                        clearInterval(checkInterval);
+
+                        statusBox.innerHTML =
+                            `<i class="fas fa-times-circle mr-2"></i> PIX expirado. Gere novamente.`;
+
+                        statusBox.classList.remove("bg-green-100");
+                        statusBox.classList.add("bg-red-500", "text-white");
+
+                        return;
+                    }
+
+                    // =========================
+                    // TEMPO LIMITE
+                    // =========================
+
+                    if (tentativas >= MAX_TENTATIVAS) {
+
+                        clearInterval(checkInterval);
+
+                        statusBox.innerHTML =
+                            `<i class="fas fa-clock mr-2"></i> Tempo expirado. Gere um novo PIX.`;
+
+                        statusBox.classList.remove("bg-green-100");
+                        statusBox.classList.add("bg-yellow-500", "text-white");
+
+                    }
+
+                } catch (error) {
+
+                    console.log("Erro ao verificar pagamento", error);
+
+                }
+
+            }, 4000); // consulta a cada 4s
         }
-    </script>

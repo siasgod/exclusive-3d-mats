@@ -21,8 +21,8 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a0a;
-            color: #f8f9fa;
+            background: #ffffff;
+            color: #111827;
             overflow-x: hidden
         }
 
@@ -31,16 +31,16 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a0a0a
+            background: #f9fafb
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #333;
+            background: #d1d5db;
             border-radius: 3px
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #FF4500
+            background: #16a34a
         }
 
         /* Utility */
@@ -66,18 +66,19 @@
 
         /* Glass */
         .glass {
-            background: rgba(255, 255, 255, 0.05);
+            background: #ffffff;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08)
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06)
         }
 
         /* Hero Carousel */
-        /* Strict Black */
+        /* White Theme */
         body,
         html {
-            background-color: #0a0a0a !important;
-            color: #fff
+            background-color: #ffffff !important;
+            color: #111827
         }
 
         /* Pop-over Selector */
@@ -88,12 +89,12 @@
 
         .popover-trigger {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #f9fafb;
+            border: 1.5px solid #d1d5db;
             border-radius: 12px;
             padding: 14px 18px;
             text-align: left;
-            color: #fff;
+            color: #111827;
             font-size: 15px;
             font-weight: 600;
             display: flex;
@@ -109,8 +110,8 @@
         }
 
         .popover-trigger:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2)
+            background: #f3f4f6;
+            border-color: #16a34a
         }
 
         .popover-content {
@@ -118,11 +119,11 @@
             top: calc(100% + 8px);
             left: 0;
             right: 0;
-            background: #151515;
-            border: 1px solid #333;
+            background: #ffffff;
+            border: 1.5px solid #e5e7eb;
             border-radius: 14px;
             z-index: 100;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
             padding: 12px;
             display: none;
             flex-direction: column;
@@ -136,17 +137,17 @@
 
         .search-input {
             width: 100%;
-            background: #0a0a0a;
-            border: 1px solid #333;
+            background: #f9fafb;
+            border: 1.5px solid #e5e7eb;
             border-radius: 8px;
             padding: 10px 14px;
-            color: #fff;
+            color: #111827;
             font-size: 14px;
             outline: none;
         }
 
         .search-input:focus {
-            border-color: #FF4500
+            border-color: #16a34a
         }
 
         .results-list {
@@ -163,7 +164,7 @@
             padding: 12px 14px;
             background: transparent;
             border: none;
-            color: #ccc;
+            color: #374151;
             font-size: 13.5px;
             border-radius: 8px;
             cursor: pointer;
@@ -171,8 +172,8 @@
         }
 
         .results-list button:hover {
-            background: rgba(255, 69, 0, 0.1);
-            color: #fff
+            background: #f0fdf4;
+            color: #16a34a
         }
 
         @keyframes popIn {
@@ -192,13 +193,13 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            background-color: #0a0a0a;
+            background-color: #f9fafb;
         }
 
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, .6) 0%, rgba(0, 0, 0, .8) 100%)
+            background: linear-gradient(to bottom, rgba(255, 255, 255, .0) 0%, rgba(255, 255, 255, .1) 100%)
         }
 
         /* Infinite horizontal strip carousel */
@@ -229,23 +230,23 @@
             object-fit: cover;
             border-radius: 10px;
             flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, .1)
+            border: 1px solid #e5e7eb
         }
 
         /* Dropdowns */
         .sel {
             width: 100%;
             height: 50px;
-            background: #151515 !important;
-            border: 1px solid #333 !important;
+            background: #f9fafb !important;
+            border: 1.5px solid #d1d5db !important;
             border-radius: 10px;
             padding: 14px 16px;
-            color: #fff;
+            color: #111827;
             font-size: 15px;
             font-weight: 600;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 14px center;
             cursor: pointer;
@@ -253,14 +254,14 @@
         }
 
         .sel option {
-            background-color: #111;
-            color: #fff;
+            background-color: #fff;
+            color: #111827;
         }
 
         .sel:focus {
             outline: none;
-            border-color: #22c55e;
-            box-shadow: 0 0 0 2px rgba(34, 197, 94, .2)
+            border-color: #16a34a;
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, .2)
         }
 
         .sel:disabled {
@@ -296,38 +297,39 @@
 
         /* Kit cards */
         .kit-card {
-            background: rgba(255, 255, 255, .04);
-            border: 1.5px solid #222;
+            background: #ffffff;
+            border: 1.5px solid #e5e7eb;
             border-radius: 18px;
             padding: 24px;
             transition: transform .25s, box-shadow .25s, border-color .25s;
-            cursor: pointer
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06)
         }
 
         /* Correção das Imagens dos Kits */
         .kit-card img {
             width: 100%;
-            height: 180px;
-            /* Altura fixa para manter proporção */
-            object-fit: cover;
-            /* Faz a imagem preencher sem esticar */
+            height: auto;
+            object-fit: contain;
             border-radius: 10px;
             display: block;
+            margin: 0 auto;
         }
 
         .kit-card:hover {
             transform: translateY(-4px);
-            border-color: #444
+            border-color: #16a34a;
+            box-shadow: 0 8px 24px rgba(22, 163, 74, 0.15)
         }
 
         .kit-card.kit-selected {
-            border-color: #22c55e;
-            box-shadow: 0 0 0 2px #22c55e, 0 0 25px rgba(34, 197, 94, .25)
+            border-color: #16a34a;
+            box-shadow: 0 0 0 2px #16a34a, 0 0 25px rgba(22, 163, 74, .25)
         }
 
         .kit-best {
-            border-color: #22c55e;
-            box-shadow: 0 0 0 2px rgba(34, 197, 94, .4)
+            border-color: #16a34a;
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, .4)
         }
 
         /* Sales sections */
@@ -343,9 +345,11 @@
 
         .sales-img {
             width: 100%;
+            height: auto;
             border-radius: 16px;
-            object-fit: cover;
-            max-height: 340px
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
         }
 
         .photo-grid-4 {
@@ -356,9 +360,10 @@
 
         .photo-grid-4 img {
             width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            display: block;
         }
 
         @media(max-width:720px) {
@@ -368,10 +373,6 @@
 
             .sales-grid.reverse .text-side {
                 order: -1
-            }
-
-            .photo-grid-4 img {
-                height: 120px
             }
         }
 
@@ -383,9 +384,10 @@
             right: 0;
             z-index: 100;
             padding: 12px 16px;
-            background: linear-gradient(to top, #0a0a0a, rgba(10, 10, 10, .95));
-            border-top: 1px solid rgba(255, 255, 255, .07);
-            padding-bottom: env(safe-area-inset-bottom, 12px)
+            background: linear-gradient(to top, #ffffff, rgba(255, 255, 255, .97));
+            border-top: 1px solid #e5e7eb;
+            padding-bottom: env(safe-area-inset-bottom, 12px);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08)
         }
 
         /* Drawer */
@@ -433,8 +435,8 @@
 
         /* Buttons */
         .btn-green {
-            background: #22c55e;
-            color: #000;
+            background: #16a34a;
+            color: #fff;
             font-weight: 900;
             border: none;
             border-radius: 12px;
@@ -445,13 +447,13 @@
         }
 
         .btn-green:hover {
-            background: #16a34a;
+            background: #15803d;
             transform: scale(1.02)
         }
 
         .btn-orange {
-            background: #FF4500;
-            color: #000;
+            background: #16a34a;
+            color: #fff;
             font-weight: 900;
             border: none;
             border-radius: 12px;
@@ -460,7 +462,7 @@
         }
 
         .btn-orange:hover {
-            background: #e03d00
+            background: #15803d
         }
 
         /* Pulse animation */
@@ -468,11 +470,11 @@
 
             0%,
             100% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, .5)
+                box-shadow: 0 0 0 0 rgba(22, 163, 74, .5)
             }
 
             70% {
-                box-shadow: 0 0 0 10px rgba(34, 197, 94, 0)
+                box-shadow: 0 0 0 10px rgba(22, 163, 74, 0)
             }
         }
 
@@ -500,12 +502,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, .04);
-            border: 1px solid rgba(255, 255, 255, .08);
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
             border-radius: 10px;
             padding: 10px 16px;
             font-size: 13px;
-            font-weight: 600
+            font-weight: 600;
+            color: #166534
         }
 
         /* Nav */
@@ -522,7 +525,7 @@
         }
 
         .nav-link {
-            color: #ccc;
+            color: #374151;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
@@ -530,7 +533,7 @@
         }
 
         .nav-link:hover {
-            color: #FF4500
+            color: #16a34a
         }
 
         .nav-links {
@@ -545,18 +548,143 @@
             }
         }
 
+        /* Benefit Cards */
+        .benefit-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .benefit-card {
+            background: #ffffff;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: transform .25s, box-shadow .25s;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(22, 163, 74, 0.15);
+            border-color: #16a34a
+        }
+
+        .benefit-icon {
+            width: 56px;
+            height: 56px;
+            background: #f0fdf4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+            color: #16a34a
+        }
+
+        /* Before After */
+        .before-after-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        @media(max-width:600px) {
+            .before-after-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ba-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #e5e7eb;
+        }
+
+        .ba-label {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 10px;
+        }
+
+        .ba-label.before {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .ba-label.after {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .ba-card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Guarantee badge */
+        .guarantee-section {
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-radius: 20px;
+            padding: 40px 32px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Security badges row */
+        .security-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .sec-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f9fafb;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 50px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .sec-badge i {
+            color: #16a34a;
+            font-size: 15px;
+        }
+
         /* Dots do Carrossel */
         .dot {
             width: 8px;
             height: 8px;
-            background: #333;
+            background: #d1d5db;
             border-radius: 50%;
             cursor: pointer;
             transition: 0.3s;
         }
 
         .dot.active {
-            background: #FF4500;
+            background: #16a34a;
             width: 20px;
             border-radius: 5px;
         }
@@ -571,27 +699,27 @@
 
     <!-- URGENCY BAR -->
     <div
-        style="background:#FF4500;color:#000;text-align:center;padding:10px;font-weight:900;font-size:14px;position:sticky;top:0;z-index:100">
+        style="background:#16a34a;color:#fff;text-align:center;padding:10px;font-weight:900;font-size:14px;position:sticky;top:0;z-index:100">
         OFERTA EXCLUSIVA TERMINA EM: <span id="timer"
-            style="background:#000; color:#fff; padding:2px 8px; border-radius:4px; margin-left:5px">15:00</span> |
+            style="background:#fff; color:#16a34a; padding:2px 8px; border-radius:4px; margin-left:5px">15:00</span> |
         FRETE GRÁTIS PARA TODO BRASIL 🚚
     </div>
 
     <!-- NAV -->
     <nav class="glass"
         style="display:flex; justify-content:center; padding:15px; margin: 10px 16px; border-radius:12px;">
-        <div style="font-size:22px; font-weight:900; color:#FF4500; letter-spacing:1px">
+        <div style="font-size:22px; font-weight:900; color:#16a34a; letter-spacing:1px">
             <i class="fas fa-shield-alt"></i> SOBERANO TAPETES
         </div>
     </nav>
 
     <!-- HERO SECTION -->
     <section
-        style="background:#0a0a0a; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        style="background:#f9fafb; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; text-align: center;">
 
         <!-- Promo Badge -->
         <div
-            style="background:rgba(255,69,0,0.1); border:1px solid #FF4500; color:#FF4500; padding:5px 15px; border-radius:20px; font-size:12px; font-weight:700; margin-bottom:20px; text-transform:uppercase">
+            style="background:#f0fdf4; border:1px solid #16a34a; color:#16a34a; padding:5px 15px; border-radius:20px; font-size:12px; font-weight:700; margin-bottom:20px; text-transform:uppercase">
             🔥 PROMOÇÃO DE LANÇAMENTO: 40% OFF ATÉ HOJE
         </div>
 
@@ -599,7 +727,7 @@
         <div style="width: 100%; max-width: 550px; position: relative; margin-bottom: 25px;">
 
             <div id="hero-carousel"
-                style="display: flex; overflow: hidden; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                style="display: flex; overflow: hidden; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.12);">
 
                 <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="hero-slide-img"
                     style="width:100%; height:auto; flex-shrink:0; display:block;">
@@ -628,27 +756,37 @@
         <!-- Text Content -->
         <div style="max-width: 650px;">
             <h1
-                style="font-size:clamp(1.8rem, 5vw, 2.8rem); font-weight:900; color:#fff; line-height:1.1; margin-bottom:12px;">
+                style="font-size:clamp(1.8rem, 5vw, 2.8rem); font-weight:900; color:#111827; line-height:1.1; margin-bottom:12px;">
                 O Encaixe Perfeito que seu Carro Merece
             </h1>
-            <p style="color:#aaa; font-size:1.1rem; margin-bottom:30px;">
+
+            <!-- Social Proof -->
+            <div
+                style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+                <span style="color:#f59e0b; font-size:18px;">⭐⭐⭐⭐⭐</span>
+                <span style="font-weight:800; color:#111827; font-size:15px;">4.8/5</span>
+                <span style="color:#6b7280; font-size:13px;">baseado em mais de <strong style="color:#16a34a;">1.347
+                        clientes</strong></span>
+            </div>
+
+            <p style="color:#6b7280; font-size:1.1rem; margin-bottom:30px;">
                 100% sob medida para o seu veículo
             </p>
 
-            <!-- Trust Icons (Substituindo o botão) -->
+            <!-- Trust Icons -->
             <div
                 style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; width: 100%; max-width: 500px; margin: 0 auto;">
                 <div style="display:flex; flex-direction:column; align-items:center; gap:8px">
-                    <i class="fas fa-truck" style="color:#22c55e; font-size:24px"></i>
-                    <span style="font-size:11px; font-weight:600; color:#fff">FRETE GRÁTIS</span>
+                    <i class="fas fa-truck" style="color:#16a34a; font-size:24px"></i>
+                    <span style="font-size:11px; font-weight:600; color:#374151">FRETE GRÁTIS</span>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center; gap:8px">
-                    <i class="fas fa-check-circle" style="color:#22c55e; font-size:24px"></i>
-                    <span style="font-size:11px; font-weight:600; color:#fff">GARANTIA 1 ANO</span>
+                    <i class="fas fa-check-circle" style="color:#16a34a; font-size:24px"></i>
+                    <span style="font-size:11px; font-weight:600; color:#374151">GARANTIA 1 ANO</span>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center; gap:8px">
-                    <i class="fas fa-shield-alt" style="color:#22c55e; font-size:24px"></i>
-                    <span style="font-size:11px; font-weight:600; color:#fff">SATISFAÇÃO <br>GARANTIDA</span>
+                    <i class="fas fa-shield-alt" style="color:#16a34a; font-size:24px"></i>
+                    <span style="font-size:11px; font-weight:600; color:#374151">SATISFAÇÃO <br>GARANTIDA</span>
                 </div>
             </div>
         </div>
@@ -656,7 +794,7 @@
 
     <!-- STRIP CAROUSEL (fotos dos tapetes instalados) -->
     <div
-        style="overflow:hidden;padding:16px 0;background:rgba(255,255,255,.02);border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a">
+        style="overflow:hidden;padding:16px 0;background:#f3f4f6;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb">
         <div class="strip-track">
             <img src="./assets/product-1-CLmPGSY4.webp" class="strip-img" alt="">
             <img src="./assets/carousel-4-BpsqPhmo.webp" class="strip-img" alt="">
@@ -681,7 +819,7 @@
     <!-- SELETOR LIMPO -->
     <section id="comprar" style="padding:40px 16px; max-width:500px; margin:0 auto">
         <div class="glass" style="border-radius:20px; padding:25px; display:flex; flex-direction:column; gap:15px">
-            <h3 style="text-align:center; font-size:16px; margin-bottom:10px; color:#FF4500">SELECIONE SEU VEÍCULO:</h3>
+            <h3 style="text-align:center; font-size:16px; margin-bottom:10px; color:#16a34a">SELECIONE SEU VEÍCULO:</h3>
 
             <select id="sel-brand" class="sel">
                 <option value="">Carregando marcas...</option>
@@ -704,9 +842,10 @@
 
             <div id="confirm-box" class="hidden">
                 <div
-                    style="background:rgba(34,197,94,0.1); border:1px solid #22c55e; border-radius:12px; padding:15px; text-align:center">
-                    <p style="color:#22c55e; font-weight:800; font-size:14px" id="conf-vehicle-text"></p>
-                    <p style="color:#fff; font-size:12px; margin-top:5px">⚠️ Molde Disponível! Escolha seu kit abaixo:
+                    style="background:#f0fdf4; border:1px solid #16a34a; border-radius:12px; padding:15px; text-align:center">
+                    <p style="color:#16a34a; font-weight:800; font-size:14px" id="conf-vehicle-text"></p>
+                    <p style="color:#374151; font-size:12px; margin-top:5px">⚠️ Molde Disponível! Escolha seu kit
+                        abaixo:
                     </p>
                 </div>
             </div>
@@ -717,26 +856,27 @@
     <section id="kit-section" style="padding:48px 16px;max-width:780px;margin:0 auto">
         <div style="text-align:center;margin-bottom:32px">
             <p
-                style="color:#FF4500;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">
+                style="color:#16a34a;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">
                 Escolha sua proteção</p>
-            <h2 style="font-size:clamp(1.6rem,4vw,2.3rem);font-weight:900;margin-bottom:8px">Selecione o Kit Ideal</h2>
-            <p style="color:#888;font-size:14px">Frete Grátis · Garantia de 12 meses · Troca sem burocracia</p>
+            <h2 style="font-size:clamp(1.6rem,4vw,2.3rem);font-weight:900;margin-bottom:8px;color:#111827">Selecione o
+                Kit Ideal</h2>
+            <p style="color:#6b7280;font-size:14px">Frete Grátis · Garantia de 12 meses · Troca sem burocracia</p>
         </div>
 
         <div id="kit-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
 
             <div class="kit-card kit-best" onclick="selectKit('Kit Interno + Porta Malas', 79.90)"
-                style="position:relative; overflow:hidden; display:flex; flex-direction:column; background:#111; border: 2px solid #22c55e; border-radius:16px;">
+                style="position:relative; overflow:hidden; display:flex; flex-direction:column; background:#fff; border: 2px solid #16a34a; border-radius:16px;">
 
                 <div
-                    style="position:absolute; top:0; left:0; right:0; background:#22c55e; color:#000; font-size:11px; font-weight:900; text-align:center; padding:5px; text-transform:uppercase; letter-spacing:1px; z-index:10;">
+                    style="position:absolute; top:0; left:0; right:0; background:#16a34a; color:#fff; font-size:11px; font-weight:900; text-align:center; padding:5px; text-transform:uppercase; letter-spacing:1px; z-index:10;">
                     ⭐ MAIS ESCOLHIDO
                 </div>
 
                 <div style="padding:24px 16px 16px; flex:1; display:flex; flex-direction:column;">
-                    <div style="height:170px; border-radius:12px; overflow:hidden; margin-bottom:14px;">
+                    <div style="border-radius:12px; overflow:hidden; margin-bottom:14px;">
                         <img src="./assets/kit-complete-BFARBGDS.jpg" alt="Kit Completo"
-                            style="width:100%; height:100%; object-fit:cover;">
+                            style="width:100%; height:auto; object-fit:contain; display:block; margin:0 auto;">
                     </div>
 
                     <h3
@@ -749,10 +889,10 @@
                     </p>
 
                     <div
-                        style="background:rgba(0,0,0,.3); border:1px solid rgba(255,255,255,.05); border-radius:10px; padding:12px; margin-bottom:14px;">
-                        <p style="color:#555; font-size:11px; text-decoration:line-through;">De R$ 489,90</p>
-                        <p style="font-size:30px; font-weight:900; color:#22c55e; line-height:1">R$ 79,90</p>
-                        <p style="font-size:11px; color:#22c55e; font-weight:700">no PIX · ou 12x no cartão</p>
+                        style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:12px; margin-bottom:14px;">
+                        <p style="color:#9ca3af; font-size:11px; text-decoration:line-through;">De R$ 489,90</p>
+                        <p style="font-size:30px; font-weight:900; color:#16a34a; line-height:1">R$ 79,90</p>
+                        <p style="font-size:11px; color:#16a34a; font-weight:700">no PIX · ou 12x no cartão</p>
                     </div>
 
                     <ul
@@ -771,244 +911,209 @@
                         <button onclick="event.stopPropagation(); selectKit('Kit Interno + Porta Malas', 79.90)"
                             class="btn-green pulse-green"
                             style="width:100%; padding:14px; font-size:13px; font-weight:900; border-radius:8px; cursor:pointer;">
-                            QUERO ESTE KIT →
+                            Garantir meu Kit 3D →
                         </button>
-                        <p style="text-align:center; font-size:10px; color:#555; margin-top:8px">
+                        <p style="text-align:center; font-size:10px; color:#9ca3af; margin-top:8px">
                             🔒 Compra 100% segura e criptografada
                         </p>
                     </div>
+                    <!-- Kit Essencial -->
+                    <div class="kit-card" data-kit="Kit Essencial" onclick="selectKit('Kit Essencial', 59.90)">
+                        <div style="border-radius:12px;overflow:hidden;margin-bottom:14px">
+                            <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Essencial"
+                                style="width:100%;height:auto;object-fit:contain;display:block;margin:0 auto">
+                        </div>
+                        <h3
+                            style="font-size:15px;font-weight:900;color:#111827;text-transform:uppercase;margin-bottom:6px">
+                            Kit
+                            Essencial</h3>
+                        <p style="color:#6b7280;font-size:12px;margin-bottom:12px;line-height:1.5">Proteção completa
+                            para o
+                            assoalho dianteiro e traseiro.</p>
+                        <div
+                            style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px;margin-bottom:14px">
+                            <p style="color:#9ca3af;font-size:11px;text-decoration:line-through">De R$ 329,90</p>
+                            <p style="font-size:30px;font-weight:900;color:#111827;line-height:1">R$ 59,90</p>
+                            <p style="font-size:11px;color:#16a34a;font-weight:700">no PIX · ou 12x no cartão</p>
+                        </div>
+                        <ul
+                            style="font-size:12px;color:#6b7280;list-style:none;margin-bottom:14px;display:flex;flex-direction:column;gap:6px">
+                            <li><i class="fas fa-check" style="color:#16a34a;margin-right:6px"></i>3 tapetes internos
+                                sob medida
+                            </li>
+                            <li><i class="fas fa-check" style="color:#16a34a;margin-right:6px"></i>Traseiro intei riço +
+                                proteção
+                                central</li>
+                        </ul>
+                        <button onclick="selectKit('Kit Essencial', 59.90)"
+                            style="width:100%;padding:14px;font-size:13px;font-weight:900;background:#f9fafb;border:1.5px solid #16a34a;color:#16a34a;border-radius:12px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;transition:background .2s,border-color .2s"
+                            onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='#f9fafb'">
+                            Garantir meu Kit 3D →
+                        </button>
+                        <p style="text-align:center;font-size:10px;color:#9ca3af;margin-top:8px">🔒 Compra 100% segura e
+                            criptografada</p>
+                    </div>
                 </div>
+
+                <!-- Trust Badges below kits -->
+                <div class="badge-row" style="margin-top:24px">
+                    <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL Seguro" style="height:40px;opacity:.85">
+                    <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:34px;opacity:.85">
+                    <div class="trust-badge"><i class="fas fa-shield-alt" style="color:#16a34a"></i><span>Garantia 1
+                            Ano</span>
+                    </div>
+                    <div class="trust-badge"><i class="fas fa-undo" style="color:#16a34a"></i><span>Troca Grátis</span>
+                    </div>
+                </div>
+    </section>
+
+    <!-- BENEFITS CARDS -->
+    <section id="beneficios" style="padding:72px 24px; background:#f9fafb;">
+        <div style="text-align:center; margin-bottom:40px;">
+            <p
+                style="color:#16a34a; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px;">
+                Por que escolher</p>
+            <h2 style="font-size:clamp(1.6rem,4vw,2.3rem); font-weight:900; color:#111827; margin-bottom:8px;">
+                Diferenciais do Kit 3D</h2>
+            <p style="color:#6b7280; font-size:14px;">Qualidade premium em cada detalhe</p>
+        </div>
+        <div class="benefit-cards">
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-tint-slash"></i></div>
+                <h3 style="font-size:16px; font-weight:800; color:#111827; margin-bottom:8px;">100% Impermeável</h3>
+                <p style="color:#6b7280; font-size:13px; line-height:1.6;">Bordas de 5cm que formam uma barreira selada.
+                    Café, água e lama ficam totalmente contidos.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3 style="font-size:16px; font-weight:800; color:#111827; margin-bottom:8px;">Proteção Total do Carpete
+                </h3>
+                <p style="color:#6b7280; font-size:13px; line-height:1.6;">Cobre 100% do assoalho, incluindo túnel
+                    central. Zero áreas expostas ao desgaste.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-spray-can"></i></div>
+                <h3 style="font-size:16px; font-weight:800; color:#111827; margin-bottom:8px;">Fácil de Limpar</h3>
+                <p style="color:#6b7280; font-size:13px; line-height:1.6;">Limpeza em 30 segundos com pano úmido. Diga
+                    adeus ao aspirador e ao carpete encharcado.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-ruler-combined"></i></div>
+                <h3 style="font-size:16px; font-weight:800; color:#111827; margin-bottom:8px;">Sob Medida para seu Carro
+                </h3>
+                <p style="color:#6b7280; font-size:13px; line-height:1.6;">Cortado com precisão milimétrica para o seu
+                    modelo específico. Encaixe perfeito garantido.</p>
             </div>
         </div>
+    </section>
 
-        <!-- Kit Essencial -->
-        <div class="kit-card" data-kit="Kit Essencial" onclick="selectKit('Kit Essencial', 59.90)">
-            <div style="height:170px;border-radius:12px;overflow:hidden;margin-bottom:14px">
-                <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Essencial"
-                    style="width:100%;height:100%;object-fit:cover">
+    <!-- BEFORE & AFTER -->
+    <section style="padding:72px 24px; background:#fff;">
+        <div style="text-align:center; margin-bottom:40px;">
+            <p
+                style="color:#16a34a; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px;">
+                Transformação Real</p>
+            <h2 style="font-size:clamp(1.6rem,4vw,2.3rem); font-weight:900; color:#111827; margin-bottom:8px;">Antes e
+                Depois</h2>
+            <p style="color:#6b7280; font-size:14px;">Veja a diferença que o Kit 3D faz no interior do seu carro</p>
+        </div>
+        <div class="before-after-grid">
+            <div class="ba-card">
+                <div class="ba-label before">❌ ANTES — Tapete Comum</div>
+                <img src="./assets/product-4-CORQHeZN.jpg" alt="Antes: tapete comum sem proteção">
             </div>
-            <h3 style="font-size:15px;font-weight:900;color:#fff;text-transform:uppercase;margin-bottom:6px">Kit
-                Essencial</h3>
-            <p style="color:#888;font-size:12px;margin-bottom:12px;line-height:1.5">Proteção completa para o
-                assoalho dianteiro e traseiro.</p>
+            <div class="ba-card" style="border-color:#16a34a;">
+                <div class="ba-label after">✅ DEPOIS — Kit 3D</div>
+                <img src="./assets/carousel-new-2-CTcO_2X9.jpg" alt="Depois: tapete 3D com proteção total">
+            </div>
+        </div>
+    </section>
+
+    <!-- GUARANTEE SECTION -->
+    <section style="padding:72px 24px; background:#f9fafb;">
+        <div class="guarantee-section">
+            <div style="font-size:64px; margin-bottom:16px;">🛡️</div>
+            <h2 style="font-size:clamp(1.5rem,4vw,2rem); font-weight:900; color:#111827; margin-bottom:12px;">Garantia
+                Total de 7 Dias</h2>
+            <p style="color:#374151; font-size:15px; line-height:1.8; margin-bottom:16px;">Se por qualquer motivo você
+                não ficar <strong>100% satisfeito</strong>, devolvemos seu dinheiro integralmente. Sem perguntas, sem
+                burocracia.</p>
             <div
-                style="background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:12px;margin-bottom:14px">
-                <p style="color:#555;font-size:11px;text-decoration:line-through">De R$ 329,90</p>
-                <p style="font-size:30px;font-weight:900;color:#fff;line-height:1">R$ 59,90</p>
-                <p style="font-size:11px;color:#22c55e;font-weight:700">no PIX · ou 12x no cartão</p>
-            </div>
-            <ul
-                style="font-size:12px;color:#bbb;list-style:none;margin-bottom:14px;display:flex;flex-direction:column;gap:6px">
-                <li><i class="fas fa-check" style="color:#FF4500;margin-right:6px"></i>3 tapetes internos sob medida
-                </li>
-                <li><i class="fas fa-check" style="color:#FF4500;margin-right:6px"></i>Traseiro inteiriço + proteção
-                    central</li>
-            </ul>
-            <button onclick="selectKit('Kit Essencial', 59.90)"
-                style="width:100%;padding:14px;font-size:13px;font-weight:900;background:transparent;border:1.5px solid #555;color:#fff;border-radius:12px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;transition:background .2s,border-color .2s"
-                onmouseover="this.style.background='#222';this.style.borderColor='#888'"
-                onmouseout="this.style.background='transparent';this.style.borderColor='#555'">
-                QUERO ESTE KIT →
-            </button>
-            <p style="text-align:center;font-size:10px;color:#555;margin-top:8px">🔒 Compra 100% segura e
-                criptografada</p>
-        </div>
-        </div>
-
-        <!-- Trust Badges below kits -->
-        <div class="badge-row" style="margin-top:24px">
-            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL Seguro" style="height:40px;opacity:.85">
-            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:34px;opacity:.85">
-            <div class="trust-badge"><i class="fas fa-shield-alt" style="color:#22c55e"></i><span>Garantia 1 Ano</span>
-            </div>
-            <div class="trust-badge"><i class="fas fa-undo" style="color:#22c55e"></i><span>Troca Grátis</span></div>
-        </div>
-    </section>
-
-    <!-- SALES SECTION 1: Borracha Premium -->
-    <section id="beneficios" style="padding:72px 24px;background:linear-gradient(to bottom,#0a0a0a,#101010)">
-        <div class="sales-grid">
-            <img src="./assets/product-3-hYd1p11T.webp" class="sales-img" alt="Borracha Premium 7mm">
-            <div class="text-side">
-                <p
-                    style="color:#FF4500;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">
-                    Material Premium</p>
-                <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:16px">Borracha Automotiva
-                    de<br><span style="color:#FF4500">7mm de Espessura</span></h2>
-                <p style="color:#aaa;line-height:1.8;margin-bottom:20px">Enquanto tapetes comuns usam 2mm de borracha
-                    reciclada que rach após 1 ano, o Exclusive 3D é fabricado com <strong style="color:#fff">borracha
-                        XPE virgem de 7mm</strong>, o mesmo padrão automotivo aplicado em veículos de luxo europeus.</p>
-                <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
-                    <li style="display:flex;align-items:center;gap:10px;color:#ccc;font-size:14px"><span
-                            style="background:#22c55e;color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">✓</span>Alta
-                        densidade — absorve impacto dos pés</li>
-                    <li style="display:flex;align-items:center;gap:10px;color:#ccc;font-size:14px"><span
-                            style="background:#22c55e;color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">✓</span>Sem
-                        cheiro — material XPE inerte e inodoro</li>
-                    <li style="display:flex;align-items:center;gap:10px;color:#ccc;font-size:14px"><span
-                            style="background:#22c55e;color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">✓</span>Resistência
-                        UV — não desbota nem resseca</li>
-                    <li style="display:flex;align-items:center;gap:10px;color:#ccc;font-size:14px"><span
-                            style="background:#22c55e;color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">✓</span>+5
-                        anos de durabilidade comprovada</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- SALES SECTION 2: 100% Impermeável -->
-    <section style="padding:72px 24px;background:#0d0d0d">
-        <div class="sales-grid reverse">
-            <div class="text-side">
-                <p
-                    style="color:#22c55e;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">
-                    Zero Preocupação</p>
-                <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:16px">Bordas de
-                    5cm:<br><span style="color:#22c55e">100% Impermeável</span></h2>
-                <p style="color:#aaa;line-height:1.8;margin-bottom:20px">As bordas elevadas de <strong
-                        style="color:#fff">5 centímetros</strong> formam uma barreira selada ao redor de todo o tapete.
-                    Café, água, refrigerante, lama — tudo fica contido. Basta inclinar e jogar fora.</p>
-                <div
-                    style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:16px;margin-top:4px">
-                    <p style="font-weight:700;color:#22c55e;margin-bottom:4px">⚡ Limpeza em 30 segundos</p>
-                    <p style="color:#888;font-size:13px">Pano úmido e está novo. Diga adeus ao aspirador de pó e ao
-                        tapete encharcado.</p>
-                </div>
-            </div>
-            <div class="photo-grid-4">
-                <img src="./assets/product-1-CLmPGSY4.webp" alt="Borda alta contendo líquido">
-                <img src="./assets/product-5-CjEBeeXw.webp" alt="Impermeável">
-                <img src="./assets/carousel-4-BpsqPhmo.webp" alt="Bordas 5cm">
-                <img src="./assets/product-7-BOjti7KE.webp" alt="100% impermeável">
-            </div>
-        </div>
-    </section>
-
-    <!-- SALES SECTION 3: Ilhós de Fixação -->
-    <section style="padding:72px 24px;background:linear-gradient(to bottom,#101010,#0a0a0a)">
-        <div class="sales-grid">
-            <img src="./assets/product-4-CORQHeZN.jpg" class="sales-img" alt="Ilhós de fixação metálicos">
-            <div class="text-side">
-                <p
-                    style="color:#FF4500;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">
-                    Segurança em Primeiro Lugar</p>
-                <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:16px">Ilhós Metálicos
-                    com<br><span style="color:#FF4500">Travas de Fábrica</span></h2>
-                <p style="color:#aaa;line-height:1.8;margin-bottom:20px">O sistema de fixação utiliza os <strong
-                        style="color:#fff">próprios pontos de ancoragem originais do seu veículo</strong>. Os ilhós
-                    metálicos de aço inox travam o tapete no lugar, impedindo qualquer deslizamento — mesmo em frenagens
-                    bruscas.</p>
-                <div style="display:flex;flex-direction:column;gap:12px">
-                    <div style="display:flex;align-items:flex-start;gap:12px">
-                        <div style="background:#FF4500;border-radius:8px;padding:8px 10px;flex-shrink:0"><i
-                                class="fas fa-lock" style="color:#000;font-size:14px"></i></div>
-                        <div>
-                            <p style="font-weight:700;font-size:14px;margin-bottom:3px">Não escorrega, nunca</p>
-                            <p style="color:#777;font-size:13px">Compatível com os clips originais de 99% dos modelos
-                            </p>
-                        </div>
-                    </div>
-                    <div style="display:flex;align-items:flex-start;gap:12px">
-                        <div style="background:#FF4500;border-radius:8px;padding:8px 10px;flex-shrink:0"><i
-                                class="fas fa-shield-alt" style="color:#000;font-size:14px"></i></div>
-                        <div>
-                            <p style="font-weight:700;font-size:14px;margin-bottom:3px">Pedais 100% livres</p>
-                            <p style="color:#777;font-size:13px">Sem risco de prender sob o acelerador ou freio</p>
-                        </div>
-                    </div>
+                style="background:#fff; border:1.5px solid #bbf7d0; border-radius:12px; padding:16px; display:inline-flex; align-items:center; gap:12px;">
+                <i class="fas fa-undo-alt" style="color:#16a34a; font-size:24px;"></i>
+                <div style="text-align:left;">
+                    <p style="font-weight:800; color:#166534; font-size:14px;">Dinheiro de Volta Garantido</p>
+                    <p style="color:#6b7280; font-size:12px;">Prazo de 7 dias corridos após o recebimento</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SALES SECTION 4: Sob Medida -->
-    <section style="padding:72px 24px;background:#0d0d0d">
-        <div class="sales-grid reverse">
-            <div class="text-side">
-                <p
-                    style="color:#22c55e;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">
-                    Encaixe Perfeito</p>
-                <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:16px">Cobre 100% do
-                    Assoalho<br><span style="color:#22c55e">Incluindo o Túnel Central</span></h2>
-                <p style="color:#aaa;line-height:1.8;margin-bottom:20px">Tapetes genéricos deixam lacunas que acumulam
-                    sujeira. O Exclusive 3D é <strong style="color:#fff">cortado com precisão milimétrica</strong> para
-                    o seu modelo específico, cobrindo cada centímetro do assoalho — inclusive a área do câmbio e o túnel
-                    central.</p>
-                <div
-                    style="background:rgba(255,165,0,.06);border:1px solid rgba(255,165,0,.2);border-radius:12px;padding:16px">
-                    <p style="font-weight:700;color:#f59e0b;margin-bottom:8px">🏆 Por que isso importa?</p>
-                    <p style="color:#888;font-size:13px;line-height:1.7">O carpete original do seu carro é impossível de
-                        limpar depois de encharcado. Um tapete mal dimensionado expõe justamente as áreas mais críticas.
-                        O nosso não.</p>
-                </div>
-            </div>
-            <img src="./assets/product-7-BOjti7KE.webp" class="sales-img"
-                alt="Tapete sob medida cobrindo assoalho completo">
-        </div>
-    </section>
 
     <!-- TESTIMONIALS -->
     <section id="depoimentos" style="padding:72px 24px;max-width:1100px;margin:0 auto">
         <div style="text-align:center;margin-bottom:40px">
-            <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;margin-bottom:8px">O que dizem os clientes
+            <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;margin-bottom:8px;color:#111827">O que dizem
+                os clientes
             </h2>
             <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:12px">
                 <div style="display:flex;gap:3px;color:#f59e0b;font-size:20px">★★★★★</div>
-                <span style="color:#22c55e;font-weight:700;font-size:16px">4.9 / 5.0</span>
-                <span style="color:#666;font-size:13px">· +10.000 avaliações</span>
+                <span style="color:#16a34a;font-weight:700;font-size:16px">4.9 / 5.0</span>
+                <span style="color:#6b7280;font-size:13px">· +10.000 avaliações</span>
             </div>
         </div>
 
         <!-- Text Reviews -->
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-bottom:48px">
-            <div class="glass" style="border-radius:14px;padding:20px;border-top:2px solid #FF4500">
+            <div class="glass" style="border-radius:14px;padding:20px;border-top:2px solid #16a34a">
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
                     <img src="./assets/customer-1-BXTDELSp.webp"
-                        style="width:46px;height:46px;border-radius:50%;border:2px solid #FF4500;object-fit:cover"
+                        style="width:46px;height:46px;border-radius:50%;border:2px solid #16a34a;object-fit:cover"
                         alt="Ricardo S.">
                     <div>
-                        <p style="font-weight:700;font-size:14px">Ricardo S.</p>
-                        <p style="color:#FF4500;font-size:12px">BMW 320i</p>
+                        <p style="font-weight:700;font-size:14px;color:#111827">Ricardo S.</p>
+                        <p style="color:#16a34a;font-size:12px">BMW 320i</p>
                     </div>
                 </div>
                 <div class="stars">★★★★★</div>
-                <p style="color:#ccc;font-size:13px;line-height:1.6;margin-top:8px;font-style:italic">"Acabamento
+                <p style="color:#374151;font-size:13px;line-height:1.6;margin-top:8px;font-style:italic">"Acabamento
                     impecável. Encaixou perfeitamente e mudou a cara do interior. Recomendo demais!"</p>
             </div>
-            <div class="glass" style="border-radius:14px;padding:20px;border-top:2px solid #FF4500">
+            <div class="glass" style="border-radius:14px;padding:20px;border-top:2px solid #16a34a">
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
                     <img src="./assets/customer-11-Va_eVyCD.webp"
-                        style="width:46px;height:46px;border-radius:50%;border:2px solid #FF4500;object-fit:cover"
+                        style="width:46px;height:46px;border-radius:50%;border:2px solid #16a34a;object-fit:cover"
                         alt="Fernanda L.">
                     <div>
                         <p style="font-weight:700;font-size:14px">Fernanda L.</p>
-                        <p style="color:#FF4500;font-size:12px">Jeep Compass</p>
+                        <p style="color:#16a34a;font-size:12px">Jeep Compass</p>
                     </div>
                 </div>
                 <div class="stars">★★★★★</div>
-                <p style="color:#ccc;font-size:13px;line-height:1.6;margin-top:8px;font-style:italic">"Derrubaram café e
+                <p style="color:#374151;font-size:13px;line-height:1.6;margin-top:8px;font-style:italic">"Derrubaram
+                    café e
                     não manchou nada! Muito fácil de limpar. O atendimento também foi 10."</p>
             </div>
-            <div class="glass" style="border-radius:14px;padding:20px;border-top:2px solid #FF4500">
+            <div class="glass" style="border-radius:14px;padding:20px;border-top:2px solid #16a34a">
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
                     <img src="./assets/customer-3-Dp2JbBLF.webp"
-                        style="width:46px;height:46px;border-radius:50%;border:2px solid #FF4500;object-fit:cover"
+                        style="width:46px;height:46px;border-radius:50%;border:2px solid #16a34a;object-fit:cover"
                         alt="Carlos M.">
                     <div>
                         <p style="font-weight:700;font-size:14px">Carlos M.</p>
-                        <p style="color:#FF4500;font-size:12px">Toyota Corolla</p>
+                        <p style="color:#16a34a;font-size:12px">Toyota Corolla</p>
                     </div>
                 </div>
                 <div class="stars">★★★★★</div>
-                <p style="color:#ccc;font-size:13px;line-height:1.6;margin-top:8px;font-style:italic">"Valeu cada
+                <p style="color:#374151;font-size:13px;line-height:1.6;margin-top:8px;font-style:italic">"Valeu cada
                     centavo. O material é muito superior. Já comprei para dois carros!"</p>
             </div>
         </div>
 
         <!-- UGC Photo Grid -->
         <div style="text-align:center;margin-bottom:24px">
-            <h3 style="font-size:1.4rem;font-weight:900">📸 Fotos Reais dos Clientes</h3>
-            <p style="color:#666;font-size:13px;margin-top:6px">Fotos enviadas por quem já recebeu o pedido</p>
+            <h3 style="font-size:1.4rem;font-weight:900;color:#111827">📸 Fotos Reais dos Clientes</h3>
+            <p style="color:#6b7280;font-size:13px;margin-top:6px">Fotos enviadas por quem já recebeu o pedido</p>
         </div>
         <div style="columns:2;column-gap:10px" id="ugc-grid">
             <img src="./assets/customer-4-DU4N_uCX.webp"
@@ -1053,14 +1158,14 @@
     </section>
 
     <!-- FOOTER -->
-    <footer style="background:#050505;border-top:1px solid #111;padding:48px 24px 120px;text-align:center">
+    <footer style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:48px 24px 120px;text-align:center">
         <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:24px">
-            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL" style="height:44px;opacity:.8">
-            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:36px;opacity:.8">
-            <img src="./assets/meios-pagamento-Dk4yb50c.webp" alt="Pagamentos" style="height:30px;opacity:.8">
+            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL" style="height:44px;opacity:.85">
+            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:36px;opacity:.85">
+            <img src="./assets/meios-pagamento-Dk4yb50c.webp" alt="Pagamentos" style="height:30px;opacity:.85">
         </div>
-        <p style="color:#444;font-size:13px">© 2026 Exclusive 3D Tapetes. Todos os direitos reservados.</p>
-        <p style="color:#333;font-size:11px;margin-top:8px">Políticas de Privacidade · Termos de Uso</p>
+        <p style="color:#6b7280;font-size:13px">© 2026 Exclusive 3D Tapetes. Todos os direitos reservados.</p>
+        <p style="color:#9ca3af;font-size:11px;margin-top:8px">Políticas de Privacidade · Termos de Uso</p>
     </footer>
 
     <!-- WHATSAPP -->
@@ -1074,9 +1179,15 @@
 
     <!-- STICKY FOOTER -->
     <div id="sticky-footer">
+        <!-- Security Badges above CTA -->
+        <div class="security-badges" style="margin-bottom:10px;">
+            <div class="sec-badge"><i class="fas fa-lock"></i> Compra segura</div>
+            <div class="sec-badge"><i class="fas fa-shipping-fast"></i> Envio para todo Brasil</div>
+            <div class="sec-badge"><i class="fas fa-users"></i> +1500 clientes satisfeitos</div>
+        </div>
         <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="btn-green pulse-green"
             style="width:100%;padding:16px;font-size:16px;border-radius:12px;max-width:600px;display:block;margin:0 auto">
-            <i class="fas fa-shopping-cart" style="margin-right:8px"></i>COMPRAR AGORA
+            <i class="fas fa-shopping-cart" style="margin-right:8px"></i>Garantir meu Kit 3D
         </button>
     </div>
 
