@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exclusive 3D — Tapetes Automotivos de Alta Performance</title>
+    <title>Soberano Tapetes | Kit 3D Exclusivo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <meta name="description"
         content="Tapetes 3D sob medida: borracha 7mm, bordas 5cm impermeáveis, ilhós metálicos. Frete Grátis para todo Brasil.">
     <link rel="icon" type="image/png" href="./assets/favicon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Montserrat:wght@700;900&display=swap"
-        rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -20,9 +20,11 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
             background: #ffffff;
             color: #111827;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
             overflow-x: hidden
         }
 
@@ -1300,6 +1302,33 @@
                 mobileMenu.style.display = mobileMenu.style.display === 'none' ? 'flex' : 'none';
             });
             mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.style.display = 'none'));
+        }
+
+        // --- STICKY CTA: scroll inteligente ---
+        function stickyBuyClick() {
+            // Usa o objeto `selection` definido em main.js (carregado como module)
+            // window.selection fica acessível pois main.js atribui direto ao objeto global
+            const vehicleSelected = window.selection && window.selection.yearId;
+            if (!vehicleSelected) {
+                // Usuário ainda não selecionou veículo → rola até o seletor
+                const target = document.getElementById('vehicle-selector') ||
+                               document.getElementById('kit-section');
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                // Veículo já selecionado → rola até os kits
+                const target = document.getElementById('kit-section');
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // --- ALTERAR VEÍCULO NO DRAWER ---
+        function drawerAlterarVeiculo() {
+            closeDrawer();
+            setTimeout(() => {
+                const target = document.getElementById('vehicle-selector') ||
+                               document.getElementById('kit-section');
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 250);
         }
     </script>
     <script type="module" src="./js/main.js"></script>

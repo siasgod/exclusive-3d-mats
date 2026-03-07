@@ -1,5 +1,7 @@
 const API_BASE = "https://parallelum.com.br/fipe/api/v1/carros";
-let selection = { brandId: '', brandName: '', modelId: '', modelName: '', yearId: '', yearName: '' };
+window.selection = { brandId: '', brandName: '', modelId: '', modelName: '', yearId: '', yearName: '' };
+// Alias local para consistência com o restante do módulo
+const selection = window.selection;
 
 // --- TIMER REGRESSIVO ---
 function startTimer(duration, display) {
