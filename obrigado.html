@@ -11,7 +11,6 @@
 
 <body class="bg-gray-50 font-sans">
 
-    <!-- HEADER CONFIRMAÇÃO -->
     <div class="bg-black p-6 text-center text-white">
         <div
             class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg animate-pulse">
@@ -22,9 +21,7 @@
     </div>
 
     <main class="max-w-md mx-auto px-4 -mt-4">
-
         <div class="bg-white rounded-3xl shadow-xl border-2 border-green-500 overflow-hidden">
-
             <div class="bg-green-50 p-3 text-center border-b border-green-100">
                 <p class="text-green-700 font-bold text-xs uppercase tracking-widest">
                     ⭐ Oferta Exclusiva para Clientes
@@ -32,13 +29,13 @@
             </div>
 
             <div class="p-5 text-center">
-
                 <div class="mb-5">
                     <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
                         Finalize sua proteção
                     </p>
                     <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                        <div id="progress-bar" class="bg-green-600 h-2 rounded-full transition-all duration-1000"></div>
+                        <div id="progress-bar" class="bg-green-600 h-2 rounded-full transition-all duration-1000"
+                            style="width: 0%"></div>
                     </div>
                 </div>
 
@@ -53,7 +50,6 @@
                 <div class="relative mb-4">
                     <img src="https://images.tcdn.com.br/img/editor/up/653457/kit_limpeza_exemplo.jpg"
                         class="w-full rounded-2xl shadow border">
-
                     <div
                         class="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-black px-2 py-1 rounded-lg shadow animate-pulse">
                         SOMENTE AGORA
@@ -84,12 +80,8 @@
                 </p>
 
                 <div class="bg-gray-100 inline-block px-4 py-1 rounded-full mb-4 shadow-inner">
-                    <span class="text-[9px] font-bold text-gray-500 uppercase">
-                        Expira em:
-                    </span>
-                    <span id="timer" class="font-mono font-black text-red-600 text-sm ml-1">
-                        04:59
-                    </span>
+                    <span class="text-[9px] font-bold text-gray-500 uppercase">Expira em:</span>
+                    <span id="timer" class="font-mono font-black text-red-600 text-sm ml-1">04:59</span>
                 </div>
 
                 <button id="cta-btn" onclick="adicionarKitLimpeza()"
@@ -105,17 +97,13 @@
                 <p class="text-[8px] text-gray-400 mt-4 font-semibold">
                     ✔ Compra segura • ✔ Garantia de satisfação
                 </p>
-
             </div>
         </div>
     </main>
 
-    <!-- MODAL -->
     <div id="modal-upsell"
         class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 text-black">
-
         <div class="bg-white rounded-3xl max-w-sm w-full p-5 text-center shadow-2xl">
-
             <div id="loading-upsell">
                 <i class="fas fa-circle-notch fa-spin text-3xl text-green-600 mb-3"></i>
                 <p class="font-bold text-gray-700 text-sm">Gerando seu pagamento...</p>
@@ -123,103 +111,70 @@
 
             <div id="qr-content-upsell" class="hidden">
                 <h3 class="text-lg font-black mb-2">PAGAMENTO PRIORITÁRIO 🚀</h3>
-
                 <div class="bg-gray-50 p-3 rounded-xl mb-3 border-2 border-dashed">
-                    <img id="upsell-qr-img" class="w-40 mx-auto mb-3">
-
+                    <img id="upsell-qr-img" class="w-40 mx-auto mb-3" alt="QR Code PIX">
                     <input type="text" id="upsell-pix-code" readonly onclick="copiarCodigo()"
-                        class="w-full p-2 border rounded text-[9px] font-mono text-center">
-
-                    <p id="feedback-copy" class="text-[8px] text-gray-400 mt-1">
-                        Clique para copiar
-                    </p>
+                        class="w-full p-2 border rounded text-[9px] font-mono text-center bg-white cursor-pointer">
+                    <p id="feedback-copy" class="text-[8px] text-gray-400 mt-1">Clique para copiar</p>
                 </div>
-
-                <button onclick="fecharModal()" class="text-gray-400 text-[9px] font-bold uppercase">
-                    Cancelar
-                </button>
-
+                <button onclick="fecharModal()" class="text-gray-400 text-[9px] font-bold uppercase">Cancelar</button>
             </div>
         </div>
     </div>
 
     <script>
-
+        // Animação da barra de progresso
         setTimeout(() => {
             document.getElementById("progress-bar").style.width = "92%";
         }, 500);
 
-        /* TIMER */
+        /* TIMER CONTRA-RECUO */
         let duration = 300;
         const timerDisplay = document.getElementById('timer');
         const ctaBtn = document.getElementById('cta-btn');
 
         const countdown = setInterval(() => {
-
             let minutes = Math.floor(duration / 60);
             let seconds = duration % 60;
-
-            timerDisplay.textContent =
-                `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-
+            timerDisplay.textContent = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
             if (duration <= 0) {
                 clearInterval(countdown);
                 ctaBtn.innerText = "OFERTA ENCERRADA";
                 ctaBtn.disabled = true;
-                ctaBtn.classList.remove("bg-green-600");
-                ctaBtn.classList.add("bg-gray-400", "cursor-not-allowed");
+                ctaBtn.classList.replace("bg-green-600", "bg-gray-400");
+                ctaBtn.classList.add("cursor-not-allowed");
             }
-
             duration--;
-
         }, 1000);
 
-        /* ESTOQUE */
+        /* SIMULAÇÃO DE ESTOQUE */
         let estoque = 12;
-
         setInterval(() => {
-
-            if (estoque > 4) {
-
+            if (estoque > 3) {
                 estoque--;
-
-                document.getElementById("estoque").innerText =
-                    `⚠ Restam apenas ${estoque} unidades`;
-
+                document.getElementById("estoque").innerText = `⚠ Restam apenas ${estoque} unidades`;
             }
-
         }, 15000);
 
         /* COPIAR PIX */
         function copiarCodigo() {
-
             const copyText = document.getElementById("upsell-pix-code");
-
             navigator.clipboard.writeText(copyText.value);
-
             const feedback = document.getElementById("feedback-copy");
-
             feedback.innerText = "Código copiado!";
             feedback.classList.add("text-green-600", "font-bold");
-
             setTimeout(() => {
-
                 feedback.innerText = "Clique para copiar";
                 feedback.classList.remove("text-green-600", "font-bold");
-
             }, 2000);
-
         }
 
-        /* MODAL */
         function fecharModal() {
             document.getElementById('modal-upsell').classList.add('hidden');
         }
 
-        /* GERAR PIX UPSELL */
-
+        /* GERAR E VERIFICAR PIX UPSELL */
         async function adicionarKitLimpeza() {
-
             const modal = document.getElementById('modal-upsell');
             const loading = document.getElementById('loading-upsell');
             const qrContent = document.getElementById('qr-content-upsell');
@@ -229,55 +184,64 @@
             qrContent.classList.add('hidden');
 
             try {
-
                 const customer = JSON.parse(localStorage.getItem("customerData") || "{}");
 
                 const response = await fetch("/api/gerar-pix", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-
                         customer: customer,
-                        amount: 89.90,
+                        amount: 8990, // Valor em centavos
                         kitName: "Kit Limpeza Soberano",
                         description: "Upsell: Kit Limpeza Soberano",
                         isUpsell: true
-
                     })
                 });
 
                 const data = await response.json();
 
-                if (!data.success) {
-                    throw new Error("Erro ao gerar PIX");
-                }
+                if (!data.success) throw new Error("Erro na API");
 
-                document.getElementById("upsell-qr-img").src = data.qrcode_image;
+                // Ajustado para os nomes que definimos no gerar-pix.js
+                document.getElementById("upsell-qr-img").src = data.pix_qr_code;
                 document.getElementById("upsell-pix-code").value = data.pix_code;
 
                 loading.classList.add("hidden");
                 qrContent.classList.remove("hidden");
 
+                // Iniciar verificação automática do pagamento do Upsell
+                iniciarVerificacaoUpsell(data.id);
+
             } catch (error) {
-
                 console.error("Erro no upsell:", error);
-
                 alert("Erro ao gerar pagamento. Tente novamente.");
-
                 fecharModal();
-
             }
-
         }
 
-        /* BLOQUEIO DE SAÍDA DA PÁGINA */
+        function iniciarVerificacaoUpsell(transactionId) {
+            const checkInterval = setInterval(async () => {
+                try {
+                    // Usando a rota dinâmica que definimos: /api/verificar-pagamento/[id]
+                    const res = await fetch(`/api/verificar-pagamento/${transactionId}`);
+                    const statusData = await res.json();
 
+                    if (statusData.pago) {
+                        clearInterval(checkInterval);
+                        alert("✅ Kit de Limpeza adicionado ao seu pedido!");
+                        window.location.href = "finalizado.html";
+                    }
+                } catch (e) {
+                    console.warn("Aguardando pagamento...");
+                }
+            }, 5000);
+        }
+
+        // Bloqueio amigável de saída
         window.onbeforeunload = function () {
             return "Espere! Você ainda tem uma oferta exclusiva ativa.";
         };
-
     </script>
-
 </body>
 
 </html>
