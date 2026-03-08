@@ -33,7 +33,6 @@
 
             <div class="p-5 text-center">
 
-                <!-- PROGRESSO -->
                 <div class="mb-5">
                     <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
                         Finalize sua proteção
@@ -43,7 +42,6 @@
                     </div>
                 </div>
 
-                <!-- HEADLINE -->
                 <h2 class="text-xl font-black text-gray-900 leading-tight mb-2 uppercase">
                     PROTEJA SEU INTERIOR <span class="text-red-600">POR ANOS</span>
                 </h2>
@@ -52,7 +50,6 @@
                     Preserve seus tapetes 3D e mantenha aparência de carro zero KM.
                 </p>
 
-                <!-- IMAGEM -->
                 <div class="relative mb-4">
                     <img src="https://images.tcdn.com.br/img/editor/up/653457/kit_limpeza_exemplo.jpg"
                         class="w-full rounded-2xl shadow border">
@@ -63,7 +60,6 @@
                     </div>
                 </div>
 
-                <!-- BENEFÍCIOS -->
                 <div class="bg-gray-50 border rounded-xl p-3 mb-4 text-left text-xs">
                     <ul class="space-y-1 font-medium text-gray-700">
                         <li>✔ Limpeza profissional sem danificar</li>
@@ -73,7 +69,6 @@
                     </ul>
                 </div>
 
-                <!-- PREÇO -->
                 <div class="mb-3">
                     <div class="flex items-center justify-center gap-2">
                         <span class="text-gray-400 line-through text-sm">R$ 147,00</span>
@@ -84,12 +79,10 @@
                     </p>
                 </div>
 
-                <!-- ESTOQUE DINÂMICO -->
                 <p id="estoque" class="text-red-600 text-xs font-bold mb-3">
                     ⚠ Restam apenas 12 unidades
                 </p>
 
-                <!-- TIMER -->
                 <div class="bg-gray-100 inline-block px-4 py-1 rounded-full mb-4 shadow-inner">
                     <span class="text-[9px] font-bold text-gray-500 uppercase">
                         Expira em:
@@ -99,7 +92,6 @@
                     </span>
                 </div>
 
-                <!-- CTA -->
                 <button id="cta-btn" onclick="adicionarKitLimpeza()"
                     class="w-full bg-green-600 text-white font-black py-3 rounded-2xl shadow-lg uppercase text-sm tracking-tight transition-all duration-300 active:scale-95 hover:scale-105">
                     SIM! QUERO PROTEGER AGORA 🚀
@@ -116,14 +108,13 @@
 
             </div>
         </div>
-
     </main>
 
     <!-- MODAL -->
     <div id="modal-upsell"
         class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 text-black">
 
-        <div class="bg-white rounded-3xl max-w-sm w-full p-5 text-center shadow-2xl animate-fade">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-5 text-center shadow-2xl">
 
             <div id="loading-upsell">
                 <i class="fas fa-circle-notch fa-spin text-3xl text-green-600 mb-3"></i>
@@ -135,8 +126,10 @@
 
                 <div class="bg-gray-50 p-3 rounded-xl mb-3 border-2 border-dashed">
                     <img id="upsell-qr-img" class="w-40 mx-auto mb-3">
+
                     <input type="text" id="upsell-pix-code" readonly onclick="copiarCodigo()"
                         class="w-full p-2 border rounded text-[9px] font-mono text-center">
+
                     <p id="feedback-copy" class="text-[8px] text-gray-400 mt-1">
                         Clique para copiar
                     </p>
@@ -145,25 +138,27 @@
                 <button onclick="fecharModal()" class="text-gray-400 text-[9px] font-bold uppercase">
                     Cancelar
                 </button>
-            </div>
 
+            </div>
         </div>
     </div>
 
     <script>
-        /* PROGRESSO ANIMADO */
+
         setTimeout(() => {
             document.getElementById("progress-bar").style.width = "92%";
         }, 500);
 
-        /* TIMER REAL */
+        /* TIMER */
         let duration = 300;
         const timerDisplay = document.getElementById('timer');
         const ctaBtn = document.getElementById('cta-btn');
 
         const countdown = setInterval(() => {
+
             let minutes = Math.floor(duration / 60);
             let seconds = duration % 60;
+
             timerDisplay.textContent =
                 `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 
@@ -174,41 +169,113 @@
                 ctaBtn.classList.remove("bg-green-600");
                 ctaBtn.classList.add("bg-gray-400", "cursor-not-allowed");
             }
+
             duration--;
+
         }, 1000);
 
-        /* ESTOQUE DINÂMICO */
+        /* ESTOQUE */
         let estoque = 12;
+
         setInterval(() => {
+
             if (estoque > 4) {
+
                 estoque--;
+
                 document.getElementById("estoque").innerText =
                     `⚠ Restam apenas ${estoque} unidades`;
+
             }
+
         }, 15000);
 
-        /* COPIAR MODERNO */
+        /* COPIAR PIX */
         function copiarCodigo() {
+
             const copyText = document.getElementById("upsell-pix-code");
+
             navigator.clipboard.writeText(copyText.value);
+
             const feedback = document.getElementById("feedback-copy");
+
             feedback.innerText = "Código copiado!";
             feedback.classList.add("text-green-600", "font-bold");
+
             setTimeout(() => {
+
                 feedback.innerText = "Clique para copiar";
                 feedback.classList.remove("text-green-600", "font-bold");
+
             }, 2000);
+
         }
 
+        /* MODAL */
         function fecharModal() {
             document.getElementById('modal-upsell').classList.add('hidden');
         }
 
-        /* SUA FUNÇÃO ORIGINAL PIX MANTIDA */
+        /* GERAR PIX UPSELL */
+
         async function adicionarKitLimpeza() {
+
             const modal = document.getElementById('modal-upsell');
+            const loading = document.getElementById('loading-upsell');
+            const qrContent = document.getElementById('qr-content-upsell');
+
             modal.classList.remove('hidden');
+            loading.classList.remove('hidden');
+            qrContent.classList.add('hidden');
+
+            try {
+
+                const customer = JSON.parse(localStorage.getItem("customerData") || "{}");
+
+                const response = await fetch("/api/gerar-pix", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+
+                        customer: customer,
+                        amount: 89.90,
+                        kitName: "Kit Limpeza Soberano",
+                        description: "Upsell: Kit Limpeza Soberano",
+                        isUpsell: true
+
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error("Erro ao gerar PIX");
+                }
+
+                document.getElementById("upsell-qr-img").src = data.qrcode_image;
+                document.getElementById("upsell-pix-code").value = data.pix_code;
+
+                loading.classList.add("hidden");
+                qrContent.classList.remove("hidden");
+
+            } catch (error) {
+
+                console.error("Erro no upsell:", error);
+
+                alert("Erro ao gerar pagamento. Tente novamente.");
+
+                fecharModal();
+
+            }
+
         }
+
+        /* BLOQUEIO DE SAÍDA DA PÁGINA */
+
+        window.onbeforeunload = function () {
+            return "Espere! Você ainda tem uma oferta exclusiva ativa.";
+        };
+
     </script>
 
 </body>

@@ -300,6 +300,7 @@ window.selectKit = function (kitName, price) {
     selection.kitName = kitName;
     selection.price = price;
     selection.image = imgPath;
+    localStorage.setItem("checkout_selection", JSON.stringify(selection));
 
     const kitNameEl = document.getElementById('drawer-kit-name');
     const priceEl = document.getElementById('drawer-price');
@@ -354,31 +355,36 @@ window.drawerConfirmPayment = () => {
 
     const btn = document.getElementById('drawer-pay-btn');
 
-    const kitName = selection.kitName || 'Kit';
-    const priceRaw = selection.price || '0';
-    const vehicle =
-        document.getElementById('drawer-vehicle')?.innerText || 'Não informado';
+    if (!selection.kitName || !selection.price) {
+        alert("Selecione um kit antes de continuar.");
+        return;
+    }
+    localStorage.setItem("checkout_selection", JSON.stringify(selection));
+    const kitName = selection.kitName;
+    const priceRaw = selection.price;
+
+    const vehicle = `${selection.brandName} ${selection.modelName} (${selection.yearName})`;
 
     const imgUrl = selection.image || '';
 
     if (btn) {
-
         btn.innerHTML =
             '<i class="fas fa-spinner fa-spin mr-2"></i> Encaminhando...';
-
         btn.disabled = true;
-
     }
 
-    const params = new URLSearchParams();
+    const params = new URLSearchParams({
+        kit: kitName,
+        preco: priceRaw,
+        veiculo: vehicle,
+        imagem: imgUrl
+    });
 
-    params.append('kit', kitName);
-    params.append('preco', priceRaw);
-    params.append('veiculo', vehicle);
-    params.append('imagem', imgUrl);
+    const url = `dados-pagamento.html?${params.toString()}`;
 
-    window.location.href = `dados-pagamento.html?${params.toString()}`;
+    console.log("Redirect URL:", url); // DEBUG
 
+    window.location.href = url;
 };
 
 // --- INIT ---

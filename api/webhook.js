@@ -1,18 +1,17 @@
-// api/webhook.js
-
 export default async function handler(req, res) {
+
     if (req.method !== "POST") {
         return res.status(405).json({ message: "Método não permitido" });
     }
 
     try {
 
-        const payload = req.body;
+        const payload = req.body || {};
 
-        console.log("Evento recebido da Syncpay:", JSON.stringify(payload, null, 2));
+        console.log("Webhook SyncPay recebido");
 
         // ===============================
-        // 1. NORMALIZAÇÃO DO OBJETO
+        // 1. NORMALIZAÇÃO
         // ===============================
 
         const raw = payload?.data || payload;
@@ -28,8 +27,7 @@ export default async function handler(req, res) {
             null;
 
         const description =
-            raw.description ||
-            "";
+            raw.description || "";
 
         const customerEmail =
             raw.client_email ||
@@ -42,56 +40,96 @@ export default async function handler(req, res) {
         const normalizedStatus = normalizeStatus(statusRaw);
 
         // ===============================
-        // 2. LOG ESTRUTURADO
+        // 2. VALIDAÇÃO BÁSICA
         // ===============================
 
-        console.log("ID:", transactionId);
-        console.log("Status recebido:", statusRaw);
-        console.log("Status normalizado:", normalizedStatus);
+        if (!transactionId) {
+
+            console.warn("Webhook sem transactionId");
+
+            return res.status(400).json({
+                error: "transactionId ausente"
+            });
+
+        }
+
+        // ===============================
+        // 3. PROTEÇÃO DUPLICAÇÃO
+        // ===============================
+
+        const processed = global.processedTransactions || new Set();
+
+        if (processed.has(transactionId)) {
+
+            console.log("Webhook duplicado ignorado:", transactionId);
+
+            return res.status(200).json({
+                duplicate: true
+            });
+
+        }
+
+        processed.add(transactionId);
+        global.processedTransactions = processed;
+
+        // ===============================
+        // 4. EXTRAIR ORDER ID
+        // ===============================
+
+        const orderMatch = description.match(/EX3DMATS-\d+-\d+/);
+
+        const orderId = orderMatch ? orderMatch[0] : "unknown-order";
+
+        // ===============================
+        // 5. DETECTAR UPSELL
+        // ===============================
+
+        const isUpsell =
+            description.toLowerCase().includes("upsell") ||
+            Number(amount) < 50;
+
+        // ===============================
+        // 6. LOG ESTRUTURADO
+        // ===============================
+
+        console.log("Transaction:", transactionId);
+        console.log("Order ID:", orderId);
+        console.log("Status:", normalizedStatus);
         console.log("Valor:", amount);
-        console.log("Email:", customerEmail);
+        console.log("Cliente:", customerEmail);
 
         // ===============================
-        // 3. PROCESSAMENTO APENAS SE APROVADO
+        // 7. PROCESSAR PAGAMENTO
         // ===============================
 
         if (normalizedStatus === "approved") {
 
-            const isUpsell =
-                description.toLowerCase().includes("upsell") ||
-                description.toLowerCase().includes("kit limpeza") ||
-                description.toLowerCase().includes("kit lavagem");
-
             if (isUpsell) {
 
-                console.log(`✅ [UPSELL CONFIRMADO] Cliente: ${customerEmail}`);
-
-                // 👉 Aqui você pode:
-                // - Marcar no banco como upsell pago
-                // - Disparar webhook para ERP
-                // - Enviar notificação Slack
-                // - Atualizar CRM
+                console.log("✅ UPSELL CONFIRMADO");
+                console.log("Cliente:", customerEmail);
+                console.log("Pedido:", orderId);
 
             } else {
 
-                console.log(`✅ [VENDA PRINCIPAL CONFIRMADA] Cliente: ${customerEmail}`);
+                console.log("✅ VENDA PRINCIPAL CONFIRMADA");
+                console.log("Cliente:", customerEmail);
+                console.log("Pedido:", orderId);
 
-                // 👉 Fluxo normal:
-                // - Liberar pedido
-                // - Enviar para logística
-                // - Atualizar CRM
             }
 
-            console.log(`Transação ${transactionId} confirmada | Valor ${amount}`);
+            console.log(`Transação ${transactionId} aprovada | Valor ${amount}`);
+
         }
 
         // ===============================
-        // 4. RESPOSTA OBRIGATÓRIA
+        // 8. RESPOSTA PARA SYNCPAY
         // ===============================
 
         return res.status(200).json({
             received: true,
-            status: normalizedStatus
+            status: normalizedStatus,
+            transaction: transactionId
         });
 
     } catch (error) {
@@ -111,6 +149,7 @@ export default async function handler(req, res) {
 // ===============================
 
 function normalizeStatus(status) {
+
     if (!status) return "unknown";
 
     const s = String(status).toLowerCase();

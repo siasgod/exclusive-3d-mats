@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+
     if (req.method !== "POST") {
         return res.status(405).send("Method Not Allowed");
     }
@@ -8,8 +9,19 @@ export default async function handler(req, res) {
     try {
 
         // ===============================
-        // 1. TRATAMENTO DE VALOR (BLINDADO)
+        // 1. VALIDAÇÃO BÁSICA DE CLIENTE
         // ===============================
+
+        if (!customer || !customer.email) {
+            return res.status(400).json({
+                error: "Dados do cliente inválidos"
+            });
+        }
+
+        // ===============================
+        // 2. TRATAMENTO DE VALOR (BLINDADO)
+        // ===============================
+
         let parsedAmount = Number(
             String(amount || "0")
                 .replace(/\./g, "")
@@ -17,28 +29,40 @@ export default async function handler(req, res) {
         );
 
         if (!parsedAmount || parsedAmount <= 0) {
-            return res.status(400).json({ error: "Valor inválido" });
+            return res.status(400).json({
+                error: "Valor inválido"
+            });
         }
 
-        // Caso venha em centavos (ex: 8990)
+        // Caso venha em centavos (8990)
         if (parsedAmount > 1000) {
             parsedAmount = parsedAmount / 100;
         }
 
         parsedAmount = Number(parsedAmount.toFixed(2));
 
+        // ===============================
+        // 3. NORMALIZAÇÃO DE DADOS
+        // ===============================
+
         const cleanCpf = String(customer?.cpf_cnpj || "")
             .replace(/\D/g, "")
             .slice(0, 11);
 
-        const cleanPhone =
-            String(customer?.phone || "")
-                .replace(/\D/g, "")
-                .slice(-11) || "11999999999";
+        const cleanPhone = String(customer?.phone || "")
+            .replace(/\D/g, "")
+            .slice(-11) || "11999999999";
 
         // ===============================
-        // 2. AUTENTICAÇÃO
+        // 4. GERAR ORDER ID INTERNO
         // ===============================
+
+        const orderId = `EX3DMATS-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+        // ===============================
+        // 5. AUTENTICAÇÃO SYNCPAY
+        // ===============================
+
         const authResponse = await fetch(
             "https://api.syncpayments.com.br/api/partner/v1/auth-token",
             {
@@ -55,24 +79,26 @@ export default async function handler(req, res) {
 
         if (!authResponse.ok || !authData?.access_token) {
             console.error("Erro na autenticação SyncPay:", authData);
+
             return res.status(401).json({
                 error: "Erro na autenticação SyncPay",
             });
         }
 
         // ===============================
-        // 3. DESCRIÇÃO FINAL
+        // 6. DESCRIÇÃO FINAL DO PEDIDO
         // ===============================
+
         const finalDescription =
             description ||
-            kitName ||
             (isUpsell
-                ? "Upsell: Kit Limpeza Soberano"
-                : "Compra Exclusive 3D Mats");
+                ? `Upsell: Kit Limpeza Soberano | Pedido ${orderId}`
+                : `${kitName || "Compra Exclusive 3D Mats"} | Pedido ${orderId}`);
 
         // ===============================
-        // 4. GERAÇÃO DO PIX
+        // 7. GERAR COBRANÇA PIX
         // ===============================
+
         const paymentResponse = await fetch(
             "https://api.syncpayments.com.br/api/partner/v1/cash-in",
             {
@@ -85,12 +111,11 @@ export default async function handler(req, res) {
                 body: JSON.stringify({
                     amount: parsedAmount,
                     description: finalDescription,
-                    webhook_url:
-                        "https://exclusive-3d-mats.vercel.app/api/webhook",
+                    webhook_url: `${process.env.BASE_URL}/api/webhook`,
                     client: {
                         name: customer?.name || "Cliente",
                         email: customer?.email || "cliente@email.com",
-                        cpf: cleanCpf,
+                        cpf: cleanCpf || "00000000000",
                         phone: cleanPhone,
                     },
                 }),
@@ -101,25 +126,26 @@ export default async function handler(req, res) {
 
         if (!paymentResponse.ok) {
             console.error("Erro na geração do pagamento:", paymentData);
+
             return res
                 .status(paymentResponse.status)
                 .json(paymentData);
         }
 
         // ===============================
-        // 5. TRATAMENTO DO RETORNO (BLINDADO)
+        // 8. TRATAMENTO DO RETORNO
         // ===============================
 
         const pixRaw = paymentData?.data || paymentData;
 
         if (!pixRaw) {
             console.error("Resposta inesperada da SyncPay:", paymentData);
-            return res
-                .status(500)
-                .json({ error: "Resposta inválida da SyncPay" });
+
+            return res.status(500).json({
+                error: "Resposta inválida da SyncPay"
+            });
         }
 
-        // PIX code pode vir com nomes diferentes
         const pixCode =
             pixRaw.pix_code ||
             pixRaw.paymentcode ||
@@ -128,12 +154,12 @@ export default async function handler(req, res) {
 
         if (!pixCode) {
             console.error("PIX não retornado:", pixRaw);
-            return res
-                .status(500)
-                .json({ error: "PIX não retornado pela SyncPay" });
+
+            return res.status(500).json({
+                error: "PIX não retornado pela SyncPay"
+            });
         }
 
-        // ID pode vir com nomes diferentes
         const transactionId =
             pixRaw.id ||
             pixRaw.identifier ||
@@ -141,21 +167,24 @@ export default async function handler(req, res) {
             null;
 
         if (!transactionId) {
-            console.warn("ID não encontrado, usando fallback.");
+            console.warn("ID da transação não encontrado.");
         }
 
         // ===============================
-        // 6. GERAÇÃO DO QR CODE (SEMPRE FUNCIONAL)
+        // 9. GERAR QR CODE UNIVERSAL
         // ===============================
+
         const qrCodeImageUrl =
             `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pixCode)}`;
 
         // ===============================
-        // 7. RESPOSTA FINAL
+        // 10. RESPOSTA FINAL
         // ===============================
+
         const responsePayload = {
             success: true,
             id: transactionId,
+            order_id: orderId,
             pix_code: pixCode,
             pix_qr_code: qrCodeImageUrl,
             qrcode_image: qrCodeImageUrl,
@@ -165,13 +194,17 @@ export default async function handler(req, res) {
 
         console.log(
             `PIX ${isUpsell ? "Upsell" : "Principal"} Gerado:`,
-            transactionId
+            transactionId,
+            "| Pedido:",
+            orderId
         );
 
         return res.status(200).json(responsePayload);
 
     } catch (error) {
+
         console.error("Erro interno no servidor:", error);
+
         return res.status(500).json({
             error: "Erro interno no servidor",
             details: error.message,
