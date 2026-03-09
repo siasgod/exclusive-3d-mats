@@ -49,7 +49,8 @@
 
                 <div class="relative mb-4">
                     <img src="https://images.tcdn.com.br/img/editor/up/653457/kit_limpeza_exemplo.jpg"
-                        class="w-full rounded-2xl shadow border">
+                        onerror="this.src='https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&q=80&w=500'"
+                        class="w-full rounded-2xl shadow border" alt="Kit de Limpeza">
                     <div
                         class="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-black px-2 py-1 rounded-lg shadow animate-pulse">
                         SOMENTE AGORA
@@ -106,18 +107,20 @@
         <div class="bg-white rounded-3xl max-w-sm w-full p-5 text-center shadow-2xl">
             <div id="loading-upsell">
                 <i class="fas fa-circle-notch fa-spin text-3xl text-green-600 mb-3"></i>
-                <p class="font-bold text-gray-700 text-sm">Gerando seu pagamento...</p>
+                <p class="font-bold text-gray-700 text-sm">Gerando seu pagamento prioritário...</p>
             </div>
 
             <div id="qr-content-upsell" class="hidden">
-                <h3 class="text-lg font-black mb-2">PAGAMENTO PRIORITÁRIO 🚀</h3>
-                <div class="bg-gray-50 p-3 rounded-xl mb-3 border-2 border-dashed">
+                <h3 class="text-lg font-black mb-2 uppercase">Pagamento do Kit 🚀</h3>
+                <div class="bg-gray-50 p-3 rounded-xl mb-3 border-2 border-dashed border-green-500">
                     <img id="upsell-qr-img" class="w-40 mx-auto mb-3" alt="QR Code PIX">
                     <input type="text" id="upsell-pix-code" readonly onclick="copiarCodigo()"
-                        class="w-full p-2 border rounded text-[9px] font-mono text-center bg-white cursor-pointer">
-                    <p id="feedback-copy" class="text-[8px] text-gray-400 mt-1">Clique para copiar</p>
+                        class="w-full p-2 border rounded text-[10px] font-mono text-center bg-white cursor-pointer mb-2">
+                    <p id="feedback-copy" class="text-[9px] text-gray-500 font-bold uppercase">Clique no código para
+                        copiar</p>
                 </div>
-                <button onclick="fecharModal()" class="text-gray-400 text-[9px] font-bold uppercase">Cancelar</button>
+                <button onclick="fecharModal()"
+                    class="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Fechar</button>
             </div>
         </div>
     </div>
@@ -125,10 +128,11 @@
     <script>
         // Animação da barra de progresso
         setTimeout(() => {
-            document.getElementById("progress-bar").style.width = "92%";
+            const pb = document.getElementById("progress-bar");
+            if (pb) pb.style.width = "92%";
         }, 500);
 
-        /* TIMER CONTRA-RECUO */
+        /* TIMER REVERSO */
         let duration = 300;
         const timerDisplay = document.getElementById('timer');
         const ctaBtn = document.getElementById('cta-btn');
@@ -142,30 +146,20 @@
                 ctaBtn.innerText = "OFERTA ENCERRADA";
                 ctaBtn.disabled = true;
                 ctaBtn.classList.replace("bg-green-600", "bg-gray-400");
-                ctaBtn.classList.add("cursor-not-allowed");
             }
             duration--;
         }, 1000);
-
-        /* SIMULAÇÃO DE ESTOQUE */
-        let estoque = 12;
-        setInterval(() => {
-            if (estoque > 3) {
-                estoque--;
-                document.getElementById("estoque").innerText = `⚠ Restam apenas ${estoque} unidades`;
-            }
-        }, 15000);
 
         /* COPIAR PIX */
         function copiarCodigo() {
             const copyText = document.getElementById("upsell-pix-code");
             navigator.clipboard.writeText(copyText.value);
             const feedback = document.getElementById("feedback-copy");
-            feedback.innerText = "Código copiado!";
-            feedback.classList.add("text-green-600", "font-bold");
+            feedback.innerText = "COPIADO COM SUCESSO!";
+            feedback.style.color = "#16a34a";
             setTimeout(() => {
-                feedback.innerText = "Clique para copiar";
-                feedback.classList.remove("text-green-600", "font-bold");
+                feedback.innerText = "Clique no código para copiar";
+                feedback.style.color = "#6b7280";
             }, 2000);
         }
 
@@ -173,7 +167,7 @@
             document.getElementById('modal-upsell').classList.add('hidden');
         }
 
-        /* GERAR E VERIFICAR PIX UPSELL */
+        /* GERAR PIX UPSELL */
         async function adicionarKitLimpeza() {
             const modal = document.getElementById('modal-upsell');
             const loading = document.getElementById('loading-upsell');
@@ -184,14 +178,21 @@
             qrContent.classList.add('hidden');
 
             try {
-                const customer = JSON.parse(localStorage.getItem("customerData") || "{}");
+                // Tenta recuperar os dados salvos no checkout principal
+                const storageData = localStorage.getItem("customerData") || localStorage.getItem("dados_cliente");
+                const customer = storageData ? JSON.parse(storageData) : null;
+
+                // Validação crucial para não dar erro 422 na API
+                if (!customer || !customer.email) {
+                    throw new Error("Dados do cliente não encontrados. Por favor, inicie o pedido novamente.");
+                }
 
                 const response = await fetch("/api/gerar-pix", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         customer: customer,
-                        amount: 8990, // Valor em centavos
+                        amount: 89.90, // Valor decimal tratado pelo seu gerar-pix.js
                         kitName: "Kit Limpeza Soberano",
                         description: "Upsell: Kit Limpeza Soberano",
                         isUpsell: true
@@ -200,21 +201,21 @@
 
                 const data = await response.json();
 
-                if (!data.success) throw new Error("Erro na API");
+                if (!data.success) {
+                    throw new Error(data.error || "Falha ao gerar Pix.");
+                }
 
-                // Ajustado para os nomes que definimos no gerar-pix.js
                 document.getElementById("upsell-qr-img").src = data.pix_qr_code;
                 document.getElementById("upsell-pix-code").value = data.pix_code;
 
                 loading.classList.add("hidden");
                 qrContent.classList.remove("hidden");
 
-                // Iniciar verificação automática do pagamento do Upsell
                 iniciarVerificacaoUpsell(data.id);
 
             } catch (error) {
                 console.error("Erro no upsell:", error);
-                alert("Erro ao gerar pagamento. Tente novamente.");
+                alert(error.message);
                 fecharModal();
             }
         }
@@ -222,25 +223,19 @@
         function iniciarVerificacaoUpsell(transactionId) {
             const checkInterval = setInterval(async () => {
                 try {
-                    // Usando a rota dinâmica que definimos: /api/verificar-pagamento/[id]
                     const res = await fetch(`/api/verificar-pagamento/${transactionId}`);
                     const statusData = await res.json();
 
                     if (statusData.pago) {
                         clearInterval(checkInterval);
-                        alert("✅ Kit de Limpeza adicionado ao seu pedido!");
+                        alert("✅ Kit de Limpeza adicionado com sucesso!");
                         window.location.href = "finalizado.html";
                     }
                 } catch (e) {
-                    console.warn("Aguardando pagamento...");
+                    console.log("Aguardando pagamento...");
                 }
             }, 5000);
         }
-
-        // Bloqueio amigável de saída
-        window.onbeforeunload = function () {
-            return "Espere! Você ainda tem uma oferta exclusiva ativa.";
-        };
     </script>
 </body>
 
