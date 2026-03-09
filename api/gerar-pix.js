@@ -42,16 +42,19 @@ export default async function handler(req, res) {
             return res.status(401).json({ error: "Erro na autenticação SyncPay" });
         }
 
-        // 5. GERAÇÃO DO PAGAMENTO (BLINDADO)
+        // 5. GERAÇÃO DO PAGAMENTO (VERSÃO ULTRA-COMPATÍVEL)
         const paymentBody = {
-            amount: finalAmount, // Agora garantido como INTEIRO (centavos)
-            description: description || `${kitName || "Pedido"} | ${orderId}`,
+            amount: finalAmount,
+            // Simplificamos a descrição para evitar caracteres especiais que travam a API
+            description: `Pedido Soberano - ${orderId}`,
             payment_method: "pix",
             customer: {
-                name: String(customer.name).substring(0, 60),
-                email: customer.email,
+                // Removemos excesso de espaços e garantimos texto simples
+                name: String(customer.name).trim().substring(0, 50),
+                email: customer.email.trim(),
                 cpf_cnpj: cleanCpf,
-                phone: cleanPhone || "11999999999"
+                // O telefone DEVE ter o DDD. Se o log mostrou 11 dígitos, está certo.
+                phone: cleanPhone
             }
         };
 
