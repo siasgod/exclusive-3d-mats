@@ -1,176 +1,210 @@
-export default async function handler(req, res) {
+<!DOCTYPE html>
+<html lang="pt-br">
 
-    if (req.method !== "POST") {
-        return res.status(405).json({ message: "Método não permitido" });
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Confirmado! | Soberano 3D</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
 
-    try {
+<body class="bg-gray-50 font-sans">
 
-        const payload = req.body || {};
+    <div class="bg-black p-6 text-center text-white">
+        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg animate-pulse">
+            <i class="fas fa-check text-2xl text-white"></i>
+        </div>
+        <h1 class="text-2xl font-black uppercase">Pedido Confirmado!</h1>
+        <p class="text-gray-400 mt-1 text-sm">Seu kit já está sendo preparado.</p>
+    </div>
 
-        console.log("Webhook SyncPay recebido");
+    <main class="max-w-md mx-auto px-4 -mt-4">
+        <div class="bg-white rounded-3xl shadow-xl border-2 border-green-500 overflow-hidden">
+            <div class="bg-green-50 p-3 text-center border-b border-green-100">
+                <p class="text-green-700 font-bold text-xs uppercase tracking-widest">
+                    ⭐ Oferta Exclusiva para Clientes
+                </p>
+            </div>
 
-        // ===============================
-        // 1. NORMALIZAÇÃO
-        // ===============================
+            <div class="p-5 text-center">
+                <div class="mb-5">
+                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
+                        Finalize sua proteção
+                    </p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                        <div id="progress-bar" class="bg-green-600 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                </div>
 
-        const raw = payload?.data || payload;
+                <h2 class="text-xl font-black text-gray-900 leading-tight mb-2 uppercase">
+                    PROTEJA SEU INTERIOR <span class="text-red-600">POR ANOS</span>
+                </h2>
 
-        const transactionId =
-            raw.id ||
-            raw.idtransaction ||
-            null;
+                <p class="text-gray-600 text-xs mb-4 font-medium">
+                    Preserve seus tapetes 3D e mantenha aparência de carro zero KM.
+                </p>
 
-        const amount =
-            raw.amount ||
-            raw.final_amount ||
-            null;
+                <div class="relative mb-4">
+                    <img src="assets/kitlimpeza.jpg" 
+                         class="w-full rounded-2xl shadow border" 
+                         alt="Kit Limpeza Completo">
+                    
+                    <div class="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-black px-2 py-1 rounded-lg shadow animate-pulse">
+                        SOMENTE AGORA
+                    </div>
+                </div>
 
-        const description =
-            raw.description || "";
+                <div class="bg-gray-50 border rounded-xl p-3 mb-4 text-left text-xs">
+                    <ul class="space-y-1 font-medium text-gray-700">
+                        <li>✔ Limpeza profissional sem danificar</li>
+                        <li>✔ Evita desgaste e rachaduras</li>
+                        <li>✔ Protege couro e plástico</li>
+                        <li>✔ Mantém cheiro e aparência premium</li>
+                    </ul>
+                </div>
 
-        const customerEmail =
-            raw.client_email ||
-            raw.email ||
-            payload?.customer?.email ||
-            null;
+                <div class="mb-3">
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="text-gray-400 line-through text-sm">R$ 147,00</span>
+                        <span class="text-2xl font-black text-green-600">R$ 89,90</span>
+                    </div>
+                    <p class="text-[9px] text-gray-500 font-bold uppercase mt-1">
+                        Frete grátis • Enviado junto
+                    </p>
+                </div>
 
-        const statusRaw = raw.status || "";
+                <p id="estoque" class="text-red-600 text-xs font-bold mb-3">
+                    ⚠ Restam apenas 11 unidades
+                </p>
 
-        const normalizedStatus = normalizeStatus(statusRaw);
+                <div class="bg-gray-100 inline-block px-4 py-1 rounded-full mb-4 shadow-inner">
+                    <span class="text-[9px] font-bold text-gray-500 uppercase">Expira em:</span>
+                    <span id="timer" class="font-mono font-black text-red-600 text-sm ml-1">04:59</span>
+                </div>
 
-        // ===============================
-        // 2. VALIDAÇÃO BÁSICA
-        // ===============================
+                <button id="cta-btn" onclick="adicionarKitLimpeza()"
+                    class="w-full bg-green-600 text-white font-black py-3 rounded-2xl shadow-lg uppercase text-sm tracking-tight transition-all duration-300 active:scale-95 hover:scale-105">
+                    SIM! QUERO PROTEGER AGORA 🚀
+                </button>
 
-        if (!transactionId) {
+                <button onclick="window.location.href='index.html'"
+                    class="mt-3 text-gray-400 text-[9px] font-bold underline uppercase tracking-widest">
+                    Não, prefiro correr o risco.
+                </button>
+            </div>
+        </div>
+    </main>
 
-            console.warn("Webhook sem transactionId");
+    <div id="modal-upsell" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 text-black">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-5 text-center shadow-2xl">
+            <div id="loading-upsell">
+                <i class="fas fa-circle-notch fa-spin text-3xl text-green-600 mb-3"></i>
+                <p class="font-bold text-gray-700 text-sm">Gerando seu pagamento...</p>
+            </div>
 
-            return res.status(400).json({
-                error: "transactionId ausente"
-            });
+            <div id="qr-content-upsell" class="hidden">
+                <h3 class="text-lg font-black mb-2 uppercase">Pagamento Prioritário 🚀</h3>
+                <div class="bg-gray-50 p-3 rounded-xl mb-3 border-2 border-dashed border-green-500">
+                    <img id="upsell-qr-img" class="w-40 mx-auto mb-3" alt="QR Code PIX">
+                    <input type="text" id="upsell-pix-code" readonly onclick="copiarCodigo()"
+                        class="w-full p-2 border rounded text-[10px] font-mono text-center bg-white cursor-pointer mb-2">
+                    <p id="feedback-copy" class="text-[9px] text-gray-500 font-bold">Clique no código para copiar</p>
+                </div>
+                <button onclick="fecharModal()" class="text-gray-400 text-[10px] font-bold uppercase">Fechar</button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        // Barra de progresso
+        setTimeout(() => {
+            const pb = document.getElementById("progress-bar");
+            if(pb) pb.style.width = "92%";
+        }, 500);
+
+        // Timer
+        let duration = 300;
+        const timerDisplay = document.getElementById('timer');
+        const countdown = setInterval(() => {
+            let minutes = Math.floor(duration / 60);
+            let seconds = duration % 60;
+            if(timerDisplay) timerDisplay.textContent = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+            if (duration <= 0) clearInterval(countdown);
+            duration--;
+        }, 1000);
+
+        function copiarCodigo() {
+            const copyText = document.getElementById("upsell-pix-code");
+            navigator.clipboard.writeText(copyText.value);
+            const feedback = document.getElementById("feedback-copy");
+            feedback.innerText = "COPIADO!";
+            setTimeout(() => feedback.innerText = "Clique no código para copiar", 2000);
         }
 
-        // ===============================
-        // 3. PROTEÇÃO DUPLICAÇÃO
-        // ===============================
-
-        const processed = global.processedTransactions || new Set();
-
-        if (processed.has(transactionId)) {
-
-            console.log("Webhook duplicado ignorado:", transactionId);
-
-            return res.status(200).json({
-                duplicate: true
-            });
-
+        function fecharModal() {
+            document.getElementById('modal-upsell').classList.add('hidden');
         }
 
-        processed.add(transactionId);
-        global.processedTransactions = processed;
+        async function adicionarKitLimpeza() {
+            const modal = document.getElementById('modal-upsell');
+            const loading = document.getElementById('loading-upsell');
+            const qrContent = document.getElementById('qr-content-upsell');
 
-        // ===============================
-        // 4. EXTRAIR ORDER ID
-        // ===============================
+            modal.classList.remove('hidden');
+            loading.classList.remove('hidden');
+            qrContent.classList.add('hidden');
 
-        const orderMatch = description.match(/EX3DMATS-\d+-\d+/);
+            try {
+                // Recupera dados salvos do checkout (garantindo o e-mail)
+                const storageData = localStorage.getItem("customerData") || localStorage.getItem("dados_cliente");
+                const customer = storageData ? JSON.parse(storageData) : null;
 
-        const orderId = orderMatch ? orderMatch[0] : "unknown-order";
+                if (!customer || !customer.email) {
+                    throw new Error("Dados do cliente não encontrados. Por favor, inicie o pedido novamente.");
+                }
 
-        // ===============================
-        // 5. DETECTAR UPSELL
-        // ===============================
+                const response = await fetch("/api/gerar-pix", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        customer: customer,
+                        amount: 89.90,
+                        kitName: "Kit Limpeza Soberano",
+                        isUpsell: true
+                    })
+                });
 
-        const isUpsell =
-            description.toLowerCase().includes("upsell") ||
-            Number(amount) < 50;
+                const data = await response.json();
+                if (!data.success) throw new Error(data.error || "Erro no servidor");
 
-        // ===============================
-        // 6. LOG ESTRUTURADO
-        // ===============================
+                document.getElementById("upsell-qr-img").src = data.pix_qr_code;
+                document.getElementById("upsell-pix-code").value = data.pix_code;
 
-        console.log("Transaction:", transactionId);
-        console.log("Order ID:", orderId);
-        console.log("Status:", normalizedStatus);
-        console.log("Valor:", amount);
-        console.log("Cliente:", customerEmail);
+                loading.classList.add("hidden");
+                qrContent.classList.remove("hidden");
 
-        // ===============================
-        // 7. PROCESSAR PAGAMENTO
-        // ===============================
+                iniciarVerificacaoUpsell(data.id);
 
-        if (normalizedStatus === "approved") {
-
-            if (isUpsell) {
-
-                console.log("✅ UPSELL CONFIRMADO");
-                console.log("Cliente:", customerEmail);
-                console.log("Pedido:", orderId);
-
-            } else {
-
-                console.log("✅ VENDA PRINCIPAL CONFIRMADA");
-                console.log("Cliente:", customerEmail);
-                console.log("Pedido:", orderId);
-
+            } catch (error) {
+                alert(error.message);
+                fecharModal();
             }
-
-            console.log(`Transação ${transactionId} aprovada | Valor ${amount}`);
-
         }
 
-        // ===============================
-        // 8. RESPOSTA PARA SYNCPAY
-        // ===============================
-
-        return res.status(200).json({
-            received: true,
-            status: normalizedStatus,
-            transaction: transactionId
-        });
-
-    } catch (error) {
-
-        console.error("Erro interno no webhook:", error);
-
-        return res.status(500).json({
-            error: "Erro interno no webhook",
-            details: error.message
-        });
-    }
-}
-
-
-// ===============================
-// NORMALIZADOR DE STATUS
-// ===============================
-
-function normalizeStatus(status) {
-
-    if (!status) return "unknown";
-
-    const s = String(status).toLowerCase();
-
-    if (s === "waiting_for_approval" || s === "pending")
-        return "pending";
-
-    if (
-        s === "approved" ||
-        s === "paid" ||
-        s === "concluded" ||
-        s === "success"
-    )
-        return "approved";
-
-    if (
-        s === "cancelled" ||
-        s === "canceled" ||
-        s === "refused"
-    )
-        return "cancelled";
-
-    return s;
-}
+        function iniciarVerificacaoUpsell(transactionId) {
+            const checkInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`/api/verificar-pagamento/${transactionId}`);
+                    const statusData = await res.json();
+                    if (statusData.pago) {
+                        clearInterval(checkInterval);
+                        alert("✅ Kit adicionado!");
+                        window.location.href = "finalizado.html";
+                    }
+                } catch (e) {}
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
