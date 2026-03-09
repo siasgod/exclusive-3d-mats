@@ -381,14 +381,25 @@
 
         #sticky-footer {
             position: fixed;
-            bottom: 0;
+            bottom: 20px;
             left: 0;
             right: 0;
-            background: #fff;
-            border-top: 1px solid #eee;
-            padding: 12px;
+            display: flex;
+            justify-content: center;
             z-index: 999;
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+            pointer-events: none;
+        }
+
+        #sticky-footer button {
+            pointer-events: auto;
+            background: #16a34a;
+            color: white;
+            font-weight: 800;
+            border: none;
+            padding: 16px 28px;
+            border-radius: 14px;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
         .security-badges {
@@ -1230,20 +1241,6 @@ if(sticky) sticky.style.display = "block";
 
     <div id="sticky-footer">
 
-        <div class="security-badges" style="margin-bottom:10px;">
-            <div class="sec-badge">
-                <i class="fas fa-lock"></i> Compra segura
-            </div>
-
-            <div class="sec-badge">
-                <i class="fas fa-shipping-fast"></i> Envio para todo Brasil
-            </div>
-
-            <div class="sec-badge">
-                <i class="fas fa-users"></i> +1500 clientes satisfeitos
-            </div>
-        </div>
-
         <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="btn-green pulse-green" style="
         width:100%;
         padding:18px;
@@ -1254,7 +1251,7 @@ if(sticky) sticky.style.display = "block";
         color:#fff;
         border:none;
         cursor:pointer;
-        ">
+    ">
 
             <i class="fas fa-shopping-cart"></i>
             GARANTIR MEU KIT 3D
