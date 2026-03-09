@@ -1336,20 +1336,32 @@
             mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.style.display = 'none'));
         }
 
-        // --- STICKY CTA: scroll inteligente ---
         function stickyBuyClick() {
-            // Usa o objeto `selection` definido em main.js (carregado como module)
-            // window.selection fica acessível pois main.js atribui direto ao objeto global
+
             const vehicleSelected = window.selection && window.selection.yearId;
+
             if (!vehicleSelected) {
-                // Usuário ainda não selecionou veículo → rola até o seletor
-                const target = document.getElementById('vehicle-selector') ||
-                    document.getElementById('kit-section');
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                const target = document.getElementById('comprar');
+
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+
             } else {
-                // Veículo já selecionado → rola até os kits
+
                 const target = document.getElementById('kit-section');
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+
             }
         }
 
@@ -1362,6 +1374,27 @@
                 if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 250);
         }
+    </script>
+    <script>
+
+        window.addEventListener("scroll", () => {
+
+            const sticky = document.getElementById("sticky-footer");
+
+            if (!sticky) return;
+
+            if (window.scrollY > 300) {
+
+                sticky.style.display = "block";
+
+            } else {
+
+                sticky.style.display = "none";
+
+            }
+
+        });
+
     </script>
     <script type="module" src="./js/main.js"></script>
 
