@@ -343,12 +343,16 @@ window.selectKit = function (kitName, price) {
 function openDrawer() {
 
     const drawer = document.getElementById('checkout-drawer');
+    const sticky = document.getElementById('sticky-footer');
 
     if (drawer) {
-
         drawer.classList.remove('drawer-hidden');
         drawer.classList.add('drawer-visible');
+    }
 
+    // ESCONDE O BOTÃO FIXO
+    if (sticky) {
+        sticky.style.display = "none";
     }
 
     document.body.style.overflow = 'hidden';
@@ -358,12 +362,16 @@ function openDrawer() {
 window.closeDrawer = function () {
 
     const drawer = document.getElementById('checkout-drawer');
+    const sticky = document.getElementById('sticky-footer');
 
     if (drawer) {
-
         drawer.classList.remove('drawer-visible');
         drawer.classList.add('drawer-hidden');
+    }
 
+    // MOSTRA O BOTÃO FIXO NOVAMENTE
+    if (sticky) {
+        sticky.style.display = "block";
     }
 
     document.body.style.overflow = '';

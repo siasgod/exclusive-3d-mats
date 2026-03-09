@@ -721,22 +721,6 @@
         }
     </style>
 </head>
-const sticky = document.getElementById("sticky-footer");
-const selector = document.getElementById("model-search");
-
-if(selector){
-
-selector.addEventListener("focus", () => {
-if(sticky) sticky.style.display = "none";
-});
-
-selector.addEventListener("blur", () => {
-if(window.scrollY > 300){
-if(sticky) sticky.style.display = "block";
-}
-});
-
-}
 
 <body>
 
@@ -1487,6 +1471,26 @@ if(sticky) sticky.style.display = "block";
         }
     </script>
 
+    <script>
+
+        const sticky = document.getElementById("sticky-footer");
+        const selector = document.getElementById("model-search");
+
+        if (selector) {
+
+            selector.addEventListener("focus", () => {
+                if (sticky) sticky.style.display = "none";
+            });
+
+            selector.addEventListener("blur", () => {
+                if (window.scrollY > 300) {
+                    if (sticky) sticky.style.display = "block";
+                }
+            });
+
+        }
+
+    </script>
 </body>
 
 </html>
