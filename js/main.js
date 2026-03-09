@@ -175,7 +175,11 @@ document.getElementById('model-trigger')?.addEventListener('click', (e) => {
 
         popover.classList.toggle('show');
 
-        document.getElementById('model-search')?.focus();
+        // remove foco automático para não abrir teclado no mobile
+        const searchInput = document.getElementById('model-search');
+        if (searchInput) {
+            searchInput.value = "";
+        }
 
     }
 
@@ -273,6 +277,22 @@ document.getElementById('sel-year')?.addEventListener('change', (e) => {
 
     if (drawerVehicle)
         drawerVehicle.innerText = full;
+
+    // SCROLL AUTOMÁTICO PARA OS KITS
+    setTimeout(() => {
+
+        const kits = document.getElementById('kit-section');
+
+        if (kits) {
+
+            kits.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    }, 400);
 
 });
 

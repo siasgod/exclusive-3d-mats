@@ -379,21 +379,16 @@
             }
         }
 
-        /* Sticky Footer */
         #sticky-footer {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            /* Aumentado para garantir que fique sobre tudo */
-            padding: 12px 0;
-            background: white;
-            border-top: 1px solid #e5e7eb;
-            padding-bottom: env(safe-area-inset-bottom, 12px);
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-            display: none;
-            /* Ele começa escondido e aparece ao rolar, se desejar */
+            background: #fff;
+            border-top: 1px solid #eee;
+            padding: 12px;
+            z-index: 999;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .security-badges {
@@ -715,6 +710,22 @@
         }
     </style>
 </head>
+const sticky = document.getElementById("sticky-footer");
+const selector = document.getElementById("model-search");
+
+if(selector){
+
+selector.addEventListener("focus", () => {
+if(sticky) sticky.style.display = "none";
+});
+
+selector.addEventListener("blur", () => {
+if(window.scrollY > 300){
+if(sticky) sticky.style.display = "block";
+}
+});
+
+}
 
 <body>
 
@@ -838,39 +849,66 @@
     </div>
 
     <!-- SELETOR LIMPO -->
-    <section id="comprar" style="padding:40px 16px; max-width:500px; margin:0 auto">
-        <div class="glass" style="border-radius:20px; padding:25px; display:flex; flex-direction:column; gap:15px">
-            <h3 style="text-align:center; font-size:16px; margin-bottom:10px; color:#16a34a">SELECIONE SEU VEÍCULO:</h3>
+    <section id="comprar" style="padding:40px 16px 160px 16px; max-width:500px; margin:0 auto">
 
+        <div class="glass" style="border-radius:20px; padding:25px; display:flex; flex-direction:column; gap:15px">
+
+            <h3 style="text-align:center; font-size:16px; margin-bottom:10px; color:#16a34a">
+                SELECIONE SEU VEÍCULO:
+            </h3>
+
+            <!-- MARCA -->
             <select id="sel-brand" class="sel">
                 <option value="">Carregando marcas...</option>
             </select>
 
+            <!-- MODELO -->
             <div class="popover-container">
-                <button id="model-trigger" class="popover-trigger" disabled style="height:50px">
+
+                <button id="model-trigger" class="popover-trigger" disabled style="height:50px" type="button">
                     <span id="model-selected-text">Selecione o Modelo</span>
                     <i class="fas fa-chevron-down"></i>
                 </button>
+
                 <div id="model-popover" class="popover-content">
-                    <input type="text" id="model-search" class="search-input" placeholder="Buscar modelo...">
+
+                    <input type="text" id="model-search" class="search-input" placeholder="Buscar modelo..."
+                        autocomplete="off" inputmode="search" autocapitalize="off" spellcheck="false">
+
                     <div id="model-results" class="results-list"></div>
+
                 </div>
             </div>
 
+            <!-- ANO -->
             <select id="sel-year" class="sel" disabled>
                 <option value="">Selecione o Ano</option>
             </select>
 
+            <!-- CONFIRMAÇÃO -->
             <div id="confirm-box" class="hidden">
-                <div
-                    style="background:#f0fdf4; border:1px solid #16a34a; border-radius:12px; padding:15px; text-align:center">
-                    <p style="color:#16a34a; font-weight:800; font-size:14px" id="conf-vehicle-text"></p>
-                    <p style="color:#374151; font-size:12px; margin-top:5px">⚠️ Molde Disponível! Escolha seu kit
-                        abaixo:
+
+                <div style="
+                background:#f0fdf4;
+                border:1px solid #16a34a;
+                border-radius:12px;
+                padding:15px;
+                text-align:center;
+            ">
+
+                    <p style="color:#16a34a; font-weight:800; font-size:14px" id="conf-vehicle-text">
                     </p>
+
+                    <p style="color:#374151; font-size:12px; margin-top:5px">
+                        ⚠️ Molde Disponível! Escolha seu kit abaixo:
+                    </p>
+
                 </div>
+
             </div>
+
         </div>
+
     </section>
 
     <section id="kit-section" style="padding:48px 16px;max-width:780px;margin:0 auto">
