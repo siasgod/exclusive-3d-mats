@@ -3,105 +3,132 @@ export default async function handler(req, res) {
         return res.status(405).send("Method Not Allowed");
     }
 
-    const { customer, amount } = req.body;
+    const { customer, amount, kitName, description, isUpsell } = req.body;
 
     try {
+        // ===============================
+        // 1. TRATAMENTO DE VALOR (DECIMAL)
+        // ===============================
+        let parsedAmount = Number(
+            String(amount || "0")
+                .replace(/\./g, "")
+                .replace(",", ".")
+        );
 
-        if (!customer || !customer.email) {
-            return res.status(400).json({ error: "Dados do cliente inválidos" });
+        if (!parsedAmount || parsedAmount <= 0) {
+            return res.status(400).json({ error: "Valor inválido" });
         }
 
-        let finalAmount = Number(amount);
-
-        if (!Number.isInteger(finalAmount)) {
-            finalAmount = Math.round(finalAmount * 100);
-        } else if (finalAmount < 500) {
-            finalAmount = finalAmount * 100;
+        // Se o valor chegar em centavos (ex: 8990), converte para decimal (89.90)
+        // A SyncPay, nesta estrutura, espera o ponto decimal.
+        if (parsedAmount > 1000) {
+            parsedAmount = parsedAmount / 100;
         }
 
-        const cleanCpf = String(customer.cpf_cnpj || "").replace(/\D/g, "");
-        const cleanPhone = String(customer.phone || "").replace(/\D/g, "");
+        parsedAmount = Number(parsedAmount.toFixed(2));
 
-        const orderId = `SOBERANO-${Date.now()}`;
+        const cleanCpf = String(customer?.cpf_cnpj || "")
+            .replace(/\D/g, "")
+            .slice(0, 11);
 
-        // AUTENTICAÇÃO
-        const authResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/auth-token", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                client_id: process.env.SYNCPAY_CLIENT_ID,
-                client_secret: process.env.SYNCPAY_SECRET_KEY
-            })
-        });
+        const cleanPhone =
+            String(customer?.phone || "")
+                .replace(/\D/g, "")
+                .slice(-11) || "11999999999";
+
+        // ===============================
+        // 2. AUTENTICAÇÃO
+        // ===============================
+        const authResponse = await fetch(
+            "https://api.syncpayments.com.br/api/partner/v1/auth-token",
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    client_id: process.env.SYNCPAY_CLIENT_ID,
+                    client_secret: process.env.SYNCPAY_SECRET_KEY,
+                }),
+            }
+        );
 
         const authData = await authResponse.json();
 
-        if (!authData.access_token) {
-            console.error("Erro Auth:", authData);
-            return res.status(401).json({ error: "Erro autenticação SyncPay" });
+        if (!authResponse.ok || !authData?.access_token) {
+            console.error("Erro na autenticação SyncPay:", authData);
+            return res.status(401).json({ error: "Erro na autenticação SyncPay" });
         }
 
-        const paymentBody = {
-            amount: finalAmount,
-            description: `Pedido ${orderId}`,
-            external_id: orderId,
-            payment_method: "pix",
+        // ===============================
+        // 3. DESCRIÇÃO E WEBHOOK
+        // ===============================
+        const finalDescription = description || kitName || (isUpsell ? "Upsell: Kit Limpeza Soberano" : "Compra Soberano 3D Mats");
 
-            customer: {
-                name: String(customer.name).trim(),
-                email: customer.email.trim(),
-                cpf: cleanCpf,
-                phone: cleanPhone
-            },
+        // Usa a URL do seu site ou fallback
+        const webhookUrl = process.env.BASE_URL ? `${process.env.BASE_URL}/api/webhook` : "https://exclusive-3d-mats.vercel.app/api/webhook";
 
-            callback_url: "https://exclusive-3d-mats.vercel.app/api/webhook"
-        };
-
-        const paymentResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/cash-in", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${authData.access_token}`
-            },
-            body: JSON.stringify(paymentBody)
-        });
+        // ===============================
+        // 4. GERAÇÃO DO PIX (MUDANÇA PARA 'CLIENT' E 'CPF')
+        // ===============================
+        const paymentResponse = await fetch(
+            "https://api.syncpayments.com.br/api/partner/v1/cash-in",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${authData.access_token}`,
+                },
+                body: JSON.stringify({
+                    amount: parsedAmount, // Ex: 89.90
+                    description: finalDescription.substring(0, 50),
+                    webhook_url: webhookUrl,
+                    client: { // Algumas versões usam 'client' em vez de 'customer'
+                        name: String(customer?.name || "Cliente").trim(),
+                        email: customer?.email,
+                        cpf: cleanCpf, // Algumas versões usam 'cpf' em vez de 'cpf_cnpj'
+                        phone: cleanPhone,
+                    },
+                }),
+            }
+        );
 
         const paymentData = await paymentResponse.json();
 
-        const pixRaw = paymentData.data || paymentData;
-
-        if (!paymentResponse.ok || !pixRaw.pix_code) {
-
-            console.error("Payload enviado:", JSON.stringify(paymentBody));
-            console.error("Resposta SyncPay:", paymentData);
-
-            return res.status(400).json({
-                error: "Erro ao gerar PIX",
-                details: paymentData
-            });
+        if (!paymentResponse.ok) {
+            console.error("Payload enviado:", parsedAmount, finalDescription, cleanCpf);
+            console.error("Erro na geração do pagamento:", paymentData);
+            return res.status(paymentResponse.status).json(paymentData);
         }
+
+        // ===============================
+        // 5. TRATAMENTO DO RETORNO (MULTI-CAMPO)
+        // ===============================
+        const pixRaw = paymentData?.data || paymentData;
+
+        // Tenta capturar o código PIX de qualquer campo possível
+        const pixCode = pixRaw.pix_code || pixRaw.paymentcode || pixRaw.paymentCode || pixRaw.emv;
+
+        if (!pixCode) {
+            return res.status(500).json({ error: "PIX não retornado pela SyncPay", details: pixRaw });
+        }
+
+        const transactionId = pixRaw.id || pixRaw.identifier || pixRaw.idtransaction || pixRaw.uuid;
+
+        // ===============================
+        // 6. QR CODE E RESPOSTA
+        // ===============================
+        const qrCodeImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pixCode)}`;
 
         return res.status(200).json({
             success: true,
-            id: pixRaw.id || pixRaw.uuid,
-            pix_code: pixRaw.pix_code,
-            pix_qr_code:
-                pixRaw.pix_qr_code ||
-                `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-                    pixRaw.pix_code
-                )}`,
-            status: pixRaw.status
+            id: transactionId,
+            pix_code: pixCode,
+            pix_qr_code: qrCodeImageUrl,
+            status: pixRaw.status || "PENDING"
         });
 
     } catch (error) {
-
-        console.error("Erro interno:", error);
-
-        return res.status(500).json({
-            error: "Erro interno",
-            message: error.message
-        });
+        console.error("Erro interno no servidor:", error);
+        return res.status(500).json({ error: "Erro interno", details: error.message });
     }
 }
