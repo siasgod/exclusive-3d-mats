@@ -56,7 +56,7 @@ export default async function handler(req, res) {
                 phone: cleanPhone
             },
 
-            callback_url: "https://SEU-DOMINIO.com/api/webhook"
+            callback_url: "https://exclusive-3d-mats.vercel.app/api/webhook"
         };
 
         const paymentResponse = await fetch("https://api.syncpayments.com.br/api/partner/v1/cash-in", {
