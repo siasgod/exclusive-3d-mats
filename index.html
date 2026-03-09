@@ -387,7 +387,7 @@
             right: 0;
             z-index: 1000;
             /* Aumentado para garantir que fique sobre tudo */
-            padding: 12px 16px;
+            padding: 12px 0;
             background: white;
             border-top: 1px solid #e5e7eb;
             padding-bottom: env(safe-area-inset-bottom, 12px);
@@ -778,7 +778,7 @@
         <div style="max-width: 650px;">
             <h1
                 style="font-size:clamp(1.8rem, 5vw, 2.8rem); font-weight:900; color:#111827; line-height:1.1; margin-bottom:12px;">
-                O Encaixe Perfeito que seu Carro Merece
+                Proteja o Interior do seu Carro com Tapetes 3D
             </h1>
 
             <!-- Social Proof -->
@@ -1190,18 +1190,39 @@
             style="position:absolute;top:-4px;right:-4px;background:red;color:#fff;font-size:9px;font-weight:900;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center">1</span>
     </a>
 
-    <!-- STICKY FOOTER -->
-    <div id="sticky-footer" style="display: block;">
+    <div id="sticky-footer">
+
         <div class="security-badges" style="margin-bottom:10px;">
-            <div class="sec-badge"><i class="fas fa-lock" style="color:#16a34a"></i> Compra segura</div>
-            <div class="sec-badge"><i class="fas fa-shipping-fast" style="color:#16a34a"></i> Envio para todo Brasil
+            <div class="sec-badge">
+                <i class="fas fa-lock"></i> Compra segura
             </div>
-            <div class="sec-badge"><i class="fas fa-users" style="color:#16a34a"></i> +1500 clientes satisfeitos</div>
+
+            <div class="sec-badge">
+                <i class="fas fa-shipping-fast"></i> Envio para todo Brasil
+            </div>
+
+            <div class="sec-badge">
+                <i class="fas fa-users"></i> +1500 clientes satisfeitos
+            </div>
         </div>
-        <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="btn-green pulse-green"
-            style="width:100%; padding:16px; font-size:16px; font-weight:900; border-radius:12px; max-width:600px; display:block; margin:0 auto; background:#16a34a; color:#fff; border:none; cursor:pointer;">
-            <i class="fas fa-shopping-cart" style="margin-right:8px"></i>GARANTIR MEU KIT 3D
+
+        <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="btn-green pulse-green" style="
+        width:100%;
+        padding:18px;
+        font-size:17px;
+        font-weight:900;
+        border-radius:0;
+        background:#16a34a;
+        color:#fff;
+        border:none;
+        cursor:pointer;
+        ">
+
+            <i class="fas fa-shopping-cart"></i>
+            GARANTIR MEU KIT 3D
+
         </button>
+
     </div>
 
     <div id="checkout-drawer" class="drawer-hidden"
