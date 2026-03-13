@@ -161,15 +161,21 @@
             }
         }
 
-        /* ── PIX success overlay ── */
+        /* ── PIX success overlay ── 
+           ✅ CORRIGIDO: display:flex movido para :not(.hidden)
+           para não sobrescrever a classe .hidden do Tailwind
+        */
         #pix-success-overlay {
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.55);
             z-index: 100;
-            display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        #pix-success-overlay:not(.hidden) {
+            display: flex;
         }
 
         .pix-success-card {
@@ -603,7 +609,8 @@
         document.getElementById('resumo-mobile-kit').innerText = kitNome;
         document.getElementById('resumo-preco').innerText = fmt(valorBase);
 
-        uupdateTotal(0); // frete só aparece após CEP
+        // ✅ CORRIGIDO: era 'uupdateTotal' (typo com dois u)
+        updateTotal(0); // frete só aparece após CEP
         document.getElementById('resumo-frete-texto').innerText = '---';
 
         if (imagemUrl) {
@@ -769,7 +776,7 @@
                 check.classList.remove('hidden');
 
                 document.getElementById('container-fretes').classList.remove('hidden');
-                updateTotal(freteAtual); // agora sim aplica o SEDEX pré-selecionado
+                updateTotal(freteAtual);
                 atualizaResumoPix();
             } catch {
                 spinner.classList.add('hidden');
@@ -779,7 +786,7 @@
         }
 
         // ═══════════════════════════════════════
-        // 8. FRETE — troca de seleção sem bug de borda
+        // 8. FRETE
         // ═══════════════════════════════════════
         const cardIds = ['card-sedex', 'card-jadlog', 'card-gratis'];
 
@@ -858,7 +865,8 @@
                 document.getElementById('section-pagamento').classList.remove('hidden');
                 window.scrollTo(0, 0);
                 startPixTimer();
-                verificarPagamento(result.id);
+                // Aguarda 5s antes de iniciar polling — evita falso positivo no retorno inicial
+                setTimeout(() => verificarPagamento(result.id), 5000);
 
             } catch {
                 showAlert('alert-pessoal', 'Erro ao gerar PIX. Verifique os dados e tente novamente.');
