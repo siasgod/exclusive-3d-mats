@@ -12,12 +12,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        input:focus {
-            border-color: #16a34a;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
-        }
-
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -26,55 +20,226 @@
             display: none;
         }
 
+        input:focus {
+            border-color: #16a34a;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
+        }
+
+        /* ── Shipping cards ── */
+        .shipping-label {
+            display: block;
+            position: relative;
+            cursor: pointer;
+        }
+
         .shipping-card {
             transition: all 0.2s ease;
             border: 2px solid #e5e7eb;
+            border-radius: 12px;
             cursor: pointer;
         }
 
         .shipping-card:hover {
-            border-color: #3b82f6;
+            border-color: #86efac;
         }
 
-        input[type="radio"]:checked+.shipping-card {
-            border-color: #16a34a;
-            background-color: #f0fdf4;
+        .shipping-card-selected {
+            border-color: #16a34a !important;
+            background-color: #f0fdf4 !important;
+        }
+
+        /* ── Autocomplete e-mail ── */
+        .email-suggestions {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        .email-suggestion-item {
+            padding: 10px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.1s;
+        }
+
+        .email-suggestion-item:hover {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .email-suggestion-item span.domain {
+            color: #16a34a;
+            font-weight: 700;
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .toast-anim {
+            animation: fadeInUp 0.2s ease;
+        }
+
+        /* ── Inline alerts ── */
+        .inline-alert {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .inline-alert.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .inline-alert.success {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .inline-alert.info {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+        }
+
+        /* ── Steps ── */
+        .step-done {
+            background: #16a34a !important;
+            color: #fff !important;
+        }
+
+        .step-active {
+            background: #111827 !important;
+            color: #fff !important;
+        }
+
+        /* ── Resumo fixo mobile ── */
+        #resumo-mobile {
+            display: none;
+        }
+
+        @media (max-width: 767px) {
+            #resumo-mobile {
+                display: flex;
+                position: sticky;
+                top: 0;
+                z-index: 40;
+                background: #fff;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 10px 16px;
+                align-items: center;
+                justify-content: space-between;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            }
+        }
+
+        /* ── PIX success overlay ── */
+        #pix-success-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pix-success-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 32px;
+            text-align: center;
+            max-width: 340px;
+            width: 90%;
+            animation: fadeInUp 0.3s ease;
         }
     </style>
 </head>
 
 <body class="bg-gray-50 text-gray-900 font-sans">
+
+    <!-- RESUMO FIXO MOBILE -->
+    <div id="resumo-mobile">
+        <div class="flex items-center gap-2 text-sm">
+            <i class="fas fa-shopping-bag text-green-600"></i>
+            <span id="resumo-mobile-kit" class="font-bold text-gray-700 truncate max-w-[160px]">---</span>
+        </div>
+        <div class="text-right">
+            <p class="text-[10px] text-gray-400 uppercase font-bold">Total</p>
+            <p id="resumo-mobile-total" class="text-base font-black text-green-600">R$ 0,00</p>
+        </div>
+    </div>
+
+    <!-- HEADER -->
     <header class="bg-white border-b py-4 shadow-sm">
         <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
-            <h1 class="text-xl font-black text-gray-800 italic">SOBERANO <span class="text-green-600">3D</span></h1>
+            <h1 class="text-xl font-black text-gray-800 italic">SOBERANO <span class="text-green-600">TAPETES</span>
+            </h1>
             <div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
                 <i class="fas fa-lock text-green-600"></i> Ambiente Seguro
             </div>
         </div>
     </header>
 
+    <!-- STEP BAR -->
     <nav class="bg-white border-b py-6">
         <div class="max-w-md mx-auto relative flex items-center justify-between px-6">
             <div class="absolute left-10 right-10 top-5 h-0.5 bg-gray-200 -z-0"></div>
-            <div id="progress-line" class="absolute left-10 top-5 h-0.5 bg-black transition-all duration-500 -z-0"
-                style="width: 0%;"></div>
+            <div id="progress-line" class="absolute left-10 top-5 h-0.5 bg-green-600 transition-all duration-500 -z-0"
+                style="width:0%"></div>
+
             <div class="relative z-10 flex flex-col items-center gap-2">
                 <div id="step-1-circle"
-                    class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center border-4 border-white shadow-sm transition-all">
+                    class="w-10 h-10 rounded-full step-active flex items-center justify-center border-4 border-white shadow-sm transition-all">
                     <i class="fas fa-user-check text-sm"></i>
-                </div> <span class="text-[10px] font-bold uppercase tracking-tighter">Identificação</span>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-tighter">Identificação</span>
             </div>
+
             <div class="relative z-10 flex flex-col items-center gap-2">
                 <div id="step-2-circle"
                     class="w-10 h-10 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center border-4 border-white shadow-sm transition-all">
                     <i class="fas fa-truck text-sm"></i>
-                </div> <span class="text-[10px] font-bold uppercase tracking-tighter text-gray-400">Entrega</span>
+                </div>
+                <span id="step-2-label"
+                    class="text-[10px] font-bold uppercase tracking-tighter text-gray-400">Entrega</span>
             </div>
+
             <div class="relative z-10 flex flex-col items-center gap-2">
                 <div id="step-3-circle"
                     class="w-10 h-10 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center border-4 border-white shadow-sm transition-all">
                     <i class="fas fa-credit-card text-sm"></i>
-                </div> <span class="text-[10px] font-bold uppercase tracking-tighter text-gray-400">Pagamento</span>
+                </div>
+                <span id="step-3-label"
+                    class="text-[10px] font-bold uppercase tracking-tighter text-gray-400">Pagamento</span>
             </div>
         </div>
     </nav>
@@ -82,128 +247,284 @@
     <main class="max-w-4xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="md:col-span-2 space-y-6">
             <form id="form-checkout">
+
+                <!-- ═══ STEP 1: IDENTIFICAÇÃO ═══ -->
                 <section id="section-pessoal"
                     class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
-                    <h2 class="text-lg font-bold mb-6 flex items-center gap-2"> <i
-                            class="fas fa-user-circle text-gray-400"></i> Informações Pessoais </h2>
-                    <div> <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nome Completo</label>
+                    <h2 class="text-lg font-bold mb-2 flex items-center gap-2">
+                        <i class="fas fa-user-circle text-gray-400"></i> Informações Pessoais
+                    </h2>
+
+                    <div id="alert-pessoal" class="hidden"></div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nome Completo</label>
                         <input type="text" id="nome" placeholder="Ex: João Silva" required
                             class="w-full p-3 border border-gray-300 rounded-lg">
                     </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div> <label class="block text-xs font-bold text-gray-500 uppercase mb-1">E-mail</label>
-                            <input type="email" id="email" placeholder="seu@email.com" required
-                                class="w-full p-3 border border-gray-300 rounded-lg">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">E-mail</label>
+                            <div class="relative">
+                                <input type="email" id="email" placeholder="seu@email.com" required autocomplete="off"
+                                    class="w-full p-3 border border-gray-300 rounded-lg">
+                                <div id="email-suggestions" class="email-suggestions hidden"></div>
+                            </div>
                         </div>
-                        <div> <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Celular</label>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Celular</label>
                             <input type="tel" id="phone" placeholder="(00) 00000-0000" required
                                 class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                     </div>
-                    <div> <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CPF</label>
-                        <input type="text" id="cpf" placeholder="000.000.000-00" required
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CPF</label>
+                        <input type="text" id="cpf" placeholder="000.000.000-00" required maxlength="14"
                             class="w-full p-3 border border-gray-300 rounded-lg">
+                        <p id="cpf-error" class="text-red-500 text-xs mt-1 hidden">
+                            <i class="fas fa-exclamation-circle mr-1"></i>CPF inválido. Verifique os dígitos.
+                        </p>
                     </div>
+
                     <button type="button" onclick="irParaEntrega()"
-                        class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-wider mt-4">
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-wider mt-2">
                         Avançar para Entrega <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </section>
 
+                <!-- ═══ STEP 2: ENTREGA ═══ -->
                 <section id="section-entrega"
                     class="hidden bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
-                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2"> <i
-                            class="fas fa-truck text-gray-400"></i> Onde devemos entregar? </h2>
+                    <h2 class="text-lg font-bold mb-2 flex items-center gap-2">
+                        <i class="fas fa-truck text-gray-400"></i> Onde devemos entregar?
+                    </h2>
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div> <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CEP</label>
-                            <input type="text" id="cep" placeholder="00000-000" required
-                                class="w-full p-3 border border-gray-300 rounded-lg">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CEP</label>
+                            <div class="relative">
+                                <input type="text" id="cep" placeholder="00000-000" required
+                                    class="w-full p-3 border border-gray-300 rounded-lg pr-10">
+                                <div id="cep-spinner" class="hidden absolute inset-y-0 right-3 flex items-center">
+                                    <i class="fas fa-circle-notch fa-spin text-gray-400 text-sm"></i>
+                                </div>
+                                <div id="cep-check" class="hidden absolute inset-y-0 right-3 flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 text-sm"></i>
+                                </div>
+                            </div>
+                            <p id="cep-error" class="text-red-500 text-xs mt-1 hidden">
+                                <i class="fas fa-exclamation-circle mr-1"></i>CEP não encontrado.
+                            </p>
                         </div>
-                        <div class="md:col-span-2"> <label
-                                class="block text-xs font-bold text-gray-500 uppercase mb-1">Rua / Logradouro</label>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Rua / Logradouro</label>
                             <input type="text" id="rua" required class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                     </div>
+
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div> <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Número</label>
-                            <input type="text" id="numero" required
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Número</label>
+                            <input type="text" id="numero" required inputmode="numeric"
                                 class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
-                        <div class="md:col-span-3"> <label
-                                class="block text-xs font-bold text-gray-500 uppercase mb-1">Bairro /
+                        <div class="md:col-span-3">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Bairro /
                                 Complemento</label>
                             <input type="text" id="bairro" required
                                 class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                     </div>
-                    <div id="container-fretes" class="hidden space-y-3 mt-8 border-t pt-6">
-                        <label
-                            class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-tighter text-xs">Escolha
-                            a entrega:</label>
-                        <label class="relative block">
-                            <input type="radio" name="shipping" value="22.40" onchange="updateTotal(22.40)"
-                                class="peer hidden">
-                            <div class="shipping-card p-4 rounded-xl flex items-center justify-between">
-                                <p class="text-sm font-bold text-gray-800 uppercase">📦 FULL ⚡ JADLOG EXPRESS</p>
-                                <span class="font-bold text-gray-800">R$ 22,40</span>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Cidade</label>
+                            <input type="text" id="cidade" readonly
+                                class="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Estado</label>
+                            <input type="text" id="estado" readonly
+                                class="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed">
+                        </div>
+                    </div>
+
+                    <!-- FRETES -->
+                    <div id="container-fretes" class="hidden space-y-3 mt-6 border-t pt-6">
+                        <div class="mb-4">
+                            <p class="text-xs font-black uppercase tracking-widest text-gray-500">Escolha a entrega</p>
+                            <p class="text-xs text-gray-400 mt-0.5">Seu tapete está pronto — quando quer receber?</p>
+                        </div>
+
+                        <!-- SEDEX -->
+                        <label class="shipping-label">
+                            <input type="radio" name="shipping" value="16.91"
+                                onchange="onFreteChange(16.91,'card-sedex')" checked class="hidden">
+                            <div id="card-sedex" class="shipping-card shipping-card-selected p-4 relative">
+                                <div class="absolute -top-3 left-4">
+                                    <span
+                                        class="bg-green-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                                        ⚡ Recomendado
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between mt-1">
+                                    <div>
+                                        <p class="text-sm font-black text-gray-800">SEDEX — Correios</p>
+                                        <p class="text-xs text-green-700 font-semibold mt-0.5">🚀 Chega em <strong>1 a 3
+                                                dias úteis</strong></p>
+                                        <p class="text-[11px] text-gray-400 mt-0.5">Rastreamento em tempo real</p>
+                                    </div>
+                                    <span class="text-lg font-black text-gray-800">R$ 16,91</span>
+                                </div>
                             </div>
                         </label>
-                        <label class="relative block">
-                            <input type="radio" name="shipping" value="16.91" onchange="updateTotal(16.91)" checked
-                                class="peer hidden">
-                            <div class="shipping-card p-4 rounded-xl flex items-center justify-between">
-                                <p class="text-sm font-bold text-gray-800 uppercase">📦 SEDEX - CORREIOS</p>
-                                <span class="font-bold text-gray-800">R$ 16,91</span>
+
+                        <!-- JADLOG -->
+                        <label class="shipping-label">
+                            <input type="radio" name="shipping" value="22.40"
+                                onchange="onFreteChange(22.40,'card-jadlog')" class="hidden">
+                            <div id="card-jadlog" class="shipping-card p-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-bold text-gray-800">JADLOG Express</p>
+                                        <p class="text-xs text-gray-500 font-semibold mt-0.5">📦 Chega em <strong>3 a 5
+                                                dias úteis</strong></p>
+                                        <p class="text-[11px] text-gray-400 mt-0.5">Entrega em mãos pelo motoboy</p>
+                                    </div>
+                                    <span class="text-lg font-bold text-gray-700">R$ 22,40</span>
+                                </div>
                             </div>
                         </label>
-                        <label class="relative block">
-                            <input type="radio" name="shipping" value="0" onchange="updateTotal(0)" class="peer hidden">
-                            <div class="shipping-card p-4 rounded-xl flex items-center justify-between">
-                                <p class="text-sm font-bold text-gray-800 uppercase">📦 FRETE NORMAL (15 DIAS)</p>
-                                <span class="font-bold text-green-600">GRÁTIS</span>
+
+                        <!-- GRÁTIS -->
+                        <label class="shipping-label">
+                            <input type="radio" name="shipping" value="0" onchange="onFreteChange(0,'card-gratis')"
+                                class="hidden">
+                            <div id="card-gratis" class="shipping-card p-4 opacity-80">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-bold text-gray-600">Frete Econômico</p>
+                                        <p class="text-xs text-red-400 font-semibold mt-0.5">🐢 Pode levar <strong>15 a
+                                                25 dias úteis</strong></p>
+                                        <p class="text-[11px] text-gray-400 mt-0.5">Sem rastreamento garantido</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-sm font-bold text-gray-400 line-through">R$ 16,91</span>
+                                        <p class="text-green-600 font-black text-sm">GRÁTIS</p>
+                                    </div>
+                                </div>
                             </div>
                         </label>
+
+                        <!-- Confirmação antes de gerar PIX -->
+                        <div id="resumo-pre-pix" class="hidden bg-gray-50 border border-gray-200 rounded-xl p-4 mt-2">
+                            <p class="text-xs text-gray-500 uppercase font-black tracking-widest mb-3">Confirme seu
+                                pedido</p>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Produto</span>
+                                <span id="conf-kit" class="font-bold text-gray-800 text-right max-w-[180px]">---</span>
+                            </div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Veículo</span>
+                                <span id="conf-veiculo"
+                                    class="font-bold text-gray-800 text-right max-w-[180px]">---</span>
+                            </div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Frete</span>
+                                <span id="conf-frete" class="font-bold text-gray-800">---</span>
+                            </div>
+                            <div class="flex justify-between text-sm pt-2 border-t mt-2">
+                                <span class="font-black text-gray-800">TOTAL</span>
+                                <span id="conf-total" class="font-black text-green-600 text-base">R$ 0,00</span>
+                            </div>
+                        </div>
+
                         <button type="submit" id="btn-submit"
-                            class="w-full bg-black hover:bg-gray-800 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-wider mt-6">
-                            Gerar PIX Seguro <i class="fas fa-chevron-right ml-2 text-xs"></i>
+                            class="w-full bg-black hover:bg-gray-800 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-wider mt-2">
+                            <i class="fas fa-lock mr-2 text-xs"></i>Gerar PIX Seguro
                         </button>
                     </div>
                 </section>
 
+                <!-- ═══ STEP 3: PAGAMENTO ═══ -->
                 <section id="section-pagamento"
                     class="hidden bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center space-y-6">
-                    <div class="flex flex-col items-center">
-                        <div id="pix-timer"
-                            class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-bold mb-4 italic">
-                            <i class="fas fa-clock mr-2"></i> Aguardando Pagamento (05:00)
-                        </div>
-                        <h2 class="text-xl font-black text-gray-800 italic uppercase">Pague via PIX</h2>
-                        <p class="text-gray-500 text-sm">Aprovação imediata e envio prioritário.</p>
+
+                    <div id="pix-timer"
+                        class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-bold inline-flex items-center gap-2 mx-auto">
+                        <i class="fas fa-clock"></i> Aguardando Pagamento (05:00)
                     </div>
+
+                    <div>
+                        <h2 class="text-xl font-black text-gray-800 uppercase">Pague via PIX</h2>
+                        <p class="text-gray-500 text-sm mt-1">Aprovação imediata — envio priorizado em seguida.</p>
+                    </div>
+
+                    <!-- Instruções passo a passo -->
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 text-left space-y-3">
+                        <p class="text-xs font-black text-blue-700 uppercase tracking-wider">Como pagar agora:</p>
+                        <div class="flex items-start gap-3 text-sm text-blue-800">
+                            <span
+                                class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-black shrink-0 mt-0.5">1</span>
+                            <span>Abra o app do seu banco ou carteira digital</span>
+                        </div>
+                        <div class="flex items-start gap-3 text-sm text-blue-800">
+                            <span
+                                class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-black shrink-0 mt-0.5">2</span>
+                            <span>Escolha <strong>Pagar com PIX</strong> e escaneie o QR Code abaixo</span>
+                        </div>
+                        <div class="flex items-start gap-3 text-sm text-blue-800">
+                            <span
+                                class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-black shrink-0 mt-0.5">3</span>
+                            <span>Ou copie o código e cole em <strong>PIX Copia e Cola</strong></span>
+                        </div>
+                        <div class="flex items-start gap-3 text-sm text-blue-800">
+                            <span
+                                class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-black shrink-0 mt-0.5">4</span>
+                            <span>Confirme — você será redirecionado <strong>automaticamente</strong> após o
+                                pagamento</span>
+                        </div>
+                    </div>
+
                     <div
                         class="flex justify-center border-4 border-gray-50 p-4 rounded-2xl bg-white max-w-[220px] mx-auto shadow-inner">
-                        <img id="pix-qr-code" src="" alt="QR Code PIX" style="width: 200px; height: 200px;">
+                        <img id="pix-qr-code" src="" alt="QR Code PIX" style="width:200px;height:200px;">
                     </div>
+
                     <div class="space-y-2">
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase">Clique no código abaixo para
-                            copiar</label>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase">Ou copie o código PIX</label>
                         <div class="relative group cursor-pointer" onclick="copyPix()">
                             <input type="text" id="pix-key" readonly
                                 class="w-full p-4 bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl text-xs font-mono text-center cursor-pointer group-hover:border-green-500 transition-all">
-                            <div class="absolute inset-y-0 right-4 flex items-center"><i
-                                    class="fas fa-copy text-gray-400"></i></div>
+                            <div class="absolute inset-y-0 right-4 flex items-center">
+                                <i id="copy-icon" class="fas fa-copy text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div id="copy-toast" class="hidden toast-anim">
+                            <p class="text-green-600 text-xs font-bold flex items-center justify-center gap-1 mt-1">
+                                <i class="fas fa-check-circle"></i> Código copiado com sucesso!
+                            </p>
                         </div>
                     </div>
+
+                    <div id="pix-polling-status"
+                        class="flex items-center justify-center gap-2 text-xs text-gray-400 font-medium">
+                        <i class="fas fa-circle-notch fa-spin"></i> Verificando pagamento automaticamente...
+                    </div>
                 </section>
+
             </form>
         </div>
 
-        <div class="md:col-span-1">
+        <!-- ═══ RESUMO LATERAL (desktop) ═══ -->
+        <div class="md:col-span-1 hidden md:block">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 sticky top-6">
                 <h3 class="font-bold text-gray-800 mb-4 uppercase text-xs tracking-widest border-b pb-2">Resumo</h3>
                 <div class="flex gap-4 mb-4 pb-4 border-b">
                     <div id="resumo-img-container"
-                        class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden text-2xl text-gray-300">
+                        class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden text-2xl text-gray-300 shrink-0">
                         <i class="fas fa-box"></i>
                     </div>
                     <div>
@@ -212,30 +533,58 @@
                     </div>
                 </div>
                 <div class="space-y-3">
-                    <div class="flex justify-between text-sm"><span class="text-gray-500">Subtotal</span><span
-                            id="resumo-preco" class="font-bold">R$ 0,00</span></div>
-                    <div class="flex justify-between text-sm"><span class="text-gray-500">Frete</span><span
-                            id="resumo-frete-texto" class="font-black italic text-gray-400">---</span></div>
-                    <div class="pt-4 mt-4 border-t flex justify-between items-center"><span
-                            class="font-bold text-gray-800">TOTAL</span><span id="total-final"
-                            class="text-2xl font-black text-green-600 tracking-tighter">R$ 0,00</span></div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">Subtotal</span>
+                        <span id="resumo-preco" class="font-bold">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">Frete</span>
+                        <span id="resumo-frete-texto" class="font-black italic text-gray-400">---</span>
+                    </div>
+                    <div class="pt-4 mt-4 border-t flex justify-between items-center">
+                        <span class="font-bold text-gray-800">TOTAL</span>
+                        <span id="total-final" class="text-2xl font-black text-green-600 tracking-tighter">R$
+                            0,00</span>
+                    </div>
+                </div>
+                <div
+                    class="mt-4 pt-4 border-t flex items-center justify-center gap-2 text-[10px] text-gray-400 font-bold uppercase">
+                    <i class="fas fa-lock text-green-500"></i> Compra 100% segura
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- PIX CONFIRMADO — overlay -->
+    <div id="pix-success-overlay" class="hidden">
+        <div class="pix-success-card">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check-circle text-green-500 text-3xl"></i>
+            </div>
+            <h2 class="text-xl font-black text-gray-800 mb-2">Pagamento Confirmado!</h2>
+            <p class="text-gray-500 text-sm mb-6">Seu pedido foi recebido. Você receberá um e-mail com os detalhes do
+                envio em breve.</p>
+            <div class="flex items-center justify-center gap-2 text-xs text-gray-400">
+                <i class="fas fa-circle-notch fa-spin"></i> Redirecionando...
+            </div>
+        </div>
+    </div>
+
     <script>
+        // ═══════════════════════════════════════
         // 1. DADOS INICIAIS
+        // ═══════════════════════════════════════
         let kitNome = "Produto não identificado";
         let veiculoNome = "Veículo não informado";
         let imagemUrl = "";
         let valorBase = 0;
+        let freteAtual = 16.91; // SEDEX pré-selecionado
 
         const saved = localStorage.getItem("checkout_selection");
         if (saved) {
             const data = JSON.parse(saved);
             kitNome = data.kitName || kitNome;
-            veiculoNome = `${data.brandName || ""} ${data.modelName || ""} (${data.yearName || ""})`;
+            veiculoNome = `${data.brandName || ""} ${data.modelName || ""} (${data.yearName || ""})`.trim();
             imagemUrl = data.image || "";
             valorBase = parseFloat(data.price) || 0;
         } else {
@@ -247,65 +596,225 @@
             imagemUrl = params.get('imagem') || "";
         }
 
-        // Renderização Inicial
+        const fmt = v => `R$ ${v.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
         document.getElementById('resumo-kit').innerText = kitNome;
         document.getElementById('resumo-veiculo').innerText = veiculoNome;
-        document.getElementById('resumo-preco').innerText = `R$ ${valorBase.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-        document.getElementById('total-final').innerText = `R$ ${valorBase.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        document.getElementById('resumo-mobile-kit').innerText = kitNome;
+        document.getElementById('resumo-preco').innerText = fmt(valorBase);
+
+        uupdateTotal(0); // frete só aparece após CEP
+        document.getElementById('resumo-frete-texto').innerText = '---';
+
         if (imagemUrl) {
-            document.getElementById('resumo-img-container').innerHTML = `<img src="${imagemUrl}" class="w-full h-full object-contain">`;
+            document.getElementById('resumo-img-container').innerHTML =
+                `<img src="${imagemUrl}" class="w-full h-full object-contain">`;
         }
 
-        // 2. NAVEGAÇÃO
-        function irParaEntrega() {
-            const nome = document.getElementById('nome').value;
-            const email = document.getElementById('email').value;
-            const cpf = document.getElementById('cpf').value;
-            if (!nome || !email || cpf.length < 14) return alert("⚠️ Preencha os dados corretamente.");
+        // ═══════════════════════════════════════
+        // 2. AUTOCOMPLETE E-MAIL
+        // ═══════════════════════════════════════
+        const emailDomains = ['gmail.com', 'outlook.com', 'hotmail.com', 'yahoo.com', 'icloud.com', 'live.com', 'protonmail.com'];
+        const emailInput = document.getElementById('email');
+        const suggestionsBox = document.getElementById('email-suggestions');
 
-            document.getElementById('section-pessoal').classList.add('hidden');
-            document.getElementById('section-entrega').classList.remove('hidden');
-            document.getElementById('step-2-circle').classList.replace('bg-gray-100', 'bg-black');
-            document.getElementById('step-2-circle').classList.replace('text-gray-400', 'text-white');
-            document.getElementById('progress-line').style.width = "50%";
-            window.scrollTo(0, 0);
-        }
+        emailInput.addEventListener('input', () => {
+            const val = emailInput.value;
+            const atIdx = val.indexOf('@');
+            suggestionsBox.innerHTML = '';
+            if (atIdx === -1) { suggestionsBox.classList.add('hidden'); return; }
 
+            const user = val.substring(0, atIdx);
+            const typed = val.substring(atIdx + 1).toLowerCase();
+            const filtered = emailDomains.filter(d => d.startsWith(typed));
+
+            if (!filtered.length || (filtered.length === 1 && filtered[0] === typed)) {
+                suggestionsBox.classList.add('hidden'); return;
+            }
+            filtered.forEach(domain => {
+                const item = document.createElement('div');
+                item.className = 'email-suggestion-item';
+                item.innerHTML = `<i class="fas fa-envelope" style="color:#9ca3af;font-size:12px"></i>${user}@<span class="domain">${domain}</span>`;
+                item.addEventListener('mousedown', e => {
+                    e.preventDefault();
+                    emailInput.value = `${user}@${domain}`;
+                    suggestionsBox.classList.add('hidden');
+                });
+                suggestionsBox.appendChild(item);
+            });
+            suggestionsBox.classList.remove('hidden');
+        });
+
+        emailInput.addEventListener('blur', () => {
+            setTimeout(() => suggestionsBox.classList.add('hidden'), 150);
+        });
+
+        // ═══════════════════════════════════════
         // 3. MÁSCARAS
+        // ═══════════════════════════════════════
         const mask = (el, fn) => el && el.addEventListener('input', e => e.target.value = fn(e.target.value));
-        mask(document.getElementById('cpf'), v => v.replace(/\D/g, "").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"));
-        mask(document.getElementById('phone'), v => v.replace(/\D/g, "").replace(/^(\d{2})(\d)/g, "($1) $2").replace(/(\d)(\d{4})$/, "$1-$2"));
+
+        mask(document.getElementById('cpf'), v =>
+            v.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+        );
+        mask(document.getElementById('phone'), v =>
+            v.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d)(\d{4})$/, '$1-$2')
+        );
+        mask(document.getElementById('numero'), v => v.replace(/\D/g, ''));
         mask(document.getElementById('cep'), v => {
-            v = v.replace(/\D/g, "").replace(/^(\d{5})(\d)/, "$1-$2");
-            if (v.length === 9) buscaCEP(v);
+            v = v.replace(/\D/g, '').replace(/^(\d{5})(\d)/, '$1-$2');
+            if (v.replace(/\D/g, '').length === 8) buscaCEP(v);
             return v;
         });
 
-        // 4. BUSCA CEP
+        // ═══════════════════════════════════════
+        // 4. VALIDAÇÃO CPF
+        // ═══════════════════════════════════════
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/\D/g, '');
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+            let sum = 0;
+            for (let i = 0; i < 9; i++) sum += parseInt(cpf[i]) * (10 - i);
+            let rest = (sum * 10) % 11;
+            if (rest === 10 || rest === 11) rest = 0;
+            if (rest !== parseInt(cpf[9])) return false;
+            sum = 0;
+            for (let i = 0; i < 10; i++) sum += parseInt(cpf[i]) * (11 - i);
+            rest = (sum * 10) % 11;
+            if (rest === 10 || rest === 11) rest = 0;
+            return rest === parseInt(cpf[10]);
+        }
+
+        document.getElementById('cpf').addEventListener('blur', () => {
+            const v = document.getElementById('cpf').value;
+            const err = document.getElementById('cpf-error');
+            const inp = document.getElementById('cpf');
+            if (v.length === 14 && !validarCPF(v)) {
+                err.classList.remove('hidden'); inp.classList.add('border-red-400');
+            } else {
+                err.classList.add('hidden'); inp.classList.remove('border-red-400');
+            }
+        });
+
+        // ═══════════════════════════════════════
+        // 5. INLINE ALERT helper
+        // ═══════════════════════════════════════
+        function showAlert(id, msg, type = 'error') {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const icons = { error: 'exclamation-circle', success: 'check-circle', info: 'info-circle' };
+            el.innerHTML = `<div class="inline-alert ${type} toast-anim"><i class="fas fa-${icons[type]}"></i>${msg}</div>`;
+            el.classList.remove('hidden');
+            if (type !== 'error') setTimeout(() => el.classList.add('hidden'), 4000);
+        }
+        function hideAlert(id) {
+            const el = document.getElementById(id);
+            if (el) { el.classList.add('hidden'); el.innerHTML = ''; }
+        }
+
+        // ═══════════════════════════════════════
+        // 6. STEP 1 → 2
+        // ═══════════════════════════════════════
+        function irParaEntrega() {
+            const nome = document.getElementById('nome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const cpf = document.getElementById('cpf').value.trim();
+
+            if (!nome) return showAlert('alert-pessoal', 'Informe seu nome completo.');
+            if (!email || !email.includes('@')) return showAlert('alert-pessoal', 'Informe um e-mail válido.');
+            if (phone.replace(/\D/g, '').length < 10) return showAlert('alert-pessoal', 'Informe um telefone com DDD.');
+            if (cpf.length < 14) return showAlert('alert-pessoal', 'Informe seu CPF completo.');
+            if (!validarCPF(cpf)) return showAlert('alert-pessoal', 'CPF inválido. Verifique os dígitos.');
+
+            hideAlert('alert-pessoal');
+
+            const s1 = document.getElementById('step-1-circle');
+            s1.classList.remove('step-active'); s1.classList.add('step-done');
+            s1.innerHTML = '<i class="fas fa-check text-sm"></i>';
+
+            const s2 = document.getElementById('step-2-circle');
+            s2.classList.remove('bg-gray-100', 'text-gray-400'); s2.classList.add('step-active');
+            document.getElementById('step-2-label').classList.remove('text-gray-400');
+            document.getElementById('progress-line').style.width = "50%";
+
+            document.getElementById('section-pessoal').classList.add('hidden');
+            document.getElementById('section-entrega').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        // ═══════════════════════════════════════
+        // 7. BUSCA CEP
+        // ═══════════════════════════════════════
         async function buscaCEP(cep) {
+            const spinner = document.getElementById('cep-spinner');
+            const check = document.getElementById('cep-check');
+            const errEl = document.getElementById('cep-error');
+
+            spinner.classList.remove('hidden');
+            check.classList.add('hidden');
+            errEl.classList.add('hidden');
+
             try {
-                const res = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, "")}/json/`);
+                const res = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`);
                 const data = await res.json();
-                if (!data.erro) {
-                    document.getElementById('rua').value = data.logradouro;
-                    document.getElementById('bairro').value = data.bairro;
-                    document.getElementById('container-fretes').classList.remove('hidden');
-                    updateTotal(16.91);
-                }
-            } catch (e) {
+                spinner.classList.add('hidden');
+
+                if (data.erro) { errEl.classList.remove('hidden'); return; }
+
+                document.getElementById('rua').value = data.logradouro || '';
+                document.getElementById('bairro').value = data.bairro || '';
+                document.getElementById('cidade').value = data.localidade || '';
+                document.getElementById('estado').value = data.uf || '';
+                check.classList.remove('hidden');
+
+                document.getElementById('container-fretes').classList.remove('hidden');
+                updateTotal(freteAtual); // agora sim aplica o SEDEX pré-selecionado
+                atualizaResumoPix();
+            } catch {
+                spinner.classList.add('hidden');
+                errEl.classList.remove('hidden');
                 document.getElementById('container-fretes').classList.remove('hidden');
             }
         }
 
-        // 5. ATUALIZA TOTAL
-        function updateTotal(frete) {
-            const total = valorBase + parseFloat(frete);
-            document.getElementById('resumo-frete-texto').innerText = frete === 0 ? "Grátis" : `R$ ${frete.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            document.getElementById('total-final').innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        // ═══════════════════════════════════════
+        // 8. FRETE — troca de seleção sem bug de borda
+        // ═══════════════════════════════════════
+        const cardIds = ['card-sedex', 'card-jadlog', 'card-gratis'];
+
+        function onFreteChange(valor, selectedCardId) {
+            freteAtual = valor;
+            cardIds.forEach(id => document.getElementById(id).classList.remove('shipping-card-selected'));
+            document.getElementById(selectedCardId).classList.add('shipping-card-selected');
+            updateTotal(valor);
+            atualizaResumoPix();
         }
 
-        // 6. GERAÇÃO PIX
-        document.getElementById('form-checkout').addEventListener('submit', async (e) => {
+        // ═══════════════════════════════════════
+        // 9. ATUALIZA TOTAIS
+        // ═══════════════════════════════════════
+        function updateTotal(frete) {
+            const total = valorBase + parseFloat(frete);
+            const freteLabel = frete === 0 ? "Grátis" : fmt(frete);
+            document.getElementById('resumo-frete-texto').innerText = freteLabel;
+            document.getElementById('total-final').innerText = fmt(total);
+            document.getElementById('resumo-mobile-total').innerText = fmt(total);
+        }
+
+        function atualizaResumoPix() {
+            const total = valorBase + freteAtual;
+            document.getElementById('conf-kit').innerText = kitNome;
+            document.getElementById('conf-veiculo').innerText = veiculoNome;
+            document.getElementById('conf-frete').innerText = freteAtual === 0 ? "Grátis" : fmt(freteAtual);
+            document.getElementById('conf-total').innerText = fmt(total);
+            document.getElementById('resumo-pre-pix').classList.remove('hidden');
+        }
+
+        // ═══════════════════════════════════════
+        // 10. GERAÇÃO PIX
+        // ═══════════════════════════════════════
+        document.getElementById('form-checkout').addEventListener('submit', async e => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
             btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> PROCESSANDO...';
@@ -336,52 +845,108 @@
                 document.getElementById('pix-qr-code').src = result.pix_qr_code;
                 document.getElementById('pix-key').value = result.pix_code;
 
-                document.getElementById('section-entrega').classList.add('hidden');
-                document.getElementById('section-pagamento').classList.remove('hidden');
-                document.getElementById('step-3-circle').classList.replace('bg-gray-100', 'bg-black');
-                document.getElementById('step-3-circle').classList.replace('text-gray-400', 'text-white');
+                const s2 = document.getElementById('step-2-circle');
+                s2.classList.remove('step-active'); s2.classList.add('step-done');
+                s2.innerHTML = '<i class="fas fa-check text-sm"></i>';
+
+                const s3 = document.getElementById('step-3-circle');
+                s3.classList.remove('bg-gray-100', 'text-gray-400'); s3.classList.add('step-active');
+                document.getElementById('step-3-label').classList.remove('text-gray-400');
                 document.getElementById('progress-line').style.width = "100%";
 
+                document.getElementById('section-entrega').classList.add('hidden');
+                document.getElementById('section-pagamento').classList.remove('hidden');
                 window.scrollTo(0, 0);
-                startTimer();
+                startPixTimer();
                 verificarPagamento(result.id);
 
-            } catch (err) {
-                alert("Erro ao gerar PIX. Verifique os dados.");
+            } catch {
+                showAlert('alert-pessoal', 'Erro ao gerar PIX. Verifique os dados e tente novamente.');
                 btn.disabled = false;
-                btn.innerHTML = "Gerar PIX Seguro";
+                btn.innerHTML = '<i class="fas fa-lock mr-2 text-xs"></i>Gerar PIX Seguro';
             }
         });
 
-        // AUXILIARES
+        // ═══════════════════════════════════════
+        // 11. COPIAR PIX
+        // ═══════════════════════════════════════
         function copyPix() {
-            const key = document.getElementById("pix-key");
-            key.select();
-            navigator.clipboard.writeText(key.value);
-            alert("✅ Código PIX Copiado!");
+            const key = document.getElementById('pix-key');
+            const icon = document.getElementById('copy-icon');
+            const toast = document.getElementById('copy-toast');
+
+            const doFeedback = () => {
+                icon.classList.replace('fa-copy', 'fa-check-circle');
+                icon.classList.replace('text-gray-400', 'text-green-500');
+                key.classList.add('border-green-400');
+                toast.classList.remove('hidden');
+                setTimeout(() => {
+                    icon.classList.replace('fa-check-circle', 'fa-copy');
+                    icon.classList.replace('text-green-500', 'text-gray-400');
+                    key.classList.remove('border-green-400');
+                    toast.classList.add('hidden');
+                }, 2500);
+            };
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(key.value).then(doFeedback).catch(() => {
+                    key.select(); document.execCommand('copy'); doFeedback();
+                });
+            } else {
+                key.select(); document.execCommand('copy'); doFeedback();
+            }
         }
 
-        function startTimer() {
+        // ═══════════════════════════════════════
+        // 12. TIMER PIX
+        // ═══════════════════════════════════════
+        function startPixTimer() {
             let duration = 300;
             const display = document.getElementById('pix-timer');
-            const timer = setInterval(() => {
-                let min = Math.floor(duration / 60);
-                let sec = duration % 60;
-                display.innerHTML = `<i class="fas fa-clock mr-2"></i> Aguardando Pagamento (${min}:${sec < 10 ? '0' + sec : sec})`;
-                if (--duration < 0) clearInterval(timer);
+            const interval = setInterval(() => {
+                const min = Math.floor(duration / 60);
+                const sec = duration % 60;
+                display.innerHTML = `<i class="fas fa-clock"></i> Aguardando Pagamento (${min}:${sec < 10 ? '0' + sec : sec})`;
+                if (--duration < 0) {
+                    clearInterval(interval);
+                    display.innerHTML = `<i class="fas fa-times-circle"></i> Tempo expirado`;
+                    display.classList.replace('bg-green-100', 'bg-red-100');
+                    display.classList.replace('text-green-700', 'text-red-600');
+                    document.getElementById('pix-polling-status').innerHTML =
+                        '<i class="fas fa-exclamation-circle text-red-400"></i> <span class="text-red-400">Tempo expirado. Gere um novo PIX se necessário.</span>';
+                }
             }, 1000);
         }
 
+        // ═══════════════════════════════════════
+        // 13. VERIFICAR PAGAMENTO
+        // ═══════════════════════════════════════
         async function verificarPagamento(id) {
-            const checkInterval = setInterval(async () => {
+            const statusEl = document.getElementById('pix-polling-status');
+            let tentativas = 0;
+
+            const interval = setInterval(async () => {
+                tentativas++;
                 try {
                     const res = await fetch(`/api/verificar-pagamento/${id}`);
                     const data = await res.json();
                     if (data.status === "PAID" || data.success === true) {
-                        clearInterval(checkInterval);
-                        window.location.href = "/obrigado.html";
+                        clearInterval(interval);
+
+                        // Salva dados do cliente para o upsell no obrigado.html
+                        const sel = JSON.parse(localStorage.getItem("checkout_selection") || "{}");
+                        sel.customerName = document.getElementById('nome').value;
+                        sel.customerEmail = document.getElementById('email').value;
+                        sel.customerCpf = document.getElementById('cpf').value.replace(/\D/g, '');
+                        sel.customerPhone = document.getElementById('phone').value.replace(/\D/g, '');
+                        localStorage.setItem("checkout_selection", JSON.stringify(sel));
+
+                        document.getElementById('pix-success-overlay').classList.remove('hidden');
+                        setTimeout(() => window.location.href = "/obrigado.html", 2500);
+                    } else if (tentativas % 6 === 0) {
+                        statusEl.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Ainda verificando... pode levar alguns instantes.';
                     }
-                } catch (e) { }
+                } catch { }
             }, 5000);
         }
     </script>

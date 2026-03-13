@@ -3,11 +3,22 @@ export default async function handler(req, res) {
         return res.status(405).send("Method Not Allowed");
     }
 
-    const { customer, amount, kitName, description, isUpsell } = req.body;
+    const { customer, amount, description, isUpsell } = req.body;
+
+    // ===============================
+    // 1. VALIDAÇÃO DE ENTRADA
+    // ===============================
+    if (!customer?.email || !customer.email.includes("@")) {
+        return res.status(400).json({ error: "E-mail do cliente inválido ou ausente" });
+    }
+
+    if (!customer?.name?.trim()) {
+        return res.status(400).json({ error: "Nome do cliente ausente" });
+    }
 
     try {
         // ===============================
-        // 1. TRATAMENTO DE VALOR (DECIMAL)
+        // 2. TRATAMENTO DE VALOR
         // ===============================
         let parsedAmount = Number(
             String(amount || "0")
@@ -19,8 +30,7 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: "Valor inválido" });
         }
 
-        // Se o valor chegar em centavos (ex: 8990), converte para decimal (89.90)
-        // A SyncPay, nesta estrutura, espera o ponto decimal.
+        // Se chegar em centavos (ex: 8990), converte para decimal (89.90)
         if (parsedAmount > 1000) {
             parsedAmount = parsedAmount / 100;
         }
@@ -31,13 +41,17 @@ export default async function handler(req, res) {
             .replace(/\D/g, "")
             .slice(0, 11);
 
-        const cleanPhone =
-            String(customer?.phone || "")
-                .replace(/\D/g, "")
-                .slice(-11) || "11999999999";
+        const cleanPhone = String(customer?.phone || "")
+            .replace(/\D/g, "")
+            .slice(-11) || null;
+
+        // Avisa no log se telefone vier vazio — sem enviar número falso
+        if (!cleanPhone) {
+            console.warn("gerar-pix: telefone ausente para", customer.email);
+        }
 
         // ===============================
-        // 2. AUTENTICAÇÃO
+        // 3. AUTENTICAÇÃO
         // ===============================
         const authResponse = await fetch(
             "https://api.syncpayments.com.br/api/partner/v1/auth-token",
@@ -59,16 +73,29 @@ export default async function handler(req, res) {
         }
 
         // ===============================
-        // 3. DESCRIÇÃO E WEBHOOK
+        // 4. DESCRIÇÃO E WEBHOOK
         // ===============================
-        const finalDescription = description || kitName || (isUpsell ? "Upsell: Kit Limpeza Soberano" : "Compra Soberano 3D Mats");
+        const rawDescription = description || (isUpsell ? "Upsell: Kit Limpeza Soberano" : "Compra Soberano Tapetes");
 
-        // Usa a URL do seu site ou fallback
-        const webhookUrl = process.env.BASE_URL ? `${process.env.BASE_URL}/api/webhook` : "https://exclusive-3d-mats.vercel.app/api/webhook";
+        // Corta em limite de palavra para não truncar no meio
+        const finalDescription = rawDescription.length > 50
+            ? rawDescription.substring(0, 50).replace(/\s\S*$/, "")
+            : rawDescription;
+
+        const webhookUrl = process.env.BASE_URL
+            ? `${process.env.BASE_URL}/api/webhook`
+            : "https://exclusive-3d-mats.vercel.app/api/webhook";
 
         // ===============================
-        // 4. GERAÇÃO DO PIX (MUDANÇA PARA 'CLIENT' E 'CPF')
+        // 5. GERAÇÃO DO PIX
         // ===============================
+        const clientPayload = {
+            name: String(customer.name).trim(),
+            email: customer.email,
+            cpf: cleanCpf,
+        };
+        if (cleanPhone) clientPayload.phone = cleanPhone;
+
         const paymentResponse = await fetch(
             "https://api.syncpayments.com.br/api/partner/v1/cash-in",
             {
@@ -79,15 +106,10 @@ export default async function handler(req, res) {
                     "Authorization": `Bearer ${authData.access_token}`,
                 },
                 body: JSON.stringify({
-                    amount: parsedAmount, // Ex: 89.90
-                    description: finalDescription.substring(0, 50),
+                    amount: parsedAmount,
+                    description: finalDescription,
                     webhook_url: webhookUrl,
-                    client: { // Algumas versões usam 'client' em vez de 'customer'
-                        name: String(customer?.name || "Cliente").trim(),
-                        email: customer?.email,
-                        cpf: cleanCpf, // Algumas versões usam 'cpf' em vez de 'cpf_cnpj'
-                        phone: cleanPhone,
-                    },
+                    client: clientPayload,
                 }),
             }
         );
@@ -95,27 +117,44 @@ export default async function handler(req, res) {
         const paymentData = await paymentResponse.json();
 
         if (!paymentResponse.ok) {
-            console.error("Payload enviado:", parsedAmount, finalDescription, cleanCpf);
-            console.error("Erro na geração do pagamento:", paymentData);
+            // Loga sem expor CPF
+            console.error("Erro na geração do pagamento:", {
+                status: paymentResponse.status,
+                amount: parsedAmount,
+                description: finalDescription,
+                error: paymentData
+            });
             return res.status(paymentResponse.status).json(paymentData);
         }
 
         // ===============================
-        // 5. TRATAMENTO DO RETORNO (MULTI-CAMPO)
+        // 6. NORMALIZAÇÃO DO RETORNO
         // ===============================
         const pixRaw = paymentData?.data || paymentData;
 
-        // Tenta capturar o código PIX de qualquer campo possível
         const pixCode = pixRaw.pix_code || pixRaw.paymentcode || pixRaw.paymentCode || pixRaw.emv;
 
         if (!pixCode) {
+            console.error("PIX não retornado pela SyncPay:", pixRaw);
             return res.status(500).json({ error: "PIX não retornado pela SyncPay", details: pixRaw });
         }
 
-        const transactionId = pixRaw.id || pixRaw.identifier || pixRaw.idtransaction || pixRaw.uuid;
+        const transactionId =
+            pixRaw.id ||
+            pixRaw.identifier ||
+            pixRaw.idtransaction ||
+            pixRaw.uuid ||
+            null;
+
+        if (!transactionId) {
+            console.warn("gerar-pix: transactionId ausente no retorno da SyncPay", pixRaw);
+        }
+
+        // Log de conversão — sem dados sensíveis
+        console.log(`gerar-pix: PIX gerado | isUpsell=${!!isUpsell} | amount=${parsedAmount} | id=${transactionId}`);
 
         // ===============================
-        // 6. QR CODE E RESPOSTA
+        // 7. RESPOSTA
         // ===============================
         const qrCodeImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pixCode)}`;
 
@@ -128,7 +167,7 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error("Erro interno no servidor:", error);
+        console.error("Erro interno no servidor:", error.message);
         return res.status(500).json({ error: "Erro interno", details: error.message });
     }
 }
