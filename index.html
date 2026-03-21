@@ -4,16 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soberano Tapetes | Kit 3D Exclusivo</title>
+    <title>Soberano Tapetes | Tapete Bandeja 3D Sob Medida com Borda de 5cm</title>
+
+    <!-- SEO -->
+    <meta name="description"
+        content="Tapete bandeja 3D sob medida com borda de proteção de 5cm — retém líquidos, impermeável, encaixe milimétrico para o seu carro. Frete grátis para todo Brasil.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0a0f0a">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Soberano Tapetes | Tapete Bandeja 3D Sob Medida">
+    <meta property="og:description"
+        content="Bordas de 5cm que retêm tudo. Encaixe milimétrico, impermeável e fácil de limpar. Frete grátis.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://exclusive-3d-mats.vercel.app">
+    <meta property="og:image" content="./assets/carousel-new-2-CTcO_2X9.jpg">
+
+    <link rel="icon" type="image/png" href="./assets/favicon.png">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
-    <meta name="description"
-        content="Tapetes 3D sob medida: borracha 7mm, bordas 5cm impermeáveis, ilhós metálicos. Frete Grátis para todo Brasil.">
-    <link rel="icon" type="image/png" href="./assets/favicon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
+        :root {
+            --green: #1a9e4a;
+            --green-dark: #0f7a37;
+            --green-glow: rgba(26, 158, 74, 0.2);
+            --black: #0a0f0a;
+            --gray-50: #f8faf8;
+            --gray-100: #f0f4f0;
+            --gray-200: #e1e8e1;
+            --gray-400: #8a9e8a;
+            --gray-600: #4a5e4a;
+            --gray-800: #1f2e1f;
+            --font-d: 'Bebas Neue', sans-serif;
+            --font-b: 'DM Sans', sans-serif;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -21,189 +53,438 @@
         }
 
         body {
-            background: #ffffff;
-            color: #111827;
-            font-family: 'Inter', sans-serif;
+            background: #fff;
+            color: var(--gray-800);
+            font-family: var(--font-b);
             font-size: 16px;
             line-height: 1.5;
-            overflow-x: hidden
+            overflow-x: hidden;
         }
 
         ::-webkit-scrollbar {
-            width: 6px
+            width: 4px
         }
 
         ::-webkit-scrollbar-track {
-            background: #f9fafb
+            background: var(--gray-50)
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #d1d5db;
-            border-radius: 3px
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #16a34a
+            background: var(--green);
+            border-radius: 2px
         }
 
         .hidden {
             display: none !important
         }
 
-        @media(max-width:560px) {
-            #kit-grid {
-                grid-template-columns: 1fr !important
-            }
-        }
-
-        @media(max-width:640px) {
-            #menu-btn-nav {
-                display: block !important
-            }
-
-            .nav-links.desktop {
-                display: none !important
-            }
-        }
-
-        .glass {
-            background: #ffffff;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06)
-        }
-
-        body,
-        html {
-            background-color: #ffffff !important;
-            color: #111827
-        }
-
-        .popover-container {
-            position: relative;
-            width: 100%
-        }
-
-        .popover-trigger {
-            width: 100%;
-            background: #f9fafb;
-            border: 1.5px solid #d1d5db;
-            border-radius: 12px;
-            padding: 14px 18px;
-            text-align: left;
-            color: #111827;
-            font-size: 15px;
-            font-weight: 600;
+        /* ── TOP BAR ── */
+        .top-bar {
+            background: var(--black);
+            color: #fff;
+            padding: 9px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 200;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: all .2s
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(26, 158, 74, 0.3);
         }
 
-        .popover-trigger:disabled {
-            opacity: 0.4;
-            cursor: not-allowed
+        .top-bar-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
         }
 
-        .popover-trigger:hover:not(:disabled) {
-            background: #f3f4f6;
-            border-color: #16a34a
+        .top-bar-text strong {
+            color: #fff
         }
 
-        .popover-content {
+        .top-bar-timer {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            background: var(--green);
+            border-radius: 6px;
+            padding: 3px 10px;
+        }
+
+        .top-bar-timer span {
+            font-family: var(--font-d);
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .top-bar-badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--green);
+            background: rgba(26, 158, 74, 0.12);
+            border: 1px solid rgba(26, 158, 74, 0.3);
+            border-radius: 20px;
+            padding: 3px 10px;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── NAV ── */
+        .main-nav {
+            position: sticky;
+            top: 38px;
+            z-index: 199;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .logo-emblem {
+            width: 40px;
+            height: 40px;
+            background: var(--black);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-emblem::after {
+            content: '';
             position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 14px;
-            z-index: 100;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-            padding: 12px;
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            animation: popIn 0.2s ease-out
+            inset: 0;
+            background: linear-gradient(135deg, rgba(26, 158, 74, 0.4) 0%, transparent 60%);
+            border-radius: 10px;
         }
 
-        .popover-content.show {
-            display: flex
-        }
-
-        .search-input {
-            width: 100%;
-            background: #f9fafb;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 10px 14px;
-            color: #111827;
-            font-size: 14px;
-            outline: none
-        }
-
-        .search-input:focus {
-            border-color: #16a34a
-        }
-
-        .results-list {
-            max-height: 280px;
-            overflow-y: auto;
+        .logo-text-wrap {
             display: flex;
             flex-direction: column;
-            gap: 4px
+            line-height: 1;
+            gap: 1px;
         }
 
-        .results-list button {
+        .logo-name {
+            font-family: var(--font-d);
+            font-size: 22px;
+            letter-spacing: 1.5px;
+            color: var(--black);
+            line-height: 1;
+        }
+
+        .logo-name em {
+            font-style: normal;
+            color: var(--green);
+        }
+
+        .logo-sub {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--gray-400);
+        }
+
+        .nav-trust {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .nav-trust i {
+            color: var(--green);
+            font-size: 13px;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: var(--gray-50);
+            padding: 52px 20px 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--gray-200) 1px, transparent 1px),
+                linear-gradient(90deg, var(--gray-200) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, var(--gray-50) 100%);
+            pointer-events: none;
+        }
+
+        .hero>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--black);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 28px;
+            border: 1px solid rgba(26, 158, 74, 0.5);
+        }
+
+        .hero-pill-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
+
+        .hero-carousel-wrap {
             width: 100%;
-            text-align: left;
-            padding: 12px 14px;
-            background: transparent;
-            border: none;
-            color: #374151;
-            font-size: 13.5px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all .1s
+            max-width: 520px;
+            margin-bottom: 36px;
+            position: relative;
         }
 
-        .results-list button:hover {
-            background: #f0fdf4;
-            color: #16a34a
+        .hero-carousel-frame {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 0 var(--green), 0 8px 32px rgba(0, 0, 0, 0.14), 0 32px 64px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--gray-200);
         }
 
-        @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
+        #hero-carousel {
+            display: flex;
+            overflow: hidden;
+            scroll-behavior: smooth;
         }
 
         #hero-carousel img {
             width: 100%;
-            height: 100%;
+            height: auto;
+            flex-shrink: 0;
+            display: block;
             object-fit: contain;
-            background-color: #f9fafb
+            background: var(--gray-100);
         }
 
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, .0) 0%, rgba(255, 255, 255, .1) 100%)
+        .hero-h1 {
+            font-family: var(--font-d);
+            font-size: clamp(2.8rem, 8vw, 4.6rem);
+            letter-spacing: 1px;
+            color: var(--black);
+            line-height: 0.95;
+            margin-bottom: 16px;
+            max-width: 640px;
         }
 
+        .hero-h1 span {
+            color: var(--green);
+            display: block;
+        }
+
+        .hero-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stars {
+            color: #f59e0b;
+            font-size: 15px;
+            letter-spacing: 1px;
+        }
+
+        .hero-rating-score {
+            font-weight: 900;
+            font-size: 15px;
+            color: var(--black);
+        }
+
+        .hero-rating-count {
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+
+        .hero-rating-count strong {
+            color: var(--green);
+            font-weight: 800;
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            color: var(--gray-600);
+            max-width: 480px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .hero-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #fff;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gray-800);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-badge i {
+            color: var(--green);
+            font-size: 16px;
+        }
+
+        /* ── DOTS ── */
+        .dot {
+            width: 7px;
+            height: 7px;
+            background: var(--gray-200);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .dot.active {
+            background: var(--green);
+            width: 20px;
+            border-radius: 4px;
+        }
+
+        /* ── SECTION TITLES ── */
+        .sec-label {
+            display: inline-block;
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .sec-title {
+            font-family: var(--font-d);
+            font-size: clamp(2rem, 5vw, 3rem);
+            letter-spacing: 0.5px;
+            color: var(--black);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .sec-sub {
+            color: var(--gray-400);
+            font-size: 14px;
+        }
+
+        /* ── POR QUE SOBERANO ── */
+        .why-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            background: #fff;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .why-card:hover {
+            border-color: var(--green);
+            box-shadow: 0 6px 20px var(--green-glow);
+        }
+
+        .why-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--green);
+            flex-shrink: 0;
+        }
+
+        /* ── STRIP ── */
         .strip-track {
             display: flex;
             gap: 12px;
             animation: stripScroll 22s linear infinite;
-            width: max-content
+            width: max-content;
         }
 
         .strip-track:hover {
@@ -226,37 +507,144 @@
             object-fit: cover;
             border-radius: 10px;
             flex-shrink: 0;
-            border: 1px solid #e5e7eb
+            border: 1px solid var(--gray-200);
+        }
+
+        /* ── VEHICLE SELECTOR ── */
+        .glass {
+            background: #fff;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--gray-200);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .popover-container {
+            position: relative;
+            width: 100%
+        }
+
+        .popover-trigger {
+            width: 100%;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 14px 18px;
+            text-align: left;
+            color: var(--black);
+            font-family: var(--font-b);
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .popover-trigger:disabled {
+            opacity: 0.4;
+            cursor: not-allowed
+        }
+
+        .popover-trigger:hover:not(:disabled) {
+            background: var(--gray-100);
+            border-color: var(--green)
+        }
+
+        .popover-content {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 14px;
+            z-index: 100;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            padding: 12px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            animation: popIn 0.2s ease-out;
+        }
+
+        .popover-content.show {
+            display: flex
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--black);
+            font-family: var(--font-b);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--green)
+        }
+
+        .results-list {
+            max-height: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .results-list button {
+            width: 100%;
+            text-align: left;
+            padding: 12px 14px;
+            background: transparent;
+            border: none;
+            color: var(--gray-600);
+            font-family: var(--font-b);
+            font-size: 13.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all .1s;
+        }
+
+        .results-list button:hover {
+            background: #f0fdf4;
+            color: var(--green)
         }
 
         .sel {
             width: 100%;
             height: 50px;
-            background: #f9fafb !important;
-            border: 1.5px solid #d1d5db !important;
+            background: var(--gray-50) !important;
+            border: 1.5px solid var(--gray-200) !important;
             border-radius: 10px;
             padding: 14px 16px;
-            color: #111827;
+            color: var(--black);
+            font-family: var(--font-b);
             font-size: 15px;
             font-weight: 600;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 14px center !important;
             cursor: pointer;
-            transition: border-color .2s
+            transition: border-color .2s;
         }
 
         .sel option {
             background-color: #fff;
-            color: #111827
+            color: var(--black)
         }
 
         .sel:focus {
             outline: none;
-            border-color: #16a34a;
-            box-shadow: 0 0 0 2px rgba(22, 163, 74, .2)
+            border-color: var(--green) !important;
+            box-shadow: 0 0 0 3px var(--green-glow)
         }
 
         .sel:disabled {
@@ -265,38 +653,23 @@
         }
 
         #confirm-box {
-            background: rgba(34, 197, 94, .08);
-            border: 1.5px solid #22c55e;
+            background: rgba(26, 158, 74, 0.06);
+            border: 1.5px solid rgba(26, 158, 74, 0.3);
             border-radius: 14px;
             padding: 20px;
             margin-top: 16px;
-            animation: bounceIn .5s ease
+            animation: bounceIn .5s ease;
         }
 
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(.9)
-            }
-
-            60% {
-                transform: scale(1.03)
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1)
-            }
-        }
-
+        /* ── KITS ── */
         .kit-card {
-            background: #ffffff;
-            border: 1.5px solid #e5e7eb;
+            background: #fff;
+            border: 1.5px solid var(--gray-200);
             border-radius: 18px;
             padding: 24px;
             transition: transform .25s, box-shadow .25s, border-color .25s;
             cursor: pointer;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06)
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
         }
 
         .kit-card img {
@@ -310,63 +683,189 @@
 
         .kit-card:hover {
             transform: translateY(-4px);
-            border-color: #16a34a;
-            box-shadow: 0 8px 24px rgba(22, 163, 74, 0.15)
+            border-color: var(--green);
+            box-shadow: 0 8px 24px var(--green-glow);
         }
 
         .kit-card.kit-selected {
-            border-color: #16a34a;
-            box-shadow: 0 0 0 2px #16a34a, 0 0 25px rgba(22, 163, 74, .25)
+            border-color: var(--green);
+            box-shadow: 0 0 0 2px var(--green), 0 0 25px var(--green-glow);
         }
 
         .kit-best {
-            border-color: #16a34a;
-            box-shadow: 0 0 0 2px rgba(22, 163, 74, .4)
+            border-color: var(--green);
+            box-shadow: 0 0 0 2px rgba(26, 158, 74, .4);
         }
 
-        .sales-grid {
+        /* ── BENEFÍCIOS ── */
+        .benefit-cards {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px 0
         }
 
-        .sales-img {
-            width: 100%;
-            height: auto;
+        .benefit-card {
+            background: #fff;
+            border: 1.5px solid var(--gray-200);
             border-radius: 16px;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: transform .25s, box-shadow .25s;
         }
 
-        .photo-grid-4 {
+        .benefit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--green-glow);
+            border-color: var(--green);
+        }
+
+        .benefit-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--gray-50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+            color: var(--green);
+        }
+
+        /* ── ANTES/DEPOIS ── */
+        .before-after-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px
+            gap: 16px;
+            max-width: 740px;
+            margin: 0 auto;
         }
 
-        .photo-grid-4 img {
+        @media(max-width:600px) {
+            .before-after-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .ba-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid var(--gray-200);
+        }
+
+        .ba-label {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 10px;
+        }
+
+        .ba-label.before {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .ba-label.after {
+            background: #f0fdf4;
+            color: var(--green);
+        }
+
+        .ba-card img {
             width: 100%;
             height: auto;
             object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* ── DEPOIMENTOS ── */
+        .review-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1.5px solid var(--gray-200);
+            border-top: 3px solid var(--green);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ── GARANTIA ── */
+        .guarantee-section {
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-radius: 20px;
+            padding: 40px 32px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .guarantee-item {
+            background: #fff;
+            border: 1.5px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        /* ── BADGES / TRUST ── */
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
             border-radius: 10px;
-            display: block
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #166534;
         }
 
-        @media(max-width:720px) {
-            .sales-grid {
-                grid-template-columns: 1fr
-            }
-
-            .sales-grid.reverse .text-side {
-                order: -1
-            }
+        .badge-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 32px;
         }
 
+        .security-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .sec-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-200);
+            border-radius: 50px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .sec-badge i {
+            color: var(--green);
+            font-size: 15px;
+        }
+
+        /* ── STICKY / DRAWER ── */
         #sticky-footer {
             position: fixed;
             bottom: 0;
@@ -375,33 +874,22 @@
             display: flex;
             justify-content: center;
             z-index: 999;
-            pointer-events: none
+            pointer-events: none;
         }
 
         #sticky-footer button {
             pointer-events: auto;
-            background: #16a34a;
+            background: var(--green);
             color: white;
-            font-weight: 800;
+            font-family: var(--font-b);
+            font-weight: 900;
             border: none;
-            padding: 16px 28px;
-            font-size: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15)
-        }
-
-        .security-badges {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap
-        }
-
-        .sec-badge {
-            font-size: 10px;
-            color: #6b7280;
-            display: flex;
-            align-items: center;
-            gap: 4px
+            padding: 18px 28px;
+            font-size: 16px;
+            box-shadow: 0 -4px 20px rgba(26, 158, 74, 0.25);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            width: 100%;
         }
 
         #drawer-backdrop {
@@ -409,7 +897,7 @@
             inset: 0;
             background: rgba(0, 0, 0, .75);
             z-index: 110;
-            backdrop-filter: blur(4px)
+            backdrop-filter: blur(4px);
         }
 
         #checkout-drawer {
@@ -418,12 +906,13 @@
             left: 0;
             right: 0;
             z-index: 120;
-            background: #111;
-            border-radius: 22px 22px 0 0;
-            border-top: 1.5px solid #22c55e;
+            background: #fff;
+            border-radius: 24px 24px 0 0;
+            border-top: 2px solid var(--green);
             max-height: 80vh;
             overflow-y: auto;
-            transition: transform .35s cubic-bezier(.4, 0, .2, 1)
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+            box-shadow: 0 -12px 50px rgba(0, 0, 0, 0.2);
         }
 
         .drawer-hidden {
@@ -438,412 +927,268 @@
             #checkout-drawer {
                 max-width: 500px;
                 left: 50%;
-                transform: translateX(-50%) translateY(100%)
+                transform: translateX(-50%) translateY(100%);
             }
 
             .drawer-open {
-                transform: translateX(-50%) translateY(0) !important
+                transform: translateX(-50%) translateY(0) !important;
             }
         }
 
+        /* ── BUTTONS ── */
         .btn-green {
-            background: #16a34a;
+            background: var(--green);
             color: #fff;
+            font-family: var(--font-b);
             font-weight: 900;
             border: none;
             border-radius: 12px;
             cursor: pointer;
             transition: background .2s, transform .15s;
             text-transform: uppercase;
-            letter-spacing: .05em
+            letter-spacing: .05em;
         }
 
         .btn-green:hover {
-            background: #15803d;
-            transform: scale(1.02)
+            background: var(--green-dark);
+            transform: scale(1.02);
         }
 
         .btn-orange {
-            background: #16a34a;
+            background: var(--green);
             color: #fff;
             font-weight: 900;
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            transition: background .2s
+            transition: background .2s;
         }
 
         .btn-orange:hover {
-            background: #15803d
+            background: var(--green-dark);
         }
 
         @keyframes pulse {
 
             0%,
             100% {
-                box-shadow: 0 0 0 0 rgba(22, 163, 74, .5)
+                box-shadow: 0 0 0 0 var(--green-glow)
             }
 
             70% {
-                box-shadow: 0 0 0 10px rgba(22, 163, 74, 0)
+                box-shadow: 0 0 0 10px transparent
             }
         }
 
         .pulse-green {
-            animation: pulse 2s infinite
+            animation: pulse 2s infinite;
         }
 
-        .stars {
-            color: #f59e0b;
-            font-size: 12px
+        /* ── ANIMATIONS ── */
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
         }
 
-        .badge-row {
-            display: flex;
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(.92)
+            }
+
+            60% {
+                transform: scale(1.03)
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+        }
+
+        /* ── SALES GRID ── */
+        .sales-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 16px
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 0;
         }
 
-        .trust-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 10px;
-            padding: 10px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #166534
+        @media(max-width:720px) {
+            .sales-grid {
+                grid-template-columns: 1fr
+            }
+
+            .sales-grid.reverse .text-side {
+                order: -1
+            }
         }
 
-        nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 24px;
-            position: sticky;
-            top: 36px;
-            z-index: 50;
-            margin: 8px 16px;
-            border-radius: 14px
-        }
-
-        .nav-link {
-            color: #374151;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: color .2s
-        }
-
-        .nav-link:hover {
-            color: #16a34a
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            align-items: center
+        /* ── RESPONSIVE ── */
+        @media(max-width:560px) {
+            #kit-grid {
+                grid-template-columns: 1fr !important
+            }
         }
 
         @media(max-width:640px) {
             .nav-links.desktop {
-                display: none
+                display: none !important
             }
-        }
-
-        .benefit-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            max-width: 900px;
-            margin: 0 auto
-        }
-
-        .benefit-card {
-            background: #ffffff;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 28px 20px;
-            text-align: center;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-            transition: transform .25s, box-shadow .25s
-        }
-
-        .benefit-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(22, 163, 74, 0.15);
-            border-color: #16a34a
-        }
-
-        .benefit-icon {
-            width: 56px;
-            height: 56px;
-            background: #f0fdf4;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 24px;
-            color: #16a34a
-        }
-
-        .before-after-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            max-width: 740px;
-            margin: 0 auto
-        }
-
-        @media(max-width:600px) {
-            .before-after-grid {
-                grid-template-columns: 1fr
-            }
-        }
-
-        .ba-card {
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid #e5e7eb
-        }
-
-        .ba-label {
-            text-align: center;
-            font-size: 12px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 10px
-        }
-
-        .ba-label.before {
-            background: #fef2f2;
-            color: #dc2626
-        }
-
-        .ba-label.after {
-            background: #f0fdf4;
-            color: #16a34a
-        }
-
-        .ba-card img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto
-        }
-
-        .guarantee-section {
-            background: #f0fdf4;
-            border: 2px solid #bbf7d0;
-            border-radius: 20px;
-            padding: 40px 32px;
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center
-        }
-
-        .security-badges {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            flex-wrap: wrap;
-            margin-bottom: 20px
-        }
-
-        .sec-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #f9fafb;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 50px;
-            padding: 10px 18px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #374151
-        }
-
-        .sec-badge i {
-            color: #16a34a;
-            font-size: 15px
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #d1d5db;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: 0.3s
-        }
-
-        .dot.active {
-            background: #16a34a;
-            width: 20px;
-            border-radius: 5px
-        }
-
-        #hero-carousel {
-            scroll-behavior: smooth
         }
     </style>
 </head>
 
 <body>
 
-    <div
-        style="background:#16a34a;color:#fff;text-align:center;padding:8px 16px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:nowrap;white-space:nowrap;">
-        <span style="font-size:12px;font-weight:700;">⚡ ECONOMIZE <strong>R$ 410,00</strong> — expira em:</span>
-        <div
-            style="display:flex;align-items:center;gap:4px;background:rgba(0,0,0,0.15);border-radius:6px;padding:3px 10px;">
-            <span id="timer-min" style="font-size:14px;font-weight:900;letter-spacing:1px;">14</span>
-            <span style="font-size:13px;font-weight:900;opacity:0.8;">:</span>
-            <span id="timer-sec" style="font-size:14px;font-weight:900;letter-spacing:1px;">59</span>
+    <!-- ══ TOP BAR ══ -->
+    <div class="top-bar">
+        <span class="top-bar-text">⚡ ECONOMIZE <strong>R$ 410,00</strong> — oferta expira em:</span>
+        <div class="top-bar-timer">
+            <span id="timer-min">14</span>
+            <span style="opacity:.7">:</span>
+            <span id="timer-sec">59</span>
         </div>
-        <span style="font-size:11px;font-weight:600;opacity:0.9;">🚚 FRETE GRÁTIS</span>
+        <span class="top-bar-badge">🚚 FRETE GRÁTIS</span>
     </div>
 
-    <nav class="glass"
-        style="display:flex; justify-content:center; padding:15px; margin: 10px 16px; border-radius:12px;">
-        <div
-            style="font-size:22px; font-weight:900; color:#16a34a; letter-spacing:1px; display:flex; align-items:center; gap:8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a">
-                <path
-                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.5-2.33 6.79-5 7.93-2.67-1.14-5-4.43-5-7.93V7.18L12 5zm-1 3v4h2V8h-2zm0 6v2h2v-2h-2z" />
-            </svg>
-            SOBERANO TAPETES
+    <!-- ══ NAV ══ -->
+    <nav class="main-nav">
+        <a class="logo-wrap" href="#">
+            <div class="logo-emblem">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2.5L4.5 6V11.5C4.5 15.9 7.8 20 12 21.5C16.2 20 19.5 15.9 19.5 11.5V6L12 2.5Z"
+                        fill="rgba(26,158,74,0.2)" stroke="#1a9e4a" stroke-width="1.5" stroke-linejoin="round" />
+                    <rect x="8" y="9.5" width="8" height="6" rx="1" fill="#fff" opacity="0.9" />
+                    <line x1="10" y1="11" x2="10" y2="14" stroke="#1a9e4a" stroke-width="1.2" stroke-linecap="round" />
+                    <line x1="12" y1="11" x2="12" y2="14" stroke="#1a9e4a" stroke-width="1.2" stroke-linecap="round" />
+                    <line x1="14" y1="11" x2="14" y2="14" stroke="#1a9e4a" stroke-width="1.2" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="logo-text-wrap">
+                <span class="logo-name">SOBERANO <em>TAPETES</em></span>
+                <span class="logo-sub">Proteção sob medida</span>
+            </div>
+        </a>
+        <div class="nav-trust">
+            <i class="fas fa-lock"></i>
+            <span>Compra 100% segura</span>
         </div>
     </nav>
-    <!-- ═══ HERO ═══ -->
-    <section
-        style="background:#f9fafb; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; text-align: center;">
 
-        <div
-            style="background:#f0fdf4; border:1px solid #16a34a; color:#16a34a; padding:5px 15px; border-radius:20px; font-size:12px; font-weight:700; margin-bottom:20px; text-transform:uppercase">
-            🛡️ O ÚNICO TAPETE COM BORDA DE 5CM DO BRASIL
+    <!-- ══ HERO ══ -->
+    <section class="hero">
+        <div class="hero-pill">
+            <span class="hero-pill-dot"></span>
+            O único tapete bandeja com borda de 5cm do Brasil
         </div>
 
-        <div style="width: 100%; max-width: 550px; position: relative; margin-bottom: 25px;">
-            <div id="hero-carousel"
-                style="display: flex; overflow: hidden; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.12);">
-                <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="hero-slide-img"
-                    style="width:100%; height:auto; flex-shrink:0; display:block;">
-                <img src="./assets/product-1-CLmPGSY4.webp" class="hero-slide-img"
-                    style="width:100%; height:auto; flex-shrink:0; display:block;">
-                <img src="./assets/carousel-4-BpsqPhmo.webp" class="hero-slide-img"
-                    style="width:100%; height:auto; flex-shrink:0; display:block;">
-                <img src="./assets/product-3-hYd1p11T.webp" class="hero-slide-img"
-                    style="width:100%; height:auto; flex-shrink:0; display:block;">
-                <img src="./assets/carousel-5-Cm0njbwO.webp" class="hero-slide-img"
-                    style="width:100%; height:auto; flex-shrink:0; display:block;">
-                <img src="./assets/product-5-CjEBeeXw.webp" class="hero-slide-img"
-                    style="width:100%; height:auto; flex-shrink:0; display:block;">
+        <div class="hero-carousel-wrap">
+            <div class="hero-carousel-frame">
+                <div id="hero-carousel">
+                    <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="hero-slide-img"
+                        alt="Tapete Bandeja Soberano">
+                    <img src="./assets/product-1-CLmPGSY4.webp" class="hero-slide-img" alt="Kit Completo">
+                    <img src="./assets/carousel-4-BpsqPhmo.webp" class="hero-slide-img" alt="Borda 5cm">
+                    <img src="./assets/product-3-hYd1p11T.webp" class="hero-slide-img" alt="Encaixe Milimétrico">
+                    <img src="./assets/carousel-5-Cm0njbwO.webp" class="hero-slide-img" alt="Impermeável">
+                    <img src="./assets/product-5-CjEBeeXw.webp" class="hero-slide-img" alt="Anti-odor">
+                </div>
             </div>
-            <div id="carousel-dots" style="display: flex; justify-content: center; gap: 6px; margin-top: 12px;"></div>
+            <div id="carousel-dots" style="display:flex;justify-content:center;gap:6px;margin-top:14px;"></div>
         </div>
 
-        <div style="max-width: 650px;">
-            <h1
-                style="font-size:clamp(1.8rem, 5vw, 2.8rem); font-weight:900; color:#111827; line-height:1.1; margin-bottom:12px;">
-                O Único com Bordas de Proteção de 5cm para seu Carpete
-            </h1>
+        <h1 class="hero-h1">
+            BORDAS DE 5CM
+            <span>QUE RETÊM TUDO</span>
+        </h1>
 
-            <div
-                style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
-                <span style="color:#f59e0b; font-size:18px;">⭐⭐⭐⭐⭐</span>
-                <span style="font-weight:800; color:#111827; font-size:15px;">4.9/5</span>
-                <span style="color:#6b7280; font-size:13px;">aprovado por mais de <strong style="color:#16a34a;">1.347
-                        motoristas</strong></span>
-            </div>
+        <div class="hero-rating">
+            <span class="hero-stars">★★★★★</span>
+            <span class="hero-rating-score">4.9/5</span>
+            <span class="hero-rating-count">aprovado por <strong>+1.347 motoristas</strong></span>
+        </div>
 
-            <p style="color:#4b5563; font-size:1.1rem; margin-bottom:30px; font-weight:500;">
-                Derrubou café, lama ou suco? As bordas retêm tudo. <br>Limpeza em segundos — sem manchas, sem odor, sem
-                custo.
-            </p>
+        <p class="hero-desc">
+            Derrubou café, lama ou suco? As bordas retêm tudo.<br>
+            Limpeza em segundos — sem manchas, sem odor, sem custo extra.
+        </p>
 
-            <div
-                style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; width: 100%; max-width: 540px; margin: 0 auto;">
-                <div style="display:flex; flex-direction:column; align-items:center; gap:8px">
-                    <i class="fas fa-magic" style="color:#16a34a; font-size:22px"></i>
-                    <span style="font-size:10px; font-weight:700; color:#374151; text-align:center;">LIMPA FÁCIL</span>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:8px">
-                    <i class="fas fa-shield-virus" style="color:#16a34a; font-size:22px"></i>
-                    <span style="font-size:10px; font-weight:700; color:#374151; text-align:center;">BORDA 5CM</span>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:8px">
-                    <i class="fas fa-car" style="color:#16a34a; font-size:22px"></i>
-                    <span style="font-size:10px; font-weight:700; color:#374151; text-align:center;">SOB MEDIDA</span>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:8px">
-                    <i class="fas fa-tint-slash" style="color:#16a34a; font-size:22px"></i>
-                    <span style="font-size:10px; font-weight:700; color:#374151; text-align:center;">IMPERMEÁVEL</span>
-                </div>
-            </div>
+        <div class="hero-badges">
+            <div class="hero-badge"><i class="fas fa-magic"></i> Limpa em Segundos</div>
+            <div class="hero-badge"><i class="fas fa-ruler-combined"></i> Borda 5cm</div>
+            <div class="hero-badge"><i class="fas fa-car"></i> Sob Medida</div>
+            <div class="hero-badge"><i class="fas fa-tint-slash"></i> Impermeável</div>
         </div>
     </section>
 
-    <!-- ═══ POR QUE ESCOLHER ═══ -->
-    <section style="padding: 40px 16px; background: #fff;">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <h2 style="text-align:center; font-size: 22px; font-weight: 900; margin-bottom: 8px; color: #111827;">
-                Por que escolher a Soberano 3D?
-            </h2>
-            <p style="text-align:center; color:#6b7280; font-size:14px; margin-bottom:30px;">
-                Quem já usou, não volta para tapete comum.
-            </p>
+    <!-- ══ POR QUE SOBERANO ══ -->
+    <section style="padding:64px 20px; background:#fff;">
+        <div style="max-width:720px; margin:0 auto;">
+            <div style="text-align:center; margin-bottom:36px;">
+                <span class="sec-label">Por que a Soberano?</span>
+                <h2 class="sec-title">SEU CARPETE NUNCA<br>MAIS SOFRE</h2>
+                <p class="sec-sub">Quem troca para bandeja, não volta para tapete comum.</p>
+            </div>
 
-            <div style="display: grid; gap: 16px;">
-                <div
-                    style="display: flex; align-items: center; gap: 15px; background: #f9fafb; padding: 20px; border-radius: 12px; border-left: 5px solid #16a34a;">
-                    <i class="fas fa-briefcase" style="font-size: 28px; color: #16a34a; flex-shrink:0;"></i>
+            <div style="display:grid; gap:14px;">
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-water"></i></div>
                     <div>
-                        <h3 style="font-size: 15px; font-weight: 900; margin-bottom: 4px;">Ideal para Uber, Táxi e Uso
-                            Intenso</h3>
-                        <p style="font-size: 13px; color: #6b7280; line-height:1.6;">Passageiro derramou algo? Um pano
-                            úmido resolve em segundos. Sem odor, sem mancha, sem preocupação entre uma corrida e outra.
-                        </p>
+                        <h3 style="font-size:15px; font-weight:800; color:var(--black); margin-bottom:5px;">Barreira que
+                            retém líquido — não só cobre</h3>
+                        <p style="font-size:13px; color:var(--gray-400); line-height:1.65;">A borda de 5cm forma uma
+                            célula fechada ao redor do assoalho. Café, lama ou chuva ficam presos na bandeja — longe do
+                            carpete original do seu carro.</p>
                     </div>
                 </div>
-
-                <div
-                    style="display: flex; align-items: center; gap: 15px; background: #f9fafb; padding: 20px; border-radius: 12px; border-left: 5px solid #16a34a;">
-                    <i class="fas fa-gem" style="font-size: 28px; color: #16a34a; flex-shrink:0;"></i>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-stopwatch"></i></div>
                     <div>
-                        <h3 style="font-size: 15px; font-weight: 900; margin-bottom: 4px;">Interior de Luxo — Sem Pagar
-                            Caro por Isso</h3>
-                        <p style="font-size: 13px; color: #6b7280; line-height:1.6;">Acabamento premium em couro
-                            ecológico que transforma o visual do seu carro e ainda valoriza o preço de revenda.</p>
+                        <h3 style="font-size:15px; font-weight:800; color:var(--black); margin-bottom:5px;">Limpeza em
+                            10 segundos, não em 10 minutos</h3>
+                        <p style="font-size:13px; color:var(--gray-400); line-height:1.65;">Esqueça aspirador, produtos
+                            químicos e lavagem cara. Um pano úmido resolve qualquer sujeira. Ideal para Uber, táxi,
+                            família com crianças e uso intenso.</p>
                     </div>
                 </div>
-
-                <div
-                    style="display: flex; align-items: center; gap: 15px; background: #f9fafb; padding: 20px; border-radius: 12px; border-left: 5px solid #16a34a;">
-                    <i class="fas fa-tint-slash" style="font-size: 28px; color: #16a34a; flex-shrink:0;"></i>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-microchip"></i></div>
                     <div>
-                        <h3 style="font-size: 15px; font-weight: 900; margin-bottom: 4px;">Bordas de 5cm: o Carpete
-                            Original Nunca Mais Sofre</h3>
-                        <p style="font-size: 13px; color: #6b7280; line-height:1.6;">Café, lama, chuva — as bordas
-                            formam uma barreira selada. O líquido fica retido no tapete, longe do assoalho original do
-                            seu carro.</p>
+                        <h3 style="font-size:15px; font-weight:800; color:var(--black); margin-bottom:5px;">Molde 3D
+                            exato — sem folga, sem escorregamento</h3>
+                        <p style="font-size:13px; color:var(--gray-400); line-height:1.65;">Produzido via API FIPE com
+                            precisão milimétrica para o modelo exato do seu carro. Entra e trava. Não se move durante a
+                            direção.</p>
+                    </div>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-gem"></i></div>
+                    <div>
+                        <h3 style="font-size:15px; font-weight:800; color:var(--black); margin-bottom:5px;">Valoriza o
+                            interior — e o preço de revenda</h3>
+                        <p style="font-size:13px; color:var(--gray-400); line-height:1.65;">Carpete preservado = carro
+                            valendo mais na hora de vender. O tapete bandeja protege seu investimento desde o primeiro
+                            dia.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ═══ STRIP CAROUSEL ═══ -->
+    <!-- ══ STRIP ══ -->
     <div
-        style="overflow:hidden;padding:16px 0;background:#f3f4f6;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb">
+        style="overflow:hidden; padding:16px 0; background:var(--gray-100); border-top:1px solid var(--gray-200); border-bottom:1px solid var(--gray-200);">
         <div class="strip-track">
             <img src="./assets/product-1-CLmPGSY4.webp" class="strip-img" alt="">
             <img src="./assets/carousel-4-BpsqPhmo.webp" class="strip-img" alt="">
@@ -864,30 +1209,25 @@
         </div>
     </div>
 
-    <!-- ═══ SELETOR DE VEÍCULO ═══ -->
-    <section id="comprar" style="padding:40px 16px 60px 16px; max-width:500px; margin:0 auto">
-        <div class="glass"
-            style="border-radius:20px; padding:25px; display:flex; flex-direction:column; gap:15px; border: 1px solid #e5e7eb; background: #fff;">
+    <!-- ══ SELETOR DE VEÍCULO ══ -->
+    <section id="comprar" style="padding:56px 16px 48px; max-width:500px; margin:0 auto;">
+        <div style="text-align:center; margin-bottom:28px;">
+            <span class="sec-label">1º Passo</span>
+            <h2 class="sec-title" style="font-size:clamp(1.8rem,5vw,2.6rem);">QUAL É O SEU CARRO?</h2>
+            <p class="sec-sub">Identificamos o molde 3D exato para o seu modelo</p>
+        </div>
 
-            <div style="text-align:center;">
-                <h3
-                    style="font-size:16px; font-weight:900; color:#16a34a; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">
-                    1º PASSO: SELECIONE SEU VEÍCULO
-                </h3>
-                <p style="font-size:12px; color:#6b7280;">Identificamos o molde 3D exato para o seu modelo</p>
-            </div>
+        <div id="vehicle-selector" class="glass"
+            style="border-radius:20px; padding:24px; display:flex; flex-direction:column; gap:14px;">
 
-            <select id="sel-brand" class="sel"
-                style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d1d5db;">
+            <select id="sel-brand" class="sel">
                 <option value="">Carregando marcas...</option>
             </select>
 
             <div class="popover-container">
-                <button id="model-trigger" class="popover-trigger" disabled
-                    style="height:50px; width:100%; display: flex; justify-content: space-between; align-items: center; padding: 0 12px; border-radius: 8px; border: 1px solid #d1d5db; background: #fff;"
-                    type="button">
+                <button id="model-trigger" class="popover-trigger" disabled type="button">
                     <span id="model-selected-text">Selecione o Modelo</span>
-                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chevron-down" style="font-size:12px; color:var(--gray-400);"></i>
                 </button>
                 <div id="model-popover" class="popover-content">
                     <input type="text" id="model-search" class="search-input" placeholder="Buscar modelo..."
@@ -896,358 +1236,344 @@
                 </div>
             </div>
 
-            <select id="sel-year" class="sel" disabled
-                style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d1d5db;">
+            <select id="sel-year" class="sel" disabled>
                 <option value="">Selecione o Ano</option>
             </select>
 
             <div id="confirm-box" class="hidden">
-                <div
-                    style="background:#f0fdf4; border:1px solid #16a34a; border-radius:12px; padding:15px; text-align:center;">
-                    <p style="color:#16a34a; font-weight:800; font-size:14px" id="conf-vehicle-text"></p>
-                    <p style="color:#374151; font-size:12px; margin-top:5px">
-                        ✅ <strong>Molde 3D Identificado!</strong> Escolha seu kit abaixo:
+                <div style="text-align:center;">
+                    <p style="color:var(--green); font-weight:800; font-size:14px;" id="conf-vehicle-text"></p>
+                    <p style="color:var(--gray-600); font-size:12px; margin-top:5px;">
+                        ✅ <strong>Molde 3D identificado!</strong> Escolha seu kit abaixo:
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ═══ KITS ═══ -->
-    <section id="kit-section" style="padding:48px 16px; max-width:780px; margin:0 auto">
-        <div style="text-align:center; margin-bottom:32px">
-            <p
-                style="color:#16a34a;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">
-                2º PASSO: ESCOLHA SEU NÍVEL DE PROTEÇÃO
-            </p>
-            <h2 style="font-size:clamp(1.6rem,4vw,2.3rem);font-weight:900;margin-bottom:8px;color:#111827">
-                Oferta Exclusiva de Lançamento
-            </h2>
-            <p style="color:#6b7280;font-size:14px;"><strong>Frete Grátis</strong> para todo Brasil · Válido enquanto
-                durar o estoque</p>
+    <!-- ══ KITS ══ -->
+    <section id="kit-section" style="padding:16px 16px 56px; max-width:780px; margin:0 auto;">
+        <div style="text-align:center; margin-bottom:32px;">
+            <span class="sec-label">2º Passo — Escolha sua proteção</span>
+            <h2 class="sec-title" style="font-size:clamp(1.8rem,5vw,2.8rem);">OFERTA DE LANÇAMENTO</h2>
+            <p class="sec-sub"><strong style="color:var(--black)">Frete Grátis</strong> para todo Brasil · Válido
+                enquanto durar o estoque</p>
         </div>
 
-        <div id="kit-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
+        <div id="kit-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px;">
 
             <!-- CARD PRINCIPAL -->
-            <div class="kit-card kit-best" onclick="selectKit('Kit Interno + Porta Malas', 79.90)"
-                style="position:relative; overflow:hidden; display:flex; flex-direction:column; background:#fff; border:2px solid #16a34a; border-radius:16px; cursor:pointer; box-shadow:0 10px 25px rgba(22,163,74,0.15);">
+            <div class="kit-card kit-best" onclick="selectKit('Kit Bandeja Completo', 79.90)"
+                style="position:relative; overflow:hidden; display:flex; flex-direction:column; border:2px solid var(--green); border-radius:16px; box-shadow:0 10px 25px var(--green-glow);">
 
                 <div
-                    style="position:absolute; top:0; left:0; right:0; background:#16a34a; color:#fff; font-size:11px; font-weight:900; text-align:center; padding:6px; text-transform:uppercase; letter-spacing:1px; z-index:10;">
-                    ⭐ MAIS VENDIDO — BLINDAGEM COMPLETA
+                    style="position:absolute; top:0; left:0; right:0; background:var(--green); color:#fff; font-size:11px; font-weight:900; text-align:center; padding:6px; text-transform:uppercase; letter-spacing:1px; z-index:10; font-family:var(--font-b);">
+                    ⭐ MAIS VENDIDO — PROTEÇÃO TOTAL
                 </div>
 
                 <div style="padding:28px 16px 24px; flex:1; display:flex; flex-direction:column;">
                     <div style="border-radius:12px; overflow:hidden; margin-bottom:14px;">
-                        <img src="./assets/kit-complete-BFARBGDS.jpg" alt="Kit Completo"
-                            style="width:100%; height:auto; object-fit:contain; display:block; margin:0 auto;">
+                        <img src="./assets/kit-complete-BFARBGDS.jpg" alt="Kit Bandeja Completo">
                     </div>
 
                     <h3
-                        style="font-size:15px; font-weight:900; color:#111827; text-transform:uppercase; margin-bottom:4px;">
-                        Kit Interno + Porta Malas
+                        style="font-family:var(--font-d); font-size:22px; color:var(--black); margin-bottom:4px; letter-spacing:0.5px;">
+                        KIT BANDEJA COMPLETO
                     </h3>
-                    <p style="color:#6b7280; font-size:12px; margin-bottom:14px; line-height:1.5;">
-                        Blindagem total: cabine + porta-malas. Nenhum centímetro do seu assoalho fica exposto.
+                    <p style="color:var(--gray-400); font-size:12px; margin-bottom:14px; line-height:1.5;">
+                        Cabine + porta-malas. Nenhum centímetro do assoalho fica exposto — nem sob o banco.
                     </p>
 
                     <div
-                        style="background:#f0fdf4; border:1px solid #bcf0da; border-radius:10px; padding:14px; margin-bottom:14px;">
-                        <p style="color:#9ca3af; font-size:11px; text-decoration:line-through; margin-bottom:2px;">De R$
-                            489,90</p>
-                        <p style="font-size:36px; font-weight:900; color:#16a34a; line-height:1; margin-bottom:2px;">R$
-                            79,90</p>
-                        <p style="font-size:11px; color:#16a34a; font-weight:700;">no PIX · ou em até 12x sem juros</p>
-                        <p style="font-size:11px; color:#f59e0b; font-weight:800; margin-top:6px;">💡 Apenas R$ 0,22 por
-                            dia de proteção</p>
+                        style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:14px; margin-bottom:14px;">
+                        <p
+                            style="color:var(--gray-400); font-size:11px; text-decoration:line-through; margin-bottom:2px;">
+                            De R$ 489,90</p>
+                        <p
+                            style="font-family:var(--font-d); font-size:44px; color:var(--green); line-height:1; margin-bottom:2px; letter-spacing:0.5px;">
+                            R$ 79,90</p>
+                        <p style="font-size:11px; color:var(--green); font-weight:700;">no PIX · ou em até 12x sem juros
+                        </p>
+                        <p style="font-size:11px; color:#f59e0b; font-weight:800; margin-top:6px;">💡 Apenas R$ 0,22/dia
+                            de proteção total</p>
                     </div>
 
                     <ul
-                        style="font-size:12px; color:#4b5563; list-style:none; margin-bottom:0; display:flex; flex-direction:column; gap:8px; padding:0;">
-                        <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:6px"></i>Cobertura Total —
-                            Cabine + Porta-Malas</li>
-                        <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:6px"></i>Bordas de
-                            Retenção de 5cm</li>
-                        <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:6px"></i>Material
-                            Anti-Odores e Impermeável</li>
-                        <li><i class="fas fa-check-circle" style="color:#16a34a; margin-right:6px"></i>Encaixe
-                            Milimétrico Sob Medida</li>
+                        style="font-size:12px; color:var(--gray-600); list-style:none; display:flex; flex-direction:column; gap:8px; padding:0; margin-bottom:0;">
+                        <li><i class="fas fa-check-circle" style="color:var(--green); margin-right:6px;"></i>Bandeja com
+                            borda de 5cm — retém líquidos</li>
+                        <li><i class="fas fa-check-circle" style="color:var(--green); margin-right:6px;"></i>Cabine +
+                            porta-malas cobertos</li>
+                        <li><i class="fas fa-check-circle" style="color:var(--green); margin-right:6px;"></i>Material
+                            impermeável e anti-odores</li>
+                        <li><i class="fas fa-check-circle" style="color:var(--green); margin-right:6px;"></i>Encaixe
+                            milimétrico sob medida para o seu modelo</li>
                         <li
                             style="color:#f59e0b; font-weight:800; background:#fffbeb; padding:5px 8px; border-radius:6px;">
-                            <i class="fas fa-gift" style="margin-right:6px"></i>BRINDE: Aromatizador Black
+                            <i class="fas fa-gift" style="margin-right:6px;"></i>BRINDE: Aromatizador Black
                         </li>
                     </ul>
 
-                    <button onclick="event.stopPropagation(); selectKit('Kit Interno + Porta Malas', 79.90)"
-                        style="margin-top:16px; width:100%; background:#16a34a; color:#fff; font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:1px; padding:14px; border:none; border-radius:12px; cursor:pointer; box-shadow:0 4px 12px rgba(22,163,74,0.3);">
-                        🛒 Garantir Kit Completo
+                    <button onclick="event.stopPropagation(); selectKit('Kit Bandeja Completo', 79.90)"
+                        style="margin-top:16px; width:100%; background:var(--green); color:#fff; font-family:var(--font-b); font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:1px; padding:14px; border:none; border-radius:12px; cursor:pointer; box-shadow:0 4px 12px var(--green-glow);">
+                        🛒 Quero Proteção Total
                     </button>
                 </div>
             </div>
 
             <!-- CARD SECUNDÁRIO -->
-            <div class="kit-card" onclick="selectKit('Kit Essencial', 59.90)"
-                style="position:relative; overflow:hidden; display:flex; flex-direction:column; background:#fff; border:1px solid #e5e7eb; border-radius:16px; cursor:pointer;">
+            <div class="kit-card" onclick="selectKit('Kit Bandeja Cabine', 59.90)"
+                style="position:relative; overflow:hidden; display:flex; flex-direction:column; border-radius:16px;">
 
                 <div style="padding:24px 16px; flex:1; display:flex; flex-direction:column;">
                     <div style="border-radius:12px; overflow:hidden; margin-bottom:14px;">
-                        <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Essencial"
-                            style="width:100%; height:auto; object-fit:contain; display:block; margin:0 auto;">
+                        <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Bandeja Cabine">
                     </div>
 
                     <h3
-                        style="font-size:15px; font-weight:900; color:#111827; text-transform:uppercase; margin-bottom:4px;">
-                        Kit Essencial Cabine
+                        style="font-family:var(--font-d); font-size:22px; color:var(--black); margin-bottom:4px; letter-spacing:0.5px;">
+                        KIT BANDEJA CABINE
                     </h3>
-                    <p style="color:#6b7280; font-size:12px; margin-bottom:14px; line-height:1.5;">
-                        Proteção sob medida para motorista e passageiros. Ideal para quem quer começar.
+                    <p style="color:var(--gray-400); font-size:12px; margin-bottom:14px; line-height:1.5;">
+                        Proteção completa para motorista e passageiros. Dianteiros + traseiro inteiriço.
                     </p>
 
                     <div
-                        style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:14px; margin-bottom:14px;">
-                        <p style="color:#9ca3af; font-size:11px; text-decoration:line-through; margin-bottom:2px;">De R$
-                            329,90</p>
-                        <p style="font-size:36px; font-weight:900; color:#111827; line-height:1; margin-bottom:2px;">R$
-                            59,90</p>
-                        <p style="font-size:11px; color:#16a34a; font-weight:700;">no PIX · ou em até 12x sem juros</p>
+                        style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:14px; margin-bottom:14px;">
+                        <p
+                            style="color:var(--gray-400); font-size:11px; text-decoration:line-through; margin-bottom:2px;">
+                            De R$ 329,90</p>
+                        <p
+                            style="font-family:var(--font-d); font-size:44px; color:var(--black); line-height:1; margin-bottom:2px; letter-spacing:0.5px;">
+                            R$ 59,90</p>
+                        <p style="font-size:11px; color:var(--green); font-weight:700;">no PIX · ou em até 12x sem juros
+                        </p>
                     </div>
 
                     <ul
-                        style="font-size:12px; color:#4b5563; list-style:none; margin-bottom:0; display:flex; flex-direction:column; gap:6px; padding:0;">
-                        <li><i class="fas fa-check" style="color:#16a34a; margin-right:6px"></i>Dianteiros + Traseiro
-                            Inteiriço</li>
-                        <li><i class="fas fa-check" style="color:#16a34a; margin-right:6px"></i>Encaixe Original
-                            Garantido</li>
-                        <li><i class="fas fa-check" style="color:#16a34a; margin-right:6px"></i>Fácil de lavar e secar
-                        </li>
+                        style="font-size:12px; color:var(--gray-600); list-style:none; display:flex; flex-direction:column; gap:6px; padding:0; margin-bottom:0;">
+                        <li><i class="fas fa-check" style="color:var(--green); margin-right:6px;"></i>Bandeja com borda
+                            de 5cm na cabine</li>
+                        <li><i class="fas fa-check" style="color:var(--green); margin-right:6px;"></i>Encaixe original
+                            garantido para o seu modelo</li>
+                        <li><i class="fas fa-check" style="color:var(--green); margin-right:6px;"></i>Impermeável —
+                            limpa com pano úmido</li>
                     </ul>
 
-                    <button onclick="event.stopPropagation(); selectKit('Kit Essencial', 59.90)"
-                        style="margin-top:16px; width:100%; background:#111827; color:#fff; font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:1px; padding:14px; border:none; border-radius:12px; cursor:pointer;">
-                        🛒 Garantir Kit Essencial
+                    <button onclick="event.stopPropagation(); selectKit('Kit Bandeja Cabine', 59.90)"
+                        style="margin-top:16px; width:100%; background:var(--black); color:#fff; font-family:var(--font-b); font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:1px; padding:14px; border:none; border-radius:12px; cursor:pointer;">
+                        🛒 Quero Proteger a Cabine
                     </button>
                 </div>
             </div>
-
         </div>
-        <div class="badge-row"
-            style="margin-top:32px; display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap;">
-            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL Seguro" style="height:35px; opacity:.85">
-            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:30px; opacity:.85">
-            <div class="trust-badge"
-                style="font-size:12px; color:#111827; font-weight:700; display:flex; align-items:center; gap:5px;">
-                <i class="fas fa-shield-alt" style="color:#16a34a"></i><span>1 ANO DE GARANTIA</span>
+
+        <div class="badge-row">
+            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL Seguro" style="height:35px; opacity:.85;">
+            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:30px; opacity:.85;">
+            <div class="trust-badge"><i class="fas fa-shield-alt" style="color:var(--green);"></i> 1 ANO DE GARANTIA
             </div>
-            <div class="trust-badge"
-                style="font-size:12px; color:#111827; font-weight:700; display:flex; align-items:center; gap:5px;">
-                <i class="fas fa-truck-loading" style="color:#16a34a"></i><span>POSTAGEM EM 24H</span>
+            <div class="trust-badge"><i class="fas fa-truck-loading" style="color:var(--green);"></i> POSTAGEM EM 24H
             </div>
         </div>
     </section>
 
-    <!-- ═══ BENEFÍCIOS ═══ -->
-    <section id="beneficios" style="padding:72px 24px; background:#f9fafb;">
+    <!-- ══ BENEFÍCIOS ══ -->
+    <section style="padding:72px 24px; background:var(--gray-50);">
         <div style="text-align:center; margin-bottom:40px;">
-            <p
-                style="color:#16a34a; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px;">
-                Diferenciais Exclusivos</p>
-            <h2 style="font-size:clamp(1.6rem,4vw,2.3rem); font-weight:900; color:#111827; margin-bottom:8px;">A
-                Engenharia por trás da Blindagem</h2>
-            <p style="color:#6b7280; font-size:14px;">Tecnologia que você sente na primeira limpeza</p>
+            <span class="sec-label">Diferenciais Exclusivos</span>
+            <h2 class="sec-title">A ENGENHARIA<br>DA BANDEJA</h2>
+            <p class="sec-sub">Tecnologia que você sente na primeira limpeza</p>
         </div>
         <div class="benefit-cards">
             <div class="benefit-card">
                 <div class="benefit-icon"><i class="fas fa-tint-slash"></i></div>
-                <h3 style="font-size:16px; font-weight:800; color:#111827; margin-bottom:8px;">Barreira
-                    Anti-Derramamento</h3>
-                <p style="color:#6b7280; font-size:13px; line-height:1.6;">Bordas de 5cm formam uma célula selada ao
-                    redor do assoalho. Café, lama e água ficam presos — longe do carpete original.</p>
+                <h3 style="font-size:16px; font-weight:800; color:var(--black); margin-bottom:8px;">Retém — Não só Cobre
+                </h3>
+                <p style="color:var(--gray-400); font-size:13px; line-height:1.6;">A borda de 5cm forma uma célula
+                    selada. Líquido fica preso na bandeja, longe do carpete original.</p>
             </div>
             <div class="benefit-card">
                 <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
-                <h3 style="font-size:16px; font-weight:800; color:#111827; margin-bottom:8px;">Cobertura 360º</h3>
-                <p style="color:#6b7280; font-size:13px; line-height:1.6;">Sobe pelas laterais e cobre o túnel central.
-                    Nenhuma área do assoalho fica descoberta — nem as de maior atrito.</p>
+                <h3 style="font-size:16px; font-weight:800; color:var(--black); margin-bottom:8px;">Cobertura 360°</h3>
+                <p style="color:var(--gray-400); font-size:13px; line-height:1.6;">Sobe pelas laterais e cobre o túnel
+                    central. Nenhum centímetro do assoalho fica exposto.</p>
             </div>
             <div class="benefit-card">
                 <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
-                <h3 style="font-size:16px; font-weight:800; color:#111827; margin-bottom:8px;">Limpeza em 10 Segundos
+                <h3 style="font-size:16px; font-weight:800; color:var(--black); margin-bottom:8px;">Limpa em 10 Segundos
                 </h3>
-                <p style="color:#6b7280; font-size:13px; line-height:1.6;">Esqueça aspirador e produtos. Um pano úmido
-                    resolve qualquer sujeira. Seca rápido, sem resíduo, sem odor.</p>
+                <p style="color:var(--gray-400); font-size:13px; line-height:1.6;">Pano úmido resolve qualquer sujeira.
+                    Sem aspirador, sem produto, sem lavagem cara.</p>
             </div>
             <div class="benefit-card">
                 <div class="benefit-icon"><i class="fas fa-microchip"></i></div>
-                <h3 style="font-size:16px; font-weight:800; color:#111827; margin-bottom:8px;">Molde 3D Sob Medida</h3>
-                <p style="color:#6b7280; font-size:13px; line-height:1.6;">Produzido com precisão milimétrica para o
-                    assoalho exato do seu modelo. Sem folgas, sem escorregamento, sem adaptação.</p>
+                <h3 style="font-size:16px; font-weight:800; color:var(--black); margin-bottom:8px;">Molde 3D Exato</h3>
+                <p style="color:var(--gray-400); font-size:13px; line-height:1.6;">Precisão milimétrica para o assoalho
+                    do seu modelo. Sem folgas, sem escorregamento.</p>
             </div>
         </div>
     </section>
 
-    <!-- ═══ ANTES E DEPOIS ═══ -->
+    <!-- ══ ANTES E DEPOIS ══ -->
     <section style="padding:72px 24px; background:#fff;">
         <div style="text-align:center; margin-bottom:40px;">
-            <p
-                style="color:#16a34a; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px;">
-                O Fim do Desgaste</p>
-            <h2 style="font-size:clamp(1.6rem,4vw,2.3rem); font-weight:900; color:#111827; margin-bottom:8px;">Antes e
-                Depois</h2>
-            <p style="color:#6b7280; font-size:14px;">A diferença é visível — e você sente na primeira semana</p>
+            <span class="sec-label">Resultado Real</span>
+            <h2 class="sec-title">ANTES E DEPOIS</h2>
+            <p class="sec-sub">A diferença é visível — você sente na primeira semana</p>
         </div>
         <div class="before-after-grid">
             <div class="ba-card">
-                <div class="ba-label before">❌ ANTES — Carpete Destruído</div>
-                <img src="./assets/product-4-CORQHeZN.jpg" alt="Antes: tapete comum sem proteção">
+                <div class="ba-label before">❌ Tapete Comum — Carpete Destruído</div>
+                <img src="./assets/product-4-CORQHeZN.jpg" alt="Antes: tapete comum">
             </div>
-            <div class="ba-card" style="border-color:#16a34a; box-shadow:0 10px 30px rgba(22,163,74,0.1);">
-                <div class="ba-label after">✅ DEPOIS — Blindagem Soberano 3D</div>
-                <img src="./assets/carousel-new-2-CTcO_2X9.jpg" alt="Depois: tapete 3D com proteção total">
+            <div class="ba-card" style="border-color:var(--green); box-shadow:0 10px 30px var(--green-glow);">
+                <div class="ba-label after">✅ Bandeja Soberano — Assoalho Protegido</div>
+                <img src="./assets/carousel-new-2-CTcO_2X9.jpg" alt="Depois: bandeja Soberano">
             </div>
         </div>
     </section>
 
-    <!-- ═══ GARANTIA ═══ -->
+    <!-- ══ GARANTIA ══ -->
     <section
         style="padding:72px 24px; background:#f0fdf4; border-top:1px solid #dcfce7; border-bottom:1px solid #dcfce7;">
-        <div class="guarantee-section" style="max-width:800px; margin:0 auto; text-align:center;">
-            <div style="font-size:64px; margin-bottom:16px;">🛡️</div>
-            <h2 style="font-size:clamp(1.5rem,4vw,2rem); font-weight:900; color:#111827; margin-bottom:12px;">
-                Risco Zero: 7 Dias para Testar
+        <div style="max-width:560px; margin:0 auto; text-align:center;">
+            <div style="font-size:56px; margin-bottom:16px;">🛡️</div>
+            <span class="sec-label">Risco Zero</span>
+            <h2 class="sec-title" style="font-size:clamp(1.8rem,4vw,2.6rem); margin-bottom:12px;">7 DIAS PARA TESTAR
             </h2>
-            <p style="color:#374151; font-size:15px; line-height:1.8; margin-bottom:24px;">
-                Recebeu, instalou e não ficou satisfeito com a primeira limpeza? <br>
-                <strong>Devolvemos 100% do seu dinheiro — sem burocracia, sem perguntas.</strong>
+            <p style="color:var(--gray-600); font-size:15px; line-height:1.8; margin-bottom:28px;">
+                Instalou, usou e não ficou impressionado com a primeira limpeza?<br>
+                <strong style="color:var(--black);">Devolvemos 100% do seu dinheiro — sem burocracia, sem
+                    perguntas.</strong>
             </p>
-            <div
-                style="display:flex; flex-direction:column; gap:12px; align-items:center; max-width:380px; margin:0 auto;">
-                <div
-                    style="background:#fff; border:1.5px solid #16a34a; border-radius:12px; padding:14px 20px; display:flex; align-items:center; gap:12px; width:100%;">
-                    <i class="fas fa-undo-alt" style="color:#16a34a; font-size:20px; flex-shrink:0;"></i>
+            <div style="display:flex; flex-direction:column; gap:12px; align-items:center;">
+                <div class="guarantee-item">
+                    <i class="fas fa-undo-alt" style="color:var(--green); font-size:20px; flex-shrink:0;"></i>
                     <div style="text-align:left;">
-                        <p style="font-weight:800; color:#111827; font-size:14px;">Devolução 100% Garantida</p>
-                        <p style="color:#6b7280; font-size:12px;">Sem perguntas, sem burocracia</p>
+                        <p style="font-weight:800; color:var(--black); font-size:14px;">Devolução 100% Garantida</p>
+                        <p style="color:var(--gray-400); font-size:12px;">Sem perguntas, sem burocracia</p>
                     </div>
                 </div>
-                <div
-                    style="background:#fff; border:1.5px solid #16a34a; border-radius:12px; padding:14px 20px; display:flex; align-items:center; gap:12px; width:100%;">
-                    <i class="fas fa-shipping-fast" style="color:#16a34a; font-size:20px; flex-shrink:0;"></i>
+                <div class="guarantee-item">
+                    <i class="fas fa-shipping-fast" style="color:var(--green); font-size:20px; flex-shrink:0;"></i>
                     <div style="text-align:left;">
-                        <p style="font-weight:800; color:#111827; font-size:14px;">Frete Grátis na Devolução</p>
-                        <p style="color:#6b7280; font-size:12px;">Você não paga nada extra</p>
+                        <p style="font-weight:800; color:var(--black); font-size:14px;">Frete Grátis na Devolução</p>
+                        <p style="color:var(--gray-400); font-size:12px;">Você não paga nada extra</p>
                     </div>
                 </div>
-                <div
-                    style="background:#fff; border:1.5px solid #16a34a; border-radius:12px; padding:14px 20px; display:flex; align-items:center; gap:12px; width:100%;">
-                    <i class="fas fa-check-double" style="color:#16a34a; font-size:20px; flex-shrink:0;"></i>
+                <div class="guarantee-item">
+                    <i class="fas fa-check-double" style="color:var(--green); font-size:20px; flex-shrink:0;"></i>
                     <div style="text-align:left;">
-                        <p style="font-weight:800; color:#111827; font-size:14px;">1 Ano de Garantia Contra Defeitos</p>
-                        <p style="color:#6b7280; font-size:12px;">Compromisso Soberano com o cliente</p>
+                        <p style="font-weight:800; color:var(--black); font-size:14px;">1 Ano de Garantia Contra
+                            Defeitos</p>
+                        <p style="color:var(--gray-400); font-size:12px;">Compromisso Soberano com o cliente</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ═══ DEPOIMENTOS ═══ -->
-    <section id="depoimentos" style="padding:72px 24px;max-width:1100px;margin:0 auto">
-        <div style="text-align:center;margin-bottom:40px">
-            <p
-                style="color:#16a34a;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">
-                Clientes Verificados
-            </p>
-            <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;margin-bottom:8px;color:#111827">
-                Quem Blindou, Não Volta Atrás
-            </h2>
-            <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:12px">
-                <div style="display:flex;gap:3px;color:#f59e0b;font-size:20px">★★★★★</div>
-                <span style="color:#16a34a;font-weight:700;font-size:16px">4.9 / 5.0</span>
-                <span style="color:#6b7280;font-size:13px">· +1.300 clientes satisfeitos em todo o Brasil</span>
+    <!-- ══ DEPOIMENTOS ══ -->
+    <section id="depoimentos" style="padding:72px 24px; max-width:1100px; margin:0 auto;">
+        <div style="text-align:center; margin-bottom:40px;">
+            <span class="sec-label">Clientes Verificados</span>
+            <h2 class="sec-title">QUEM BLINDOU,<br>NÃO VOLTA ATRÁS</h2>
+            <div
+                style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; margin-top:12px;">
+                <div style="display:flex; gap:3px; color:#f59e0b; font-size:20px;">★★★★★</div>
+                <span style="color:var(--green); font-weight:700; font-size:16px;">4.9 / 5.0</span>
+                <span style="color:var(--gray-400); font-size:13px;">· +1.300 clientes em todo o Brasil</span>
             </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-bottom:48px">
-            <div class="glass" style="border-radius:14px;padding:20px;border-top:4px solid #16a34a;background:#fff;">
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div
+            style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; margin-bottom:48px;">
+            <div class="review-card">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
                     <img src="./assets/customer-1-BXTDELSp.webp"
-                        style="width:46px;height:46px;border-radius:50%;object-fit:cover" alt="Ricardo S.">
+                        style="width:46px; height:46px; border-radius:50%; object-fit:cover;" alt="Ricardo S.">
                     <div>
-                        <p style="font-weight:700;font-size:14px;color:#111827">Ricardo S.</p>
-                        <p style="color:#16a34a;font-size:11px;font-weight:700;">BMW 320i · Estética Premium</p>
+                        <p style="font-weight:700; font-size:14px; color:var(--black);">Ricardo S.</p>
+                        <p style="color:var(--green); font-size:11px; font-weight:700;">BMW 320i · Estética Premium</p>
                     </div>
                 </div>
-                <div style="color:#f59e0b;font-size:12px;">★★★★★</div>
-                <p style="color:#4b5563;font-size:13px;line-height:1.6;margin-top:8px;">"O acabamento é outro nível. O
-                    material parece couro de luxo e o encaixe não deixa nem um milímetro de carpete aparecendo.
-                    Valorizou demais o interior da BMW!"</p>
-                <p style="color:#9ca3af;font-size:11px;margin-top:10px;font-weight:600;">✅ Compra verificada</p>
+                <div style="color:#f59e0b; font-size:12px;">★★★★★</div>
+                <p style="color:var(--gray-600); font-size:13px; line-height:1.6; margin-top:8px;">"O encaixe não deixa
+                    nem um milímetro de carpete aparecendo. A bandeja travou perfeitamente e o interior da BMW ficou
+                    impecável."</p>
+                <p style="color:var(--gray-400); font-size:11px; margin-top:10px; font-weight:600;">✅ Compra verificada
+                </p>
             </div>
 
-            <div class="glass" style="border-radius:14px;padding:20px;border-top:4px solid #16a34a;background:#fff;">
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <div class="review-card">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
                     <img src="./assets/customer-11-Va_eVyCD.webp"
-                        style="width:46px;height:46px;border-radius:50%;object-fit:cover" alt="Fernanda L.">
+                        style="width:46px; height:46px; border-radius:50%; object-fit:cover;" alt="Fernanda L.">
                     <div>
-                        <p style="font-weight:700;font-size:14px">Fernanda L.</p>
-                        <p style="color:#16a34a;font-size:11px;font-weight:700;">Jeep Compass · Dia a Dia/Crianças</p>
+                        <p style="font-weight:700; font-size:14px; color:var(--black);">Fernanda L.</p>
+                        <p style="color:var(--green); font-size:11px; font-weight:700;">Jeep Compass · Mãe de 2 Filhos
+                        </p>
                     </div>
                 </div>
-                <div style="color:#f59e0b;font-size:12px;">★★★★★</div>
-                <p style="color:#4b5563;font-size:13px;line-height:1.6;margin-top:8px;">"Minha filha derrubou suco no
-                    primeiro dia. As bordas seguraram tudo e eu limpei só com um lencinho umedecido. Se fosse o tapete
-                    de pano, estaria manchado até hoje."</p>
-                <p style="color:#9ca3af;font-size:11px;margin-top:10px;font-weight:600;">✅ Compra verificada</p>
+                <div style="color:#f59e0b; font-size:12px;">★★★★★</div>
+                <p style="color:var(--gray-600); font-size:13px; line-height:1.6; margin-top:8px;">"Minha filha derrubou
+                    suco no primeiro dia. A borda segurou tudo e limpei só com um lencinho. Se fosse tapete comum,
+                    estava manchado até hoje."</p>
+                <p style="color:var(--gray-400); font-size:11px; margin-top:10px; font-weight:600;">✅ Compra verificada
+                </p>
             </div>
 
-            <div class="glass" style="border-radius:14px;padding:20px;border-top:4px solid #16a34a;background:#fff;">
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <div class="review-card">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
                     <img src="./assets/customer-3-Dp2JbBLF.webp"
-                        style="width:46px;height:46px;border-radius:50%;object-fit:cover" alt="Carlos M.">
+                        style="width:46px; height:46px; border-radius:50%; object-fit:cover;" alt="Carlos M.">
                     <div>
-                        <p style="font-weight:700;font-size:14px">Carlos M.</p>
-                        <p style="color:#16a34a;font-size:11px;font-weight:700;">Corolla · Uso Profissional</p>
+                        <p style="font-weight:700; font-size:14px; color:var(--black);">Carlos M.</p>
+                        <p style="color:var(--green); font-size:11px; font-weight:700;">Corolla · Motorista de App</p>
                     </div>
                 </div>
-                <div style="color:#f59e0b;font-size:12px;">★★★★★</div>
-                <p style="color:#4b5563;font-size:13px;line-height:1.6;margin-top:8px;">"Trabalho com o carro e a
-                    limpeza era meu maior custo. Agora eu mesmo limpo o carro em 2 minutos no posto. O tapete não
-                    escorrega nada, é muito seguro."</p>
-                <p style="color:#9ca3af;font-size:11px;margin-top:10px;font-weight:600;">✅ Compra verificada</p>
+                <div style="color:#f59e0b; font-size:12px;">★★★★★</div>
+                <p style="color:var(--gray-600); font-size:13px; line-height:1.6; margin-top:8px;">"Trabalho o dia todo
+                    com o carro. Antes gastava com lavagem toda semana. Agora limpo em 2 minutos no posto entre uma
+                    corrida e outra."</p>
+                <p style="color:var(--gray-400); font-size:11px; margin-top:10px; font-weight:600;">✅ Compra verificada
+                </p>
             </div>
         </div>
 
-        <!-- UGC Photo Grid -->
-        <div style="text-align:center;margin-bottom:24px">
-            <h3 style="font-size:1.4rem;font-weight:900;color:#111827">📸 Galeria da Comunidade Soberano</h3>
-            <p style="color:#6b7280;font-size:13px;margin-top:6px">Fotos reais enviadas por clientes após o recebimento
-            </p>
+        <!-- UGC Grid -->
+        <div style="text-align:center; margin-bottom:24px;">
+            <h3 style="font-family:var(--font-d); font-size:28px; letter-spacing:0.5px; color:var(--black);">📸 GALERIA
+                DA COMUNIDADE</h3>
+            <p style="color:var(--gray-400); font-size:13px; margin-top:6px;">Fotos reais enviadas por clientes após o
+                recebimento</p>
         </div>
-        <div style="columns:2;column-gap:10px" id="ugc-grid">
+        <div style="columns:2; column-gap:10px;" id="ugc-grid">
             <img src="./assets/customer-4-DU4N_uCX.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-5-DIAem0KY.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-6-DoC9OLcH.jpeg"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-7-D97f4G7q.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-8-HuK2VOte.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-9-dPISaVgV.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-10-Cic76gTa.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-12-CsY0kDew.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-13-BmyqEl7e.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-14-BEwioIiH.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/customer-16-88IyM-cO.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/product-3-hYd1p11T.webp"
-                style="width:100%;border-radius:10px;margin-bottom:10px;display:block;break-inside:avoid" alt="">
+                style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
         </div>
         <style>
             @media(min-width:640px) {
@@ -1264,256 +1590,196 @@
         </style>
     </section>
 
-    <!-- ═══ FOOTER ═══ -->
-    <footer style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:48px 24px 120px;text-align:center">
-        <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:28px">
-            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL" style="height:44px;opacity:.85">
-            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:36px;opacity:.85">
-            <img src="./assets/meios-pagamento-Dk4yb50c.webp" alt="Pagamentos" style="height:30px;opacity:.85">
+    <!-- ══ FOOTER ══ -->
+    <footer
+        style="background:var(--gray-50); border-top:1px solid var(--gray-200); padding:48px 24px 120px; text-align:center;">
+        <div
+            style="display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; margin-bottom:28px;">
+            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL" style="height:44px; opacity:.85;">
+            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:36px; opacity:.85;">
+            <img src="./assets/meios-pagamento-Dk4yb50c.webp" alt="Pagamentos" style="height:30px; opacity:.85;">
         </div>
-        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
-            <p style="color:#374151;font-size:13px;font-weight:700;">SOBERANO TAPETES LTDA</p>
-            <p style="color:#6b7280;font-size:12px;">CNPJ: 00.000.000/0001-00</p>
-            <p style="color:#6b7280;font-size:12px;">Atendimento: Segunda à Sexta, 08h às 18h</p>
-            <p style="color:#6b7280;font-size:12px;">
+        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:20px;">
+            <p style="font-weight:700; font-size:13px; color:var(--black);">SOBERANO TAPETES LTDA</p>
+            <p style="color:var(--gray-400); font-size:12px;">CNPJ: 00.000.000/0001-00</p>
+            <p style="color:var(--gray-400); font-size:12px;">Atendimento: Segunda à Sexta, 08h às 18h</p>
+            <p style="color:var(--gray-400); font-size:12px;">
                 <a href="mailto:suporte@soberanotapetes.com.br"
-                    style="color:#16a34a;font-weight:600;text-decoration:none;">suporte@soberanotapetes.com.br</a>
+                    style="color:var(--green); font-weight:600; text-decoration:none;">suporte@soberanotapetes.com.br</a>
                 &nbsp;·&nbsp;
                 <a href="https://wa.me/5511999999999"
-                    style="color:#16a34a;font-weight:600;text-decoration:none;">WhatsApp</a>
+                    style="color:var(--green); font-weight:600; text-decoration:none;">WhatsApp</a>
             </p>
         </div>
-        <p style="color:#6b7280;font-size:13px;">© 2026 SOBERANO TAPETES. Todos os direitos reservados.</p>
-        <p style="color:#9ca3af;font-size:11px;margin-top:8px">
-            <a href="#" style="color:#9ca3af;text-decoration:none;">Políticas de Privacidade</a> ·
-            <a href="#" style="color:#9ca3af;text-decoration:none;">Termos de Uso</a>
+        <p style="color:var(--gray-400); font-size:13px;">© 2026 SOBERANO TAPETES. Todos os direitos reservados.</p>
+        <p style="color:var(--gray-400); font-size:11px; margin-top:8px;">
+            <a href="#" style="color:var(--gray-400); text-decoration:none;">Política de Privacidade</a> ·
+            <a href="#" style="color:var(--gray-400); text-decoration:none;">Termos de Uso</a>
         </p>
     </footer>
 
-    <!-- ═══ WHATSAPP ═══ -->
-    <a href="https://wa.me/5511999999999?text=Olá!%20Tenho%20interesse%20nos%20tapetes%20Soberano%203D" target="_blank"
-        style="position:fixed;bottom:80px;right:16px;z-index:99;background:#25d366;color:#fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 20px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s"
+    <!-- ══ WHATSAPP ══ -->
+    <a href="https://wa.me/5511999999999?text=Olá!%20Tenho%20interesse%20nos%20tapetes%20Soberano" target="_blank"
+        style="position:fixed; bottom:80px; right:16px; z-index:99; background:#25d366; color:#fff; width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow:0 4px 20px rgba(37,211,102,.4); text-decoration:none; transition:transform .2s;"
         onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
         <i class="fab fa-whatsapp"></i>
         <span
-            style="position:absolute;top:-4px;right:-4px;background:red;color:#fff;font-size:9px;font-weight:900;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center">1</span>
+            style="position:absolute; top:-4px; right:-4px; background:red; color:#fff; font-size:9px; font-weight:900; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center;">1</span>
     </a>
 
-    <!-- ═══ STICKY FOOTER ═══ -->
+    <!-- ══ STICKY FOOTER ══ -->
     <div id="sticky-footer">
-        <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="btn-green pulse-green"
-            style="width:100%;padding:18px;font-size:17px;font-weight:900;border-radius:0;background:#16a34a;color:#fff;border:none;cursor:pointer;">
-            <i class="fas fa-lock" style="margin-right:8px"></i>
+        <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="btn-green pulse-green">
+            <i class="fas fa-lock" style="margin-right:8px;"></i>
             GARANTIR MEU KIT COM DESCONTO
         </button>
     </div>
 
-    <!-- ═══ CHECKOUT DRAWER ═══ -->
-    <div id="checkout-drawer" class="drawer-hidden"
-        style="background:#ffffff;border-radius:24px 24px 0 0;box-shadow:0 -12px 50px rgba(0,0,0,0.4);font-family:sans-serif;">
-
-        <div style="text-align:center;padding:14px 0 6px">
-            <div style="width:45px;height:5px;background:#e5e7eb;border-radius:10px;display:inline-block"></div>
+    <!-- ══ CHECKOUT DRAWER ══ -->
+    <div id="checkout-drawer" class="drawer-hidden">
+        <div style="text-align:center; padding:14px 0 6px;">
+            <div style="width:45px; height:5px; background:var(--gray-200); border-radius:10px; display:inline-block;">
+            </div>
         </div>
 
         <div
-            style="display:flex;align-items:center;justify-content:space-between;padding:12px 24px 18px;border-bottom:1px solid #f3f4f6">
-            <h3 style="font-size:18px;font-weight:900;color:#111827;display:flex;align-items:center;gap:8px">
-                <i class="fas fa-check-circle" style="color:#22c55e"></i> Confirme sua compra
+            style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px 18px; border-bottom:1px solid var(--gray-100);">
+            <h3
+                style="font-family:var(--font-d); font-size:22px; color:var(--black); display:flex; align-items:center; gap:8px; letter-spacing:0.5px;">
+                <i class="fas fa-check-circle" style="color:var(--green); font-size:18px;"></i> CONFIRME SUA COMPRA
             </h3>
             <button onclick="closeDrawer()"
-                style="background:#f3f4f6;border:none;color:#9ca3af;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s"
-                onmouseover="this.style.background='#e5e7eb'">
+                style="background:var(--gray-100); border:none; color:var(--gray-400); border-radius:50%; width:32px; height:32px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
                 <i class="fas fa-times"></i>
             </button>
         </div>
 
-        <div style="padding:16px 24px;background:#f9fafb;border-bottom:1px solid #f3f4f6">
-            <div style="display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:12px">
-                    <div style="background:#fff;padding:10px;border-radius:12px;border:1px solid #e5e7eb">
-                        <i class="fas fa-car" style="color:#374151;font-size:18px"></i>
+        <div style="padding:16px 24px; background:var(--gray-50); border-bottom:1px solid var(--gray-100);">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="background:#fff; padding:10px; border-radius:12px; border:1px solid var(--gray-200);">
+                        <i class="fas fa-car" style="color:var(--gray-600); font-size:18px;"></i>
                     </div>
                     <div>
                         <p
-                            style="font-size:11px;color:#9ca3af;text-transform:uppercase;font-weight:800;letter-spacing:0.5px">
+                            style="font-size:10px; color:var(--gray-400); text-transform:uppercase; font-weight:800; letter-spacing:0.5px;">
                             Seu veículo:</p>
-                        <p id="drawer-vehicle" style="font-weight:700;font-size:15px;color:#111827;margin:0">—</p>
+                        <p id="drawer-vehicle" style="font-weight:700; font-size:15px; color:var(--black); margin:0;">—
+                        </p>
                     </div>
                 </div>
                 <button onclick="drawerAlterarVeiculo()"
-                    style="background:#fff;border:1px solid #d1d5db;color:#374151;border-radius:10px;padding:8px 16px;font-size:12px;cursor:pointer;font-weight:700;transition:0.2s"
-                    onmouseover="this.style.background='#f3f4f6'">
+                    style="background:#fff; border:1px solid var(--gray-200); color:var(--gray-600); border-radius:10px; padding:8px 16px; font-size:12px; cursor:pointer; font-weight:700;">
                     <i class="fas fa-edit"></i> Alterar
                 </button>
             </div>
         </div>
 
-        <div style="padding:24px">
-            <div style="display:flex;gap:18px;align-items:center;margin-bottom:20px">
-                <div style="position:relative">
+        <div style="padding:24px;">
+            <div style="display:flex; gap:18px; align-items:center; margin-bottom:20px;">
+                <div style="position:relative;">
                     <img src="./assets/kit-complete-BFARBGDS.jpg"
-                        style="width:90px;height:80px;object-fit:cover;border-radius:14px;border:1px solid #f3f4f6"
+                        style="width:90px; height:80px; object-fit:cover; border-radius:14px; border:1px solid var(--gray-100);"
                         id="drawer-kit-img">
                     <span
-                        style="position:absolute;top:-8px;right:-8px;background:#22c55e;color:white;font-size:10px;padding:2px 6px;border-radius:20px;font-weight:900">1x</span>
+                        style="position:absolute; top:-8px; right:-8px; background:var(--green); color:white; font-size:10px; padding:2px 6px; border-radius:20px; font-weight:900;">1x</span>
                 </div>
-                <div style="flex:1">
-                    <p id="drawer-kit-name" style="font-weight:800;font-size:16px;color:#111827;margin:0">Kit Completo
-                        Premium</p>
-                    <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-                        <p id="drawer-price" style="font-size:24px;font-weight:900;color:#16a34a;margin:0">R$ 79,90</p>
+                <div style="flex:1;">
+                    <p id="drawer-kit-name" style="font-weight:800; font-size:16px; color:var(--black); margin:0;">Kit
+                        Bandeja Completo</p>
+                    <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+                        <p id="drawer-price"
+                            style="font-family:var(--font-d); font-size:28px; color:var(--green); margin:0; letter-spacing:0.5px;">
+                            R$ 79,90</p>
                         <span
-                            style="background:#dcfce7;color:#166534;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px">PIX
-                            -5%</span>
+                            style="background:#dcfce7; color:#166534; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px;">PIX</span>
                     </div>
-                    <p id="drawer-original-price" style="font-size:12px;color:#9ca3af;text-decoration:line-through">R$
-                        489,90</p>
+                    <p id="drawer-original-price"
+                        style="font-size:12px; color:var(--gray-400); text-decoration:line-through;">R$ 489,90</p>
                 </div>
             </div>
 
-            <!-- Urgência no drawer -->
             <div
-                style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-                <i class="fas fa-fire" style="color:#f59e0b;font-size:16px;flex-shrink:0;"></i>
-                <p style="font-size:12px;color:#92400e;font-weight:700;margin:0;">Oferta com desconto ativa — finalize
-                    antes que expire</p>
+                style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:10px 14px; margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-fire" style="color:#f59e0b; font-size:16px; flex-shrink:0;"></i>
+                <p style="font-size:12px; color:#92400e; font-weight:700; margin:0;">Oferta com desconto ativa —
+                    finalize antes que expire</p>
             </div>
 
             <div
-                style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:14px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
-                <i class="fas fa-shipping-fast" style="color:#16a34a;font-size:18px"></i>
+                style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:14px; padding:14px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                <i class="fas fa-shipping-fast" style="color:var(--green); font-size:18px;"></i>
                 <div>
-                    <p style="font-size:13px;color:#166534;font-weight:800;margin:0">Frete Grátis Liberado!</p>
-                    <p style="font-size:11px;color:#166534;opacity:0.8;margin:0">Entrega estimada em 5 a 7 dias úteis.
-                    </p>
+                    <p style="font-size:13px; color:#166534; font-weight:800; margin:0;">Frete Grátis Liberado!</p>
+                    <p style="font-size:11px; color:#166534; opacity:0.8; margin:0;">Entrega estimada em 5 a 7 dias
+                        úteis.</p>
                 </div>
             </div>
 
             <button id="drawer-pay-btn" onclick="drawerConfirmPayment()"
-                style="width:100%;padding:22px;font-size:16px;border-radius:16px;background:#16a34a;color:#fff;border:none;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:1px;box-shadow:0 8px 20px rgba(22,163,74,0.3);transition:0.3s;"
-                onmouseover="this.style.transform='translateY(-2px)';this.style.background='#15803d'"
-                onmousedown="this.style.transform='translateY(0)'">
-                <i class="fas fa-lock" style="margin-right:8px"></i>
+                style="width:100%; padding:20px; font-size:16px; border-radius:16px; background:var(--green); color:#fff; border:none; font-family:var(--font-b); font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px; box-shadow:0 8px 20px var(--green-glow); transition:0.2s;">
+                <i class="fas fa-lock" style="margin-right:8px;"></i>
                 Ir para Pagamento Seguro
             </button>
 
             <div
-                style="display:flex;align-items:center;justify-content:center;gap:20px;margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6">
-                <div style="text-align:center">
-                    <i class="fas fa-shield-alt" style="color:#16a34a;font-size:14px"></i>
-                    <p style="font-size:10px;color:#9ca3af;font-weight:700;margin-top:4px">Compra Segura</p>
+                style="display:flex; align-items:center; justify-content:center; gap:20px; margin-top:20px; padding-top:16px; border-top:1px solid var(--gray-100);">
+                <div style="text-align:center;"><i class="fas fa-shield-alt"
+                        style="color:var(--green); font-size:14px;"></i>
+                    <p style="font-size:10px; color:var(--gray-400); font-weight:700; margin-top:4px;">Compra Segura</p>
                 </div>
-                <div style="text-align:center">
-                    <i class="fas fa-lock" style="color:#16a34a;font-size:14px"></i>
-                    <p style="font-size:10px;color:#9ca3af;font-weight:700;margin-top:4px">Dados Protegidos</p>
+                <div style="text-align:center;"><i class="fas fa-lock" style="color:var(--green); font-size:14px;"></i>
+                    <p style="font-size:10px; color:var(--gray-400); font-weight:700; margin-top:4px;">Dados Protegidos
+                    </p>
                 </div>
-                <div style="text-align:center">
-                    <i class="fas fa-award" style="color:#16a34a;font-size:14px"></i>
-                    <p style="font-size:10px;color:#9ca3af;font-weight:700;margin-top:4px">Garantia Total</p>
+                <div style="text-align:center;"><i class="fas fa-award" style="color:var(--green); font-size:14px;"></i>
+                    <p style="font-size:10px; color:var(--gray-400); font-weight:700; margin-top:4px;">Garantia Total
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ═══ SCRIPTS ═══ -->
+    <!-- ══ SCRIPTS ══ -->
     <script>
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (menuBtn && mobileMenu) {
-            menuBtn.style.display = 'block';
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.style.display = mobileMenu.style.display === 'none' ? 'flex' : 'none';
-            });
-            mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.style.display = 'none'));
-        }
-
         function stickyBuyClick() {
             const vehicleSelected = window.selection && window.selection.yearId;
             if (!vehicleSelected) {
-                const target = document.getElementById('comprar');
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('comprar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
-                const target = document.getElementById('kit-section');
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('kit-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
         function drawerAlterarVeiculo() {
             closeDrawer();
             setTimeout(() => {
-                const target = document.getElementById('vehicle-selector') || document.getElementById('kit-section');
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('vehicle-selector')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 250);
         }
-    </script>
 
-    <script>
+        // Sticky footer visibilidade
         window.addEventListener("scroll", () => {
             const sticky = document.getElementById("sticky-footer");
             if (!sticky) return;
-            if (window.scrollY > 300) { sticky.style.display = "block"; }
-            else { sticky.style.display = "none"; }
+            sticky.style.display = window.scrollY > 300 ? "flex" : "none";
         });
-    </script>
 
-    <script type="module" src="./js/main.js"></script>
-
-    <script>
-        function iniciarVigiliaPagamento(transactionId) {
-            console.log("Monitorando pagamento ID:", transactionId);
-            const checkInterval = setInterval(async () => {
-                try {
-                    const response = await fetch(`/api/consultar-pagamento?id=${transactionId}`);
-                    const data = await response.json();
-                    if (data.pago) {
-                        clearInterval(checkInterval);
-                        window.location.href = "/obrigado.html";
-                    }
-                } catch (err) {
-                    console.error("Erro ao consultar status do PIX:", err);
-                }
-            }, 5000);
-        }
-
-        async function processarPagamento(dadosCliente) {
-            try {
-                const response = await fetch('/api/gerar-pix', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dadosCliente)
-                });
-                const result = await response.json();
-                if (result.success) {
-                    document.getElementById('checkout-form').classList.add('hidden');
-                    document.getElementById('payment-area').classList.remove('hidden');
-                    document.getElementById('qr-code-img').src = result.qrcode_image;
-                    document.getElementById('pix-copy-paste').value = result.pix_code;
-                    iniciarVigiliaPagamento(result.id);
-                } else {
-                    alert("Erro ao gerar PIX. Tente novamente.");
-                }
-            } catch (error) {
-                console.error("Erro no checkout:", error);
-            }
-        }
-    </script>
-
-    <script>
+        // Esconde sticky quando modelo está em foco
         const sticky = document.getElementById("sticky-footer");
-        const selector = document.getElementById("model-search");
-        if (selector) {
-            selector.addEventListener("focus", () => { if (sticky) sticky.style.display = "none"; });
-            selector.addEventListener("blur", () => { if (window.scrollY > 300) { if (sticky) sticky.style.display = "block"; } });
+        const modelSearch = document.getElementById("model-search");
+        if (modelSearch) {
+            modelSearch.addEventListener("focus", () => { if (sticky) sticky.style.display = "none"; });
+            modelSearch.addEventListener("blur", () => { if (window.scrollY > 300 && sticky) sticky.style.display = "flex"; });
         }
     </script>
 
-    <!-- ═══ TIMER ═══ -->
+    <!-- ══ TIMER ══ -->
     <script>
         (function () {
             let total = 14 * 60 + 59;
             function tick() {
-                if (total <= 0) { total = 14 * 60 + 59; }
+                if (total <= 0) total = 14 * 60 + 59;
                 const m = Math.floor(total / 60);
                 const s = total % 60;
                 const elMin = document.getElementById('timer-min');
@@ -1526,6 +1792,8 @@
             setInterval(tick, 1000);
         })();
     </script>
+
+    <script type="module" src="./js/main.js"></script>
 
 </body>
 
