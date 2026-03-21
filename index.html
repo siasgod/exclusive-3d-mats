@@ -5,24 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soberano Tapetes | Tapete Bandeja 3D Sob Medida com Borda de 5cm</title>
-
-    <!-- SEO -->
     <meta name="description"
         content="Tapete bandeja 3D sob medida com borda de proteção de 5cm — retém líquidos, impermeável, encaixe milimétrico para o seu carro. Frete grátis para todo Brasil.">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0a0f0a">
-
-    <!-- Open Graph -->
     <meta property="og:title" content="Soberano Tapetes | Tapete Bandeja 3D Sob Medida">
     <meta property="og:description"
         content="Bordas de 5cm que retêm tudo. Encaixe milimétrico, impermeável e fácil de limpar. Frete grátis.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://exclusive-3d-mats.vercel.app">
     <meta property="og:image" content="./assets/carousel-new-2-CTcO_2X9.jpg">
-
     <link rel="icon" type="image/png" href="./assets/favicon.png">
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -89,53 +82,47 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            flex-wrap: nowrap;
-            white-space: nowrap;
+            min-height: 42px;
             border-bottom: 1px solid rgba(26, 158, 74, 0.3);
+            overflow: hidden;
         }
 
-        .top-bar-text {
+        #topbar-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: opacity 0.35s ease, transform 0.35s ease;
             font-size: 12px;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.85);
+            white-space: nowrap;
         }
 
-        .top-bar-text strong {
-            color: #fff
-        }
-
-        .top-bar-timer {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            background: var(--green);
-            border-radius: 6px;
-            padding: 3px 10px;
-        }
-
-        .top-bar-timer span {
-            font-family: var(--font-d);
-            font-size: 16px;
-            letter-spacing: 1px;
+        #topbar-slide strong {
             color: #fff;
         }
 
-        .top-bar-badge {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--green);
-            background: rgba(26, 158, 74, 0.12);
-            border: 1px solid rgba(26, 158, 74, 0.3);
-            border-radius: 20px;
-            padding: 3px 10px;
-            letter-spacing: 0.05em;
+        .topbar-timer {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            background: var(--green);
+            border-radius: 5px;
+            padding: 2px 9px;
+        }
+
+        .topbar-timer span {
+            font-family: var(--font-d);
+            font-size: 15px;
+            letter-spacing: 1px;
+            color: #fff;
         }
 
         /* ── NAV ── */
         .main-nav {
             position: sticky;
-            top: 38px;
+            top: 42px;
             z-index: 199;
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(16px);
@@ -447,7 +434,7 @@
             font-size: 14px;
         }
 
-        /* ── POR QUE SOBERANO ── */
+        /* ── WHY CARDS ── */
         .why-card {
             display: flex;
             align-items: flex-start;
@@ -510,7 +497,7 @@
             border: 1px solid var(--gray-200);
         }
 
-        /* ── VEHICLE SELECTOR ── */
+        /* ── GLASS / POPOVER / SEL ── */
         .glass {
             background: #fff;
             backdrop-filter: blur(12px);
@@ -661,7 +648,7 @@
             animation: bounceIn .5s ease;
         }
 
-        /* ── KITS ── */
+        /* ── KIT CARDS ── */
         .kit-card {
             background: #fff;
             border: 1.5px solid var(--gray-200);
@@ -794,16 +781,6 @@
         }
 
         /* ── GARANTIA ── */
-        .guarantee-section {
-            background: #f0fdf4;
-            border: 2px solid #bbf7d0;
-            border-radius: 20px;
-            padding: 40px 32px;
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
         .guarantee-item {
             background: #fff;
             border: 1.5px solid #bbf7d0;
@@ -836,15 +813,6 @@
             gap: 20px;
             flex-wrap: wrap;
             margin-top: 32px;
-        }
-
-        .security-badges {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
         }
 
         .sec-badge {
@@ -984,7 +952,6 @@
             animation: pulse 2s infinite;
         }
 
-        /* ── ANIMATIONS ── */
         @keyframes popIn {
             from {
                 opacity: 0;
@@ -1013,7 +980,6 @@
             }
         }
 
-        /* ── SALES GRID ── */
         .sales-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1034,7 +1000,6 @@
             }
         }
 
-        /* ── RESPONSIVE ── */
         @media(max-width:560px) {
             #kit-grid {
                 grid-template-columns: 1fr !important
@@ -1051,15 +1016,11 @@
 
 <body>
 
-    <!-- ══ TOP BAR ══ -->
+    <!-- ══ TOP BAR CARROSSEL ══ -->
     <div class="top-bar">
-        <span class="top-bar-text">⚡ ECONOMIZE <strong>R$ 410,00</strong> — oferta expira em:</span>
-        <div class="top-bar-timer">
-            <span id="timer-min">14</span>
-            <span style="opacity:.7">:</span>
-            <span id="timer-sec">59</span>
+        <div id="topbar-slide">
+            <!-- preenchido pelo script -->
         </div>
-        <span class="top-bar-badge">🚚 FRETE GRÁTIS</span>
     </div>
 
     <!-- ══ NAV ══ -->
@@ -1167,9 +1128,9 @@
                     <div>
                         <h3 style="font-size:15px; font-weight:800; color:var(--black); margin-bottom:5px;">Molde 3D
                             exato — sem folga, sem escorregamento</h3>
-                        <p style="font-size:13px; color:var(--gray-400); line-height:1.65;">Produzido via API FIPE com
-                            precisão milimétrica para o modelo exato do seu carro. Entra e trava. Não se move durante a
-                            direção.</p>
+                        <p style="font-size:13px; color:var(--gray-400); line-height:1.65;">Produzido com precisão
+                            milimétrica para o modelo exato do seu carro. Entra e trava. Não se move durante a direção.
+                        </p>
                     </div>
                 </div>
                 <div class="why-card">
@@ -1177,9 +1138,9 @@
                     <div>
                         <h3 style="font-size:15px; font-weight:800; color:var(--black); margin-bottom:5px;">Valoriza o
                             interior — e o preço de revenda</h3>
-                        <p style="font-size:13px; color:var(--gray-400); line-height:1.65;">Carpete preservado = carro
-                            valendo mais na hora de vender. O tapete bandeja protege seu investimento desde o primeiro
-                            dia.</p>
+                        <p style="font-size:13px; color:var(--gray-400); line-height:1.65;">Carpete preservado significa
+                            carro valendo mais na hora de vender. O tapete bandeja protege seu investimento desde o
+                            primeiro dia.</p>
                     </div>
                 </div>
             </div>
@@ -1219,7 +1180,6 @@
 
         <div id="vehicle-selector" class="glass"
             style="border-radius:20px; padding:24px; display:flex; flex-direction:column; gap:14px;">
-
             <select id="sel-brand" class="sel">
                 <option value="">Carregando marcas...</option>
             </select>
@@ -1307,7 +1267,7 @@
                         <li><i class="fas fa-check-circle" style="color:var(--green); margin-right:6px;"></i>Material
                             impermeável e anti-odores</li>
                         <li><i class="fas fa-check-circle" style="color:var(--green); margin-right:6px;"></i>Encaixe
-                            milimétrico sob medida para o seu modelo</li>
+                            milimétrico para o seu modelo exato</li>
                         <li
                             style="color:#f59e0b; font-weight:800; background:#fffbeb; padding:5px 8px; border-radius:6px;">
                             <i class="fas fa-gift" style="margin-right:6px;"></i>BRINDE: Aromatizador Black
@@ -1478,7 +1438,7 @@
     <section id="depoimentos" style="padding:72px 24px; max-width:1100px; margin:0 auto;">
         <div style="text-align:center; margin-bottom:40px;">
             <span class="sec-label">Clientes Verificados</span>
-            <h2 class="sec-title">QUEM BLINDOU,<br>NÃO VOLTA ATRÁS</h2>
+            <h2 class="sec-title">QUEM TROCOU,<br>NÃO VOLTA ATRÁS</h2>
             <div
                 style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; margin-top:12px;">
                 <div style="display:flex; gap:3px; color:#f59e0b; font-size:20px;">★★★★★</div>
@@ -1542,7 +1502,6 @@
             </div>
         </div>
 
-        <!-- UGC Grid -->
         <div style="text-align:center; margin-bottom:24px;">
             <h3 style="font-family:var(--font-d); font-size:28px; letter-spacing:0.5px; color:var(--black);">📸 GALERIA
                 DA COMUNIDADE</h3>
@@ -1628,10 +1587,12 @@
     </a>
 
     <!-- ══ STICKY FOOTER ══ -->
-    <div id="sticky-footer">
-        <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="btn-green pulse-green">
-            <i class="fas fa-lock" style="margin-right:8px;"></i>
-            GARANTIR MEU KIT COM DESCONTO
+    <div id="sticky-footer" style="padding:12px 16px;">
+        <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="pulse-green"
+            style="pointer-events:auto; width:100%; max-width:480px; margin:0 auto; display:flex; align-items:center; justify-content:center; gap:12px; background:var(--green); color:#fff; border:none; border-radius:16px; padding:16px 28px; font-family:var(--font-b); font-size:15px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; box-shadow:0 4px 20px rgba(26,158,74,0.35); transition:background .2s, transform .15s;">
+            <i class="fas fa-lock" style="font-size:13px; opacity:0.85;"></i>
+            <span>Garantir meu kit com desconto</span>
+            <i class="fas fa-arrow-right" style="font-size:12px; opacity:0.7;"></i>
         </button>
     </div>
 
@@ -1702,8 +1663,8 @@
             <div
                 style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:10px 14px; margin-bottom:16px; display:flex; align-items:center; gap:10px;">
                 <i class="fas fa-fire" style="color:#f59e0b; font-size:16px; flex-shrink:0;"></i>
-                <p style="font-size:12px; color:#92400e; font-weight:700; margin:0;">Oferta com desconto ativa —
-                    finalize antes que expire</p>
+                <p style="font-size:12px; color:#92400e; font-weight:700; margin:0;">Oferta ativa — finalize antes que
+                    os preços subam</p>
             </div>
 
             <div
@@ -1758,14 +1719,12 @@
             }, 250);
         }
 
-        // Sticky footer visibilidade
         window.addEventListener("scroll", () => {
             const sticky = document.getElementById("sticky-footer");
             if (!sticky) return;
             sticky.style.display = window.scrollY > 300 ? "flex" : "none";
         });
 
-        // Esconde sticky quando modelo está em foco
         const sticky = document.getElementById("sticky-footer");
         const modelSearch = document.getElementById("model-search");
         if (modelSearch) {
@@ -1774,22 +1733,68 @@
         }
     </script>
 
-    <!-- ══ TIMER ══ -->
+    <!-- ══ TOP BAR CARROSSEL ══ -->
     <script>
         (function () {
-            let total = 14 * 60 + 59;
-            function tick() {
-                if (total <= 0) total = 14 * 60 + 59;
-                const m = Math.floor(total / 60);
-                const s = total % 60;
-                const elMin = document.getElementById('timer-min');
-                const elSec = document.getElementById('timer-sec');
-                if (elMin) elMin.textContent = String(m).padStart(2, '0');
-                if (elSec) elSec.textContent = String(s).padStart(2, '0');
-                total--;
+            const msgs = [
+                {
+                    html: '🚚 <strong>Frete Grátis</strong> para todo Brasil — sem mínimo de compra'
+                },
+                {
+                    html: '⚡ Oferta ativa por mais',
+                    timer: true,
+                    suffix: '— garanta antes que os preços subam'
+                },
+                {
+                    html: '📦 Seu tapete <strong>sai hoje</strong> — postagem no mesmo dia do pedido'
+                },
+                {
+                    html: '✅ <strong>7 dias de garantia</strong> — devolvemos 100% sem perguntas'
+                }
+            ];
+
+            let cur = 0;
+            let timerSeconds = 14 * 60 + 59;
+            let timerInt = null;
+            const slide = document.getElementById('topbar-slide');
+
+            function buildTimerEl() {
+                const m = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+                const s = String(timerSeconds % 60).padStart(2, '0');
+                return `<span class="topbar-timer"><span id="tb-min">${m}</span><span style="opacity:.7">:</span><span id="tb-sec">${s}</span></span>`;
             }
-            tick();
-            setInterval(tick, 1000);
+
+            function render(idx) {
+                slide.style.opacity = '0';
+                slide.style.transform = 'translateY(5px)';
+                clearInterval(timerInt);
+
+                setTimeout(() => {
+                    const m = msgs[idx];
+                    if (m.timer) {
+                        slide.innerHTML = m.html + ' ' + buildTimerEl() + ' ' + (m.suffix ? `<span style="color:rgba(255,255,255,0.7)">${m.suffix}</span>` : '');
+                        timerInt = setInterval(() => {
+                            timerSeconds--;
+                            if (timerSeconds < 0) timerSeconds = 14 * 60 + 59;
+                            const minEl = document.getElementById('tb-min');
+                            const secEl = document.getElementById('tb-sec');
+                            if (minEl) minEl.textContent = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+                            if (secEl) secEl.textContent = String(timerSeconds % 60).padStart(2, '0');
+                        }, 1000);
+                    } else {
+                        slide.innerHTML = m.html;
+                    }
+                    slide.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                    slide.style.opacity = '1';
+                    slide.style.transform = 'translateY(0)';
+                }, 300);
+            }
+
+            render(0);
+            setInterval(() => {
+                cur = (cur + 1) % msgs.length;
+                render(cur);
+            }, 4500);
         })();
     </script>
 
