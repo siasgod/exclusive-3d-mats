@@ -16,13 +16,41 @@
     <meta property="og:url" content="https://exclusive-3d-mats.vercel.app">
     <meta property="og:image" content="./assets/carousel-new-2-CTcO_2X9.jpg">
     <link rel="icon" type="image/png" href="./assets/favicon.png">
+
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1639249540743513');
+        fbq('track', 'PageView');
+        fbq('track', 'ViewContent', {
+            content_name: 'Tapete 3D Soberano',
+            content_category: 'Tapetes Automotivos',
+            value: 79.90,
+            currency: 'BRL'
+        });
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=1639249540743513&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Meta Pixel Code -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
     <style>
         :root {
             --green: #1a9e4a;
@@ -843,6 +871,8 @@
             justify-content: center;
             z-index: 999;
             pointer-events: none;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.95) 60%, transparent);
+            padding: 12px 16px;
         }
 
         #sticky-footer button {
@@ -1274,7 +1304,15 @@
                         </li>
                     </ul>
 
-                    <button onclick="event.stopPropagation(); selectKit('Kit Bandeja Completo', 79.90)"
+                    <button onclick="
+    fbq('track', 'AddToCart', {
+        content_name: 'Kit Bandeja Completo',
+        content_category: 'Tapetes Automotivos',
+        value: 79.90,
+        currency: 'BRL'
+    });
+    event.stopPropagation(); 
+    selectKit('Kit Bandeja Completo', 79.90)"
                         style="margin-top:16px; width:100%; background:var(--green); color:#fff; font-family:var(--font-b); font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:1px; padding:14px; border:none; border-radius:12px; cursor:pointer; box-shadow:0 4px 12px var(--green-glow);">
                         🛒 Quero Proteção Total
                     </button>
@@ -1320,7 +1358,15 @@
                             limpa com pano úmido</li>
                     </ul>
 
-                    <button onclick="event.stopPropagation(); selectKit('Kit Bandeja Cabine', 59.90)"
+                    <button onclick="
+    fbq('track', 'AddToCart', {
+        content_name: 'Kit Bandeja Cabine',
+        content_category: 'Tapetes Automotivos',
+        value: 59.90,
+        currency: 'BRL'
+    });
+    event.stopPropagation(); 
+    selectKit('Kit Bandeja Cabine', 59.90)"
                         style="margin-top:16px; width:100%; background:var(--black); color:#fff; font-family:var(--font-b); font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:1px; padding:14px; border:none; border-radius:12px; cursor:pointer;">
                         🛒 Quero Proteger a Cabine
                     </button>

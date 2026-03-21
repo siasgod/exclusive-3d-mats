@@ -941,6 +941,7 @@
                     if (data.status === "PAID" || data.success === true) {
                         clearInterval(interval);
 
+
                         // Salva dados do cliente para o upsell no obrigado.html
                         const sel = JSON.parse(localStorage.getItem("checkout_selection") || "{}");
                         sel.customerName = document.getElementById('nome').value;
@@ -949,8 +950,13 @@
                         sel.customerPhone = document.getElementById('phone').value.replace(/\D/g, '');
                         localStorage.setItem("checkout_selection", JSON.stringify(sel));
 
+                        // Redirect com value e kit na URL para o pixel de Purchase
+                        const valorFinalRedirect = valorBase + freteAtual;
+                        const kitRedirect = encodeURIComponent(kitNome);
+
                         document.getElementById('pix-success-overlay').classList.remove('hidden');
-                        setTimeout(() => window.location.href = "/obrigado.html", 2500);
+                        setTimeout(() => window.location.href = `/obrigado.html?value=${valorFinalRedirect}&kit=${kitRedirect}`, 2500);
+
                     } else if (tentativas % 6 === 0) {
                         statusEl.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Ainda verificando... pode levar alguns instantes.';
                     }
