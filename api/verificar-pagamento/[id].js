@@ -1,3 +1,39 @@
+// Cache simples de token em memória (válido por 1 hora)
+let cachedToken = null;
+let tokenExpiresAt = null;
+
+async function getAuthToken() {
+    const now = new Date();
+
+    // Reutiliza o token se ainda for válido (com 1 min de margem)
+    if (cachedToken && tokenExpiresAt && now < new Date(tokenExpiresAt - 60_000)) {
+        return cachedToken;
+    }
+
+    const authResponse = await fetch(
+        "https://api.syncpayments.com.br/api/partner/v1/auth-token",
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                client_id: process.env.SYNCPAY_CLIENT_ID,
+                client_secret: process.env.SYNCPAY_SECRET_KEY,
+            }),
+        }
+    );
+
+    const authData = await authResponse.json();
+
+    if (!authResponse.ok || !authData?.access_token) {
+        throw new Error("Falha na autenticação SyncPay");
+    }
+
+    cachedToken = authData.access_token;
+    tokenExpiresAt = new Date(authData.expires_at);
+
+    return cachedToken;
+}
+
 export default async function handler(req, res) {
     const { id } = req.query;
 
@@ -7,36 +43,19 @@ export default async function handler(req, res) {
 
     try {
         // ===============================
-        // 1. AUTENTICAÇÃO
+        // 1. AUTENTICAÇÃO (com cache)
         // ===============================
-        const authResponse = await fetch(
-            "https://api.syncpayments.com.br/api/partner/v1/auth-token",
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    client_id: process.env.SYNCPAY_CLIENT_ID,
-                    client_secret: process.env.SYNCPAY_SECRET_KEY,
-                }),
-            }
-        );
-
-        const authData = await authResponse.json();
-
-        if (!authResponse.ok || !authData?.access_token) {
-            console.error("verificar-pagamento: falha na autenticação SyncPay");
-            return res.status(401).json({ error: "Erro na autenticação SyncPay" });
-        }
+        const token = await getAuthToken();
 
         // ===============================
         // 2. CONSULTA DO PAGAMENTO
         // ===============================
         const paymentResponse = await fetch(
-            `https://api.syncpayments.com.br/api/partner/v1/cash-in/${id}`,
+            `https://api.syncpayments.com.br/api/partner/v1/transaction/${id}`, // ✅ endpoint corrigido
             {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${authData.access_token}`,
+                    "Authorization": `Bearer ${token}`,
                     "Accept": "application/json",
                 },
             }
@@ -67,7 +86,7 @@ export default async function handler(req, res) {
             success: pago,
             status: statusFinal,
             pago,
-            id: payment.id || id
+            id: payment.reference_id || payment.id || id, // ✅ campo correto da SyncPay
         });
 
     } catch (error) {
