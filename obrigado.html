@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
-<<head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagamento Confirmado! | Soberano Tapetes</title>
@@ -22,522 +22,525 @@
             n.queue = []; t = b.createElement(e); t.async = !0;
             t.src = v; s = b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t, s)
-        }(window, document, 'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1639249540743513');
-        fbq('track', 'PageView');
+        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
 
-        // Purchase dinâmico — lê valor real do pedido
         (function () {
-            // Tenta pegar da URL primeiro (mais confiável)
             const params = new URLSearchParams(window.location.search);
             const valueFromUrl = parseFloat(params.get('value'));
             const kitFromUrl = params.get('kit') ? decodeURIComponent(params.get('kit')) : null;
 
-            // Tenta pegar do localStorage como segundo recurso
-            let valueFromStorage = null;
-            let kitFromStorage = null;
+            let data = {};
             try {
-                const data = JSON.parse(localStorage.getItem("checkout_selection") || "{}");
-                valueFromStorage = parseFloat(data.price) || null;
-                kitFromStorage = data.kitName || null;
+                data = JSON.parse(localStorage.getItem("checkout_selection") || "{}");
             } catch (e) { }
 
-            // Ordem de prioridade: URL > localStorage > fallback por kit > fallback fixo
             const finalValue = !isNaN(valueFromUrl) ? valueFromUrl
-                : valueFromStorage ? valueFromStorage
-                    : null;
-
-            const finalKit = kitFromUrl || kitFromStorage || "Kit Soberano";
-
-            // Se ainda não temos valor, usa fallback baseado no nome do kit
+                : parseFloat(data.price) || null;
+            const finalKit = kitFromUrl || data.kitName || "Kit Soberano";
             const fallbackValue = finalKit.toLowerCase().includes('completo') ? 79.90 : 59.90;
+
+            // ✅ Init com dados do cliente para correspondência avançada
+            fbq('init', '1639249540743513', {
+                em: data.customerEmail || '',
+                ph: data.customerPhone || '',
+                fn: (data.customerName || '').split(' ')[0],
+                ln: (data.customerName || '').split(' ').slice(1).join(' '),
+                external_id: data.customerCpf || ''
+            });
+
+            fbq('track', 'PageView');
 
             fbq('track', 'Purchase', {
                 value: finalValue || fallbackValue,
                 currency: 'BRL',
                 content_name: finalKit,
-                content_category: 'Tapetes Automotivos'
+                content_category: 'Tapetes Automotivos',
+                content_type: 'product'
             });
         })();
     </script>
     <noscript><img height="1" width="1" style="display:none"
             src="https://www.facebook.com/tr?id=1639249540743513&ev=PageView&noscript=1" /></noscript>
     <!-- End Meta Pixel Code -->
-    body {
-    font-family: 'Inter', sans-serif;
-    }
 
-    @keyframes fadeInUp {
-    from {
-    opacity: 0;
-    transform: translateY(10px);
-    }
+    <!-- ✅ STYLE TAG CORRIGIDA (estava sem a tag <style> de abertura) -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
 
-    to {
-    opacity: 1;
-    transform: translateY(0);
-    }
-    }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
 
-    @keyframes popIn {
-    0% {
-    transform: scale(0.8);
-    opacity: 0;
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    70% {
-    transform: scale(1.05);
-    }
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
 
-    100% {
-    transform: scale(1);
-    opacity: 1;
-    }
-    }
+            70% {
+                transform: scale(1.05);
+            }
 
-    @keyframes pulse-ring {
-    0% {
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
-    }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
-    70% {
-    box-shadow: 0 0 0 14px rgba(34, 197, 94, 0);
-    }
+        @keyframes pulse-ring {
+            0% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+            }
 
-    100% {
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-    }
-    }
+            70% {
+                box-shadow: 0 0 0 14px rgba(34, 197, 94, 0);
+            }
 
-    .anim-fade {
-    animation: fadeInUp 0.4s ease both;
-    }
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
+        }
 
-    .anim-pop {
-    animation: popIn 0.45s cubic-bezier(.36, .07, .19, .97) both;
-    }
+        .anim-fade {
+            animation: fadeInUp 0.4s ease both;
+        }
 
-    .pulse-ring {
-    animation: pulse-ring 1.6s infinite;
-    }
+        .anim-pop {
+            animation: popIn 0.45s cubic-bezier(.36, .07, .19, .97) both;
+        }
 
-    .inline-alert {
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    }
+        .pulse-ring {
+            animation: pulse-ring 1.6s infinite;
+        }
 
-    .inline-alert.error {
-    background: #fef2f2;
-    color: #dc2626;
-    border: 1px solid #fecaca;
-    }
+        .inline-alert {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .inline-alert.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
     </style>
-    </head>
+</head>
 
-    <body class="bg-gray-50 font-sans">
+<body class="bg-gray-50 font-sans">
 
-        <!-- HEADER -->
-        <header class="bg-white border-b py-4 shadow-sm">
-            <div class="max-w-lg mx-auto px-4 flex justify-between items-center">
-                <h1 class="text-xl font-black text-gray-800 italic">SOBERANO <span class="text-green-600">TAPETES</span>
-                </h1>
-                <div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
-                    <i class="fas fa-lock text-green-600"></i> Compra Segura
-                </div>
-            </div>
-        </header>
-
-        <!-- CONFIRMAÇÃO DO PEDIDO -->
-        <div class="bg-black pt-8 pb-12 text-center text-white anim-fade">
-            <div class="w-18 h-18 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 pulse-ring"
-                style="width:72px;height:72px;">
-                <i class="fas fa-check text-3xl text-white anim-pop"></i>
-            </div>
-            <h1 class="text-2xl font-black uppercase">Pedido Confirmado!</h1>
-            <p class="text-gray-400 mt-1 text-sm">Seu pagamento foi aprovado e o kit está sendo preparado.</p>
-
-            <!-- Resumo do pedido -->
-            <div id="resumo-confirmacao"
-                class="mt-5 mx-auto max-w-xs bg-white/10 rounded-2xl p-4 text-left text-sm space-y-2">
-                <div class="flex justify-between">
-                    <span class="text-gray-400">Produto</span>
-                    <span id="conf-kit" class="font-bold text-white text-right max-w-[180px]">---</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-400">Veículo</span>
-                    <span id="conf-veiculo"
-                        class="font-bold text-white text-right max-w-[180px] text-xs leading-tight">---</span>
-                </div>
-                <div class="flex justify-between pt-2 border-t border-white/20">
-                    <span class="text-gray-400">Total pago</span>
-                    <span id="conf-total" class="font-black text-green-400 text-base">---</span>
-                </div>
+    <!-- HEADER -->
+    <header class="bg-white border-b py-4 shadow-sm">
+        <div class="max-w-lg mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-xl font-black text-gray-800 italic">SOBERANO <span class="text-green-600">TAPETES</span>
+            </h1>
+            <div class="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-wider">
+                <i class="fas fa-lock text-green-600"></i> Compra Segura
             </div>
         </div>
+    </header>
 
-        <!-- UPSELL CARD -->
-        <main class="max-w-md mx-auto px-4 -mt-5 pb-10">
-            <div class="bg-white rounded-3xl shadow-xl border-2 border-green-500 overflow-hidden anim-fade"
-                style="animation-delay:0.15s">
+    <!-- CONFIRMAÇÃO DO PEDIDO -->
+    <div class="bg-black pt-8 pb-12 text-center text-white anim-fade">
+        <div class="w-18 h-18 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 pulse-ring"
+            style="width:72px;height:72px;">
+            <i class="fas fa-check text-3xl text-white anim-pop"></i>
+        </div>
+        <h1 class="text-2xl font-black uppercase">Pedido Confirmado!</h1>
+        <p class="text-gray-400 mt-1 text-sm">Seu pagamento foi aprovado e o kit está sendo preparado.</p>
 
-                <div class="bg-green-50 p-3 text-center border-b border-green-100">
-                    <p class="text-green-700 font-bold text-xs uppercase tracking-widest">
-                        ⭐ Oferta Exclusiva — Apenas para Clientes
+        <!-- Resumo do pedido -->
+        <div id="resumo-confirmacao"
+            class="mt-5 mx-auto max-w-xs bg-white/10 rounded-2xl p-4 text-left text-sm space-y-2">
+            <div class="flex justify-between">
+                <span class="text-gray-400">Produto</span>
+                <span id="conf-kit" class="font-bold text-white text-right max-w-[180px]">---</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-gray-400">Veículo</span>
+                <span id="conf-veiculo"
+                    class="font-bold text-white text-right max-w-[180px] text-xs leading-tight">---</span>
+            </div>
+            <div class="flex justify-between pt-2 border-t border-white/20">
+                <span class="text-gray-400">Total pago</span>
+                <span id="conf-total" class="font-black text-green-400 text-base">---</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPSELL CARD -->
+    <main class="max-w-md mx-auto px-4 -mt-5 pb-10">
+        <div class="bg-white rounded-3xl shadow-xl border-2 border-green-500 overflow-hidden anim-fade"
+            style="animation-delay:0.15s">
+
+            <div class="bg-green-50 p-3 text-center border-b border-green-100">
+                <p class="text-green-700 font-bold text-xs uppercase tracking-widest">
+                    ⭐ Oferta Exclusiva — Apenas para Clientes
+                </p>
+            </div>
+
+            <div class="p-5 text-center">
+
+                <!-- Barra de progresso -->
+                <div class="mb-5">
+                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
+                        Finalize sua proteção completa
+                    </p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                        <div id="progress-bar" class="bg-green-600 h-2 rounded-full transition-all duration-1000"
+                            style="width:0%"></div>
+                    </div>
+                </div>
+
+                <!-- Timer de urgência -->
+                <div id="upsell-timer"
+                    class="inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 text-xs font-black px-4 py-2 rounded-full mb-4">
+                    <i class="fas fa-clock"></i>
+                    <span id="upsell-timer-text">Oferta disponível por: 09:59</span>
+                </div>
+
+                <h2 class="text-xl font-black text-gray-900 leading-tight mb-2 uppercase">
+                    PROTEJA SEU INTERIOR <span class="text-red-600">POR ANOS</span>
+                </h2>
+                <p class="text-gray-600 text-xs mb-4 font-medium">
+                    Preserve seus tapetes 3D e mantenha aparência de carro zero KM — enviado junto com seu pedido, sem
+                    frete extra.
+                </p>
+
+                <div class="relative mb-4">
+                    <img src="assets/kitlimpeza.jpg" class="w-full rounded-2xl shadow border"
+                        alt="Kit Limpeza Soberano">
+                    <div
+                        class="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-black px-2 py-1 rounded-lg shadow animate-pulse">
+                        SOMENTE AGORA
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 border rounded-xl p-3 mb-4 text-left text-xs">
+                    <ul class="space-y-1.5 font-medium text-gray-700">
+                        <li>✔ Limpeza profissional sem danificar o material</li>
+                        <li>✔ Evita desgaste, ressecamento e rachaduras</li>
+                        <li>✔ Protege couro, plástico e borracha</li>
+                        <li>✔ Mantém cheiro e aparência premium por mais tempo</li>
+                        <li>✔ Enviado junto — <strong>frete grátis</strong></li>
+                    </ul>
+                </div>
+
+                <!-- Alert inline upsell -->
+                <div id="alert-upsell" class="hidden mb-3"></div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="text-gray-400 line-through text-sm">R$ 147,00</span>
+                        <span class="text-2xl font-black text-green-600">R$ 89,90</span>
+                    </div>
+                    <p class="text-[9px] text-gray-500 font-bold uppercase mt-1">
+                        Frete grátis • Enviado junto com seu kit
                     </p>
                 </div>
 
-                <div class="p-5 text-center">
+                <button id="cta-btn" onclick="adicionarKitLimpeza()"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-3.5 rounded-2xl shadow-lg uppercase text-sm tracking-tight transition-all duration-200 active:scale-95">
+                    SIM! QUERO PROTEGER AGORA 🚀
+                </button>
 
-                    <!-- Barra de progresso -->
-                    <div class="mb-5">
-                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
-                            Finalize sua proteção completa
-                        </p>
-                        <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                            <div id="progress-bar" class="bg-green-600 h-2 rounded-full transition-all duration-1000"
-                                style="width:0%"></div>
-                        </div>
-                    </div>
-
-                    <!-- Timer de urgência -->
-                    <div id="upsell-timer"
-                        class="inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 text-xs font-black px-4 py-2 rounded-full mb-4">
-                        <i class="fas fa-clock"></i>
-                        <span id="upsell-timer-text">Oferta disponível por: 09:59</span>
-                    </div>
-
-                    <h2 class="text-xl font-black text-gray-900 leading-tight mb-2 uppercase">
-                        PROTEJA SEU INTERIOR <span class="text-red-600">POR ANOS</span>
-                    </h2>
-                    <p class="text-gray-600 text-xs mb-4 font-medium">
-                        Preserve seus tapetes 3D e mantenha aparência de carro zero KM — enviado junto com seu pedido,
-                        sem
-                        frete extra.
-                    </p>
-
-                    <div class="relative mb-4">
-                        <img src="assets/kitlimpeza.jpg" class="w-full rounded-2xl shadow border"
-                            alt="Kit Limpeza Soberano">
-                        <div
-                            class="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-black px-2 py-1 rounded-lg shadow animate-pulse">
-                            SOMENTE AGORA
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 border rounded-xl p-3 mb-4 text-left text-xs">
-                        <ul class="space-y-1.5 font-medium text-gray-700">
-                            <li>✔ Limpeza profissional sem danificar o material</li>
-                            <li>✔ Evita desgaste, ressecamento e rachaduras</li>
-                            <li>✔ Protege couro, plástico e borracha</li>
-                            <li>✔ Mantém cheiro e aparência premium por mais tempo</li>
-                            <li>✔ Enviado junto — <strong>frete grátis</strong></li>
-                        </ul>
-                    </div>
-
-                    <!-- Alert inline upsell -->
-                    <div id="alert-upsell" class="hidden mb-3"></div>
-
-                    <div class="mb-4">
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-gray-400 line-through text-sm">R$ 147,00</span>
-                            <span class="text-2xl font-black text-green-600">R$ 89,90</span>
-                        </div>
-                        <p class="text-[9px] text-gray-500 font-bold uppercase mt-1">
-                            Frete grátis • Enviado junto com seu kit
-                        </p>
-                    </div>
-
-                    <button id="cta-btn" onclick="adicionarKitLimpeza()"
-                        class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-3.5 rounded-2xl shadow-lg uppercase text-sm tracking-tight transition-all duration-200 active:scale-95">
-                        SIM! QUERO PROTEGER AGORA 🚀
-                    </button>
-
-                    <button onclick="window.location.href='finalizado.html'"
-                        class="mt-3 text-gray-400 text-[9px] font-bold underline uppercase tracking-widest hover:text-gray-600 transition-colors">
-                        Não, prefiro não proteger meu interior.
-                    </button>
-                </div>
-            </div>
-        </main>
-
-        <!-- MODAL UPSELL PIX -->
-        <div id="modal-upsell"
-            class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center">
-
-                <!-- Loading -->
-                <div id="loading-upsell">
-                    <i class="fas fa-circle-notch fa-spin text-3xl text-green-600 mb-3"></i>
-                    <p class="font-bold text-gray-700 text-sm">Gerando seu pagamento...</p>
-                </div>
-
-                <!-- QR + instruções -->
-                <div id="qr-content-upsell" class="hidden">
-                    <h3 class="text-lg font-black mb-1 uppercase text-gray-800">Pague via PIX</h3>
-                    <p class="text-gray-500 text-xs mb-4">Aprovação imediata — adicionado ao seu pedido.</p>
-
-                    <!-- Instruções -->
-                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-left space-y-2 mb-4">
-                        <p class="text-[10px] font-black text-blue-700 uppercase tracking-wider">Como pagar:</p>
-                        <div class="flex items-start gap-2 text-xs text-blue-800">
-                            <span
-                                class="bg-blue-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">1</span>
-                            <span>Abra o app do seu banco</span>
-                        </div>
-                        <div class="flex items-start gap-2 text-xs text-blue-800">
-                            <span
-                                class="bg-blue-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">2</span>
-                            <span>Escaneie o QR Code ou use <strong>PIX Copia e Cola</strong></span>
-                        </div>
-                        <div class="flex items-start gap-2 text-xs text-blue-800">
-                            <span
-                                class="bg-blue-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">3</span>
-                            <span>Confirmação <strong>automática</strong> após o pagamento</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 p-3 rounded-xl mb-3 border-2 border-dashed border-green-500">
-                        <img id="upsell-qr-img" class="w-40 mx-auto mb-3 rounded-lg" alt="QR Code PIX">
-                        <div class="relative cursor-pointer group" onclick="copiarCodigo()">
-                            <input type="text" id="upsell-pix-code" readonly
-                                class="w-full p-2 border rounded text-[10px] font-mono text-center bg-white cursor-pointer group-hover:border-green-400 transition-all pr-8">
-                            <div class="absolute inset-y-0 right-2 flex items-center">
-                                <i id="upsell-copy-icon" class="fas fa-copy text-gray-400 text-xs"></i>
-                            </div>
-                        </div>
-                        <p id="feedback-copy" class="text-[9px] text-gray-500 font-bold mt-1">Clique para copiar</p>
-                    </div>
-
-                    <!-- Polling status -->
-                    <div id="upsell-polling"
-                        class="flex items-center justify-center gap-2 text-xs text-gray-400 font-medium mb-3">
-                        <i class="fas fa-circle-notch fa-spin"></i> Verificando pagamento...
-                    </div>
-
-                    <button onclick="fecharModal()"
-                        class="text-gray-400 text-[10px] font-bold uppercase hover:text-gray-600 transition-colors">
-                        Fechar
-                    </button>
-                </div>
-
+                <button onclick="window.location.href='finalizado.html'"
+                    class="mt-3 text-gray-400 text-[9px] font-bold underline uppercase tracking-widest hover:text-gray-600 transition-colors">
+                    Não, prefiro não proteger meu interior.
+                </button>
             </div>
         </div>
+    </main>
 
-        <script>
-            // ═══════════════════════════════════════
-            // 1. DADOS DO PEDIDO CONFIRMADO
-            // ═══════════════════════════════════════
+    <!-- MODAL UPSELL PIX -->
+    <div id="modal-upsell"
+        class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center">
+
+            <!-- Loading -->
+            <div id="loading-upsell">
+                <i class="fas fa-circle-notch fa-spin text-3xl text-green-600 mb-3"></i>
+                <p class="font-bold text-gray-700 text-sm">Gerando seu pagamento...</p>
+            </div>
+
+            <!-- QR + instruções -->
+            <div id="qr-content-upsell" class="hidden">
+                <h3 class="text-lg font-black mb-1 uppercase text-gray-800">Pague via PIX</h3>
+                <p class="text-gray-500 text-xs mb-4">Aprovação imediata — adicionado ao seu pedido.</p>
+
+                <!-- Instruções -->
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-left space-y-2 mb-4">
+                    <p class="text-[10px] font-black text-blue-700 uppercase tracking-wider">Como pagar:</p>
+                    <div class="flex items-start gap-2 text-xs text-blue-800">
+                        <span
+                            class="bg-blue-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">1</span>
+                        <span>Abra o app do seu banco</span>
+                    </div>
+                    <div class="flex items-start gap-2 text-xs text-blue-800">
+                        <span
+                            class="bg-blue-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">2</span>
+                        <span>Escaneie o QR Code ou use <strong>PIX Copia e Cola</strong></span>
+                    </div>
+                    <div class="flex items-start gap-2 text-xs text-blue-800">
+                        <span
+                            class="bg-blue-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">3</span>
+                        <span>Confirmação <strong>automática</strong> após o pagamento</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-3 rounded-xl mb-3 border-2 border-dashed border-green-500">
+                    <img id="upsell-qr-img" class="w-40 mx-auto mb-3 rounded-lg" alt="QR Code PIX">
+                    <div class="relative cursor-pointer group" onclick="copiarCodigo()">
+                        <input type="text" id="upsell-pix-code" readonly
+                            class="w-full p-2 border rounded text-[10px] font-mono text-center bg-white cursor-pointer group-hover:border-green-400 transition-all pr-8">
+                        <div class="absolute inset-y-0 right-2 flex items-center">
+                            <i id="upsell-copy-icon" class="fas fa-copy text-gray-400 text-xs"></i>
+                        </div>
+                    </div>
+                    <p id="feedback-copy" class="text-[9px] text-gray-500 font-bold mt-1">Clique para copiar</p>
+                </div>
+
+                <!-- Polling status -->
+                <div id="upsell-polling"
+                    class="flex items-center justify-center gap-2 text-xs text-gray-400 font-medium mb-3">
+                    <i class="fas fa-circle-notch fa-spin"></i> Verificando pagamento...
+                </div>
+
+                <button onclick="fecharModal()"
+                    class="text-gray-400 text-[10px] font-bold uppercase hover:text-gray-600 transition-colors">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════
+        // 1. DADOS DO PEDIDO CONFIRMADO
+        // ✅ CORRIGIDO: lê corretamente do localStorage
+        // ═══════════════════════════════════════
+        (function () {
             const saved = localStorage.getItem("checkout_selection");
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    const kit = data.kitName || "Kit Soberano";
-                    const veiculo = `${data.brandName || ""} ${data.modelName || ""} (${data.yearName || ""})`.trim();
-                    const preco = parseFloat(data.price) || 0;
+            if (!saved) return;
+            try {
+                const data = JSON.parse(saved);
+                const kit = data.kitName || "Kit Soberano";
+                const marca = data.brandName || "";
+                const modelo = data.modelName || "";
+                const ano = data.yearName || "";
+                const veiculo = [marca, modelo, ano ? `(${ano})` : ""].filter(Boolean).join(" ").trim();
+                const preco = parseFloat(data.price) || 0;
 
-                    document.getElementById('conf-kit').innerText = kit;
-                    document.getElementById('conf-veiculo').innerText = veiculo;
-                    document.getElementById('conf-total').innerText =
-                        `R$ ${preco.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-                } catch { }
+                document.getElementById('conf-kit').innerText = kit;
+                document.getElementById('conf-veiculo').innerText = veiculo || "Não informado";
+                document.getElementById('conf-total').innerText =
+                    preco > 0 ? `R$ ${preco.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : "---";
+            } catch (e) {
+                console.error("Erro ao ler checkout_selection:", e);
             }
+        })();
 
-            // ═══════════════════════════════════════
-            // 2. PROGRESS BAR ANIMADA
-            // ═══════════════════════════════════════
-            setTimeout(() => {
-                document.getElementById('progress-bar').style.width = '92%';
-            }, 300);
+        // ═══════════════════════════════════════
+        // 2. PROGRESS BAR ANIMADA
+        // ═══════════════════════════════════════
+        setTimeout(() => {
+            document.getElementById('progress-bar').style.width = '92%';
+        }, 300);
 
-            // ═══════════════════════════════════════
-            // 3. TIMER DE URGÊNCIA DO UPSELL
-            // ═══════════════════════════════════════
-            (function startUpsellTimer() {
-                let duration = 9 * 60 + 59; // 9:59
-                const textEl = document.getElementById('upsell-timer-text');
-                const boxEl = document.getElementById('upsell-timer');
+        // ═══════════════════════════════════════
+        // 3. TIMER DE URGÊNCIA DO UPSELL
+        // ═══════════════════════════════════════
+        (function startUpsellTimer() {
+            let duration = 9 * 60 + 59;
+            const textEl = document.getElementById('upsell-timer-text');
+            const boxEl = document.getElementById('upsell-timer');
 
-                const tick = () => {
-                    const min = Math.floor(duration / 60);
-                    const sec = duration % 60;
-                    textEl.textContent = `Oferta disponível por: ${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+            const tick = () => {
+                const min = Math.floor(duration / 60);
+                const sec = duration % 60;
+                textEl.textContent = `Oferta disponível por: ${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 
-                    if (duration <= 60) {
-                        boxEl.classList.replace('bg-red-50', 'bg-red-100');
-                    }
-                    if (duration <= 0) {
-                        clearInterval(interval);
-                        textEl.textContent = 'Oferta expirada';
-                        document.getElementById('cta-btn').disabled = true;
-                        document.getElementById('cta-btn').classList.replace('bg-green-600', 'bg-gray-400');
-                        document.getElementById('cta-btn').textContent = 'Oferta Encerrada';
-                    }
-                    duration--;
-                };
-                tick();
-                const interval = setInterval(tick, 1000);
-            })();
+                if (duration <= 60) {
+                    boxEl.classList.replace('bg-red-50', 'bg-red-100');
+                }
+                if (duration <= 0) {
+                    clearInterval(interval);
+                    textEl.textContent = 'Oferta expirada';
+                    document.getElementById('cta-btn').disabled = true;
+                    document.getElementById('cta-btn').classList.replace('bg-green-600', 'bg-gray-400');
+                    document.getElementById('cta-btn').textContent = 'Oferta Encerrada';
+                }
+                duration--;
+            };
+            tick();
+            const interval = setInterval(tick, 1000);
+        })();
 
-            // ═══════════════════════════════════════
-            // 4. INLINE ALERT helper
-            // ═══════════════════════════════════════
-            function showAlert(id, msg) {
-                const el = document.getElementById(id);
-                if (!el) return;
-                el.innerHTML = `<div class="inline-alert error"><i class="fas fa-exclamation-circle"></i>${msg}</div>`;
-                el.classList.remove('hidden');
-            }
-            function hideAlert(id) {
-                const el = document.getElementById(id);
-                if (el) { el.classList.add('hidden'); el.innerHTML = ''; }
-            }
+        // ═══════════════════════════════════════
+        // 4. INLINE ALERT helper
+        // ═══════════════════════════════════════
+        function showAlert(id, msg) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.innerHTML = `<div class="inline-alert error"><i class="fas fa-exclamation-circle"></i>${msg}</div>`;
+            el.classList.remove('hidden');
+        }
+        function hideAlert(id) {
+            const el = document.getElementById(id);
+            if (el) { el.classList.add('hidden'); el.innerHTML = ''; }
+        }
 
-            // ═══════════════════════════════════════
-            // 5. COPIAR PIX
-            // ═══════════════════════════════════════
-            function copiarCodigo() {
-                const input = document.getElementById("upsell-pix-code");
-                const icon = document.getElementById("upsell-copy-icon");
-                const feedback = document.getElementById("feedback-copy");
+        // ═══════════════════════════════════════
+        // 5. COPIAR PIX
+        // ═══════════════════════════════════════
+        function copiarCodigo() {
+            const input = document.getElementById("upsell-pix-code");
+            const icon = document.getElementById("upsell-copy-icon");
+            const feedback = document.getElementById("feedback-copy");
 
-                const doFeedback = () => {
-                    icon.classList.replace('fa-copy', 'fa-check-circle');
-                    icon.style.color = '#16a34a';
-                    feedback.textContent = '✅ COPIADO COM SUCESSO!';
-                    feedback.style.color = '#16a34a';
-                    setTimeout(() => {
-                        icon.classList.replace('fa-check-circle', 'fa-copy');
-                        icon.style.color = '';
-                        feedback.textContent = 'Clique para copiar';
-                        feedback.style.color = '';
-                    }, 2500);
-                };
+            const doFeedback = () => {
+                icon.classList.replace('fa-copy', 'fa-check-circle');
+                icon.style.color = '#16a34a';
+                feedback.textContent = '✅ COPIADO COM SUCESSO!';
+                feedback.style.color = '#16a34a';
+                setTimeout(() => {
+                    icon.classList.replace('fa-check-circle', 'fa-copy');
+                    icon.style.color = '';
+                    feedback.textContent = 'Clique para copiar';
+                    feedback.style.color = '';
+                }, 2500);
+            };
 
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(input.value).then(doFeedback).catch(() => {
-                        input.select(); document.execCommand('copy'); doFeedback();
-                    });
-                } else {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(input.value).then(doFeedback).catch(() => {
                     input.select(); document.execCommand('copy'); doFeedback();
-                }
+                });
+            } else {
+                input.select(); document.execCommand('copy'); doFeedback();
+            }
+        }
+
+        // ═══════════════════════════════════════
+        // 6. FECHAR MODAL
+        // ═══════════════════════════════════════
+        function fecharModal() {
+            document.getElementById('modal-upsell').classList.add('hidden');
+            document.getElementById('cta-btn').disabled = false;
+            document.getElementById('cta-btn').innerHTML = 'SIM! QUERO PROTEGER AGORA 🚀';
+        }
+
+        // ═══════════════════════════════════════
+        // 7. ADICIONAR KIT LIMPEZA (upsell)
+        // ═══════════════════════════════════════
+        async function adicionarKitLimpeza() {
+            hideAlert('alert-upsell');
+
+            const checkoutData = localStorage.getItem("checkout_selection");
+            if (!checkoutData) {
+                return showAlert('alert-upsell', 'Dados do pedido não encontrados. Tente novamente.');
             }
 
-            // ═══════════════════════════════════════
-            // 6. FECHAR MODAL
-            // ═══════════════════════════════════════
-            function fecharModal() {
-                document.getElementById('modal-upsell').classList.add('hidden');
-                document.getElementById('cta-btn').disabled = false;
-                document.getElementById('cta-btn').innerHTML = 'SIM! QUERO PROTEGER AGORA 🚀';
+            let customer;
+            try {
+                const data = JSON.parse(checkoutData);
+                customer = {
+                    name: data.customerName || "",
+                    email: data.customerEmail || "",
+                    cpf_cnpj: data.customerCpf || "",
+                    phone: data.customerPhone || ""
+                };
+                if (!customer.email) throw new Error("E-mail não encontrado.");
+            } catch {
+                return showAlert('alert-upsell', 'Não foi possível identificar seus dados. Por favor, complete o checkout novamente.');
             }
 
-            // ═══════════════════════════════════════
-            // 7. ADICIONAR KIT LIMPEZA (upsell)
-            // ═══════════════════════════════════════
-            async function adicionarKitLimpeza() {
-                hideAlert('alert-upsell');
+            const modal = document.getElementById('modal-upsell');
+            const loading = document.getElementById('loading-upsell');
+            const qrContent = document.getElementById('qr-content-upsell');
 
-                // Lê dados do cliente do localStorage (chave correta do fluxo)
-                const checkoutData = localStorage.getItem("checkout_selection");
-                if (!checkoutData) {
-                    return showAlert('alert-upsell', 'Dados do pedido não encontrados. Tente novamente.');
-                }
+            const btn = document.getElementById('cta-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Gerando...';
 
-                let customer;
+            modal.classList.remove('hidden');
+            loading.classList.remove('hidden');
+            qrContent.classList.add('hidden');
+
+            try {
+                const response = await fetch("/api/gerar-pix", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        customer,
+                        amount: 8990,
+                        description: "Kit Limpeza Soberano — Upsell",
+                        isUpsell: true
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.pix_qr_code) throw new Error(data.error || "Erro ao gerar PIX");
+
+                document.getElementById("upsell-qr-img").src = data.pix_qr_code;
+                document.getElementById("upsell-pix-code").value = data.pix_code;
+
+                loading.classList.add("hidden");
+                qrContent.classList.remove("hidden");
+
+                iniciarVerificacaoUpsell(data.id);
+
+            } catch (err) {
+                modal.classList.add('hidden');
+                loading.classList.add('hidden');
+                btn.disabled = false;
+                btn.innerHTML = 'SIM! QUERO PROTEGER AGORA 🚀';
+                showAlert('alert-upsell', err.message || 'Erro ao gerar PIX. Tente novamente.');
+            }
+        }
+
+        // ═══════════════════════════════════════
+        // 8. POLLING UPSELL
+        // ═══════════════════════════════════════
+        function iniciarVerificacaoUpsell(transactionId) {
+            const pollingEl = document.getElementById('upsell-polling');
+            let tentativas = 0;
+
+            const interval = setInterval(async () => {
+                tentativas++;
                 try {
-                    const data = JSON.parse(checkoutData);
-                    // Reconstrói o objeto customer a partir dos dados salvos no checkout
-                    customer = {
-                        name: data.customerName || "",
-                        email: data.customerEmail || "",
-                        cpf_cnpj: data.customerCpf || "",
-                        phone: data.customerPhone || ""
-                    };
-                    if (!customer.email) throw new Error("E-mail não encontrado.");
-                } catch {
-                    return showAlert('alert-upsell', 'Não foi possível identificar seus dados. Por favor, complete o checkout novamente.');
-                }
+                    const res = await fetch(`/api/verificar-pagamento/${transactionId}`);
+                    const data = await res.json();
 
-                const modal = document.getElementById('modal-upsell');
-                const loading = document.getElementById('loading-upsell');
-                const qrContent = document.getElementById('qr-content-upsell');
+                    if (data.status === "PAID" || data.success === true) {
+                        clearInterval(interval);
 
-                const btn = document.getElementById('cta-btn');
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Gerando...';
+                        const sel = JSON.parse(localStorage.getItem("checkout_selection") || "{}");
+                        sel.upsellComprado = true;
+                        localStorage.setItem("checkout_selection", JSON.stringify(sel));
 
-                modal.classList.remove('hidden');
-                loading.classList.remove('hidden');
-                qrContent.classList.add('hidden');
-
-                try {
-                    const response = await fetch("/api/gerar-pix", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            customer,
-                            amount: 8990, // centavos
-                            description: "Kit Limpeza Soberano — Upsell",
-                            isUpsell: true
-                        })
-                    });
-
-                    const data = await response.json();
-                    if (!response.ok || !data.pix_qr_code) throw new Error(data.error || "Erro ao gerar PIX");
-
-                    document.getElementById("upsell-qr-img").src = data.pix_qr_code;
-                    document.getElementById("upsell-pix-code").value = data.pix_code;
-
-                    loading.classList.add("hidden");
-                    qrContent.classList.remove("hidden");
-
-                    iniciarVerificacaoUpsell(data.id);
-
-                } catch (err) {
-                    modal.classList.add('hidden');
-                    loading.classList.add('hidden');
-                    btn.disabled = false;
-                    btn.innerHTML = 'SIM! QUERO PROTEGER AGORA 🚀';
-                    showAlert('alert-upsell', err.message || 'Erro ao gerar PIX. Tente novamente.');
-                }
-            }
-
-            // ═══════════════════════════════════════
-            // 8. POLLING UPSELL — usa status PAID (consistente com o restante do projeto)
-            // ═══════════════════════════════════════
-            function iniciarVerificacaoUpsell(transactionId) {
-                const pollingEl = document.getElementById('upsell-polling');
-                let tentativas = 0;
-
-                const interval = setInterval(async () => {
-                    tentativas++;
-                    try {
-                        const res = await fetch(`/api/verificar-pagamento/${transactionId}`);
-                        const data = await res.json();
-
-                        if (data.status === "PAID" || data.success === true) {
-                            clearInterval(interval);
-
-                            // Marca upsell como comprado para o finalizado.html
-                            const sel = JSON.parse(localStorage.getItem("checkout_selection") || "{}");
-                            sel.upsellComprado = true;
-                            localStorage.setItem("checkout_selection", JSON.stringify(sel));
-
-                            pollingEl.innerHTML = '<i class="fas fa-check-circle text-green-500"></i> <span class="text-green-600 font-bold">Pagamento confirmado!</span>';
-                            setTimeout(() => window.location.href = "finalizado.html", 1800);
-                        } else if (tentativas % 6 === 0) {
-                            pollingEl.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Ainda verificando... pode levar alguns instantes.';
-                        }
-                    } catch { }
-                }, 5000);
-            }
-        </script>
-    </body>
+                        pollingEl.innerHTML = '<i class="fas fa-check-circle text-green-500"></i> <span class="text-green-600 font-bold">Pagamento confirmado!</span>';
+                        setTimeout(() => window.location.href = "finalizado.html", 1800);
+                    } else if (tentativas % 6 === 0) {
+                        pollingEl.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Ainda verificando... pode levar alguns instantes.';
+                    }
+                } catch { }
+            }, 5000);
+        }
+    </script>
+</body>
 
 </html>
