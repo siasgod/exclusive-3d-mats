@@ -20,6 +20,31 @@ let currentYearRequest = null;
 
 const SUPPORT_WHATSAPP = 'https://wa.me/5574999859221?text=Ol%C3%A1!%20N%C3%A3o%20encontrei%20meu%20carro%20na%20lista%20de%20modelos.';
 
+const PRIORITY_BRANDS = [
+    'Volkswagen',
+    'Chevrolet',
+    'Fiat',
+    'Toyota',
+    'Hyundai',
+    'Honda',
+    'Ford',
+    'Renault',
+    'Jeep',
+    'Nissan',
+    'Peugeot',
+    'Citroën',
+    'Citroen',
+    'BYD',
+    'Kia',
+    'Mitsubishi',
+    'Audi',
+    'BMW',
+    'Mercedes-Benz',
+    'Volvo',
+    'Chery',
+    'CAOA Chery'
+];
+
 function byId(id) {
     return document.getElementById(id);
 }
@@ -67,16 +92,40 @@ function getVehicleLabel() {
     return `${selection.brandName} ${selection.modelName} (${selection.yearName})`;
 }
 
-function updateStickyCta() {
-    const btn = byId('sticky-buy-btn');
-    if (!btn) return;
+function normalizeBrandName(name) {
+    return String(name || '')
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .trim()
+        .toLowerCase();
+}
 
-    const label = btn.querySelector('span');
-    if (!label) return;
+function sortBrandsByPriority(brands) {
+    const priorityIndex = new Map(
+        PRIORITY_BRANDS.map((name, index) => [normalizeBrandName(name), index])
+    );
 
-    label.textContent = selection.yearId
-        ? 'Escolher kit para meu carro'
-        : 'Ver molde do meu carro';
+    return [...brands].sort((a, b) => {
+        const aIndex = priorityIndex.get(normalizeBrandName(a.nome));
+        const bIndex = priorityIndex.get(normalizeBrandName(b.nome));
+
+        const aIsPriority = Number.isInteger(aIndex);
+        const bIsPriority = Number.isInteger(bIndex);
+
+        if (aIsPriority && bIsPriority) return aIndex - bIndex;
+        if (aIsPriority) return -1;
+        if (bIsPriority) return 1;
+
+        return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
+    });
+}
+
+function sortYears(list) {
+    return [...list].sort((a, b) => {
+        const aYear = parseInt(String(a.nome).match(/^\d{4}/)?.[0] || '0', 10);
+        const bYear = parseInt(String(b.nome).match(/^\d{4}/)?.[0] || '0', 10);
+        return bYear - aYear;
+    });
 }
 
 function persistSelection() {
@@ -87,15 +136,187 @@ function persistSelection() {
     }
 }
 
+function getKitCards() {
+    return [...document.querySelectorAll('.kit-card')];
+}
+
+function getKitButtons() {
+    return [...document.querySelectorAll('.kit-buy-btn')];
+}
+
+function getKitNameFromCard(card) {
+    return card?.querySelector('h5')?.textContent?.trim() || 'Kit';
+}
+
+function injectStoreUxStyles() {
+    if (byId('runtime-store-ux-styles')) return;
+
+    const style = document.createElement('style');
+    style.id = 'runtime-store-ux-styles';
+    style.textContent = `
+        .kit-card-locked {
+            opacity: .92;
+        }
+
+        .kit-card-ready {
+            border-color: rgba(26, 158, 74, 0.42) !important;
+            box-shadow:
+                0 0 0 2px rgba(26, 158, 74, 0.09),
+                0 18px 34px rgba(12, 18, 13, 0.08) !important;
+        }
+
+        .kit-card-picked {
+            border-color: #1a9e4a !important;
+            box-shadow:
+                0 0 0 3px rgba(26, 158, 74, 0.16),
+                0 18px 38px rgba(26, 158, 74, 0.12) !important;
+            transform: translateY(-2px);
+        }
+
+        .confirm-box-live {
+            animation: confirmPulse .75s ease;
+        }
+
+        @keyframes confirmPulse {
+            0% {
+                transform: scale(.985);
+                box-shadow: 0 0 0 0 rgba(26, 158, 74, 0);
+            }
+            60% {
+                transform: scale(1.01);
+                box-shadow: 0 0 0 10px rgba(26, 158, 74, 0.04);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(26, 158, 74, 0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function setKitButtonLabel(button, text) {
+    if (!button) return;
+    button.innerHTML = `<i class="fas fa-cart-shopping"></i>${text}`;
+}
+
+function updateStickyCta() {
+    const btn = byId('sticky-buy-btn');
+    if (!btn) return;
+
+    const label = btn.querySelector('span');
+    if (!label) return;
+
+    if (selection.yearId) {
+        label.textContent = 'Escolher kit para meu carro';
+    } else {
+        label.textContent = 'Ver molde do meu carro';
+    }
+}
+
+function updateStorePresentation() {
+    const panelTitle = document.querySelector('.buy-panel-title h3');
+    const helperLine = document.querySelector('.helper-line');
+    const confirmBox = byId('confirm-box');
+    const confirmPrompt = confirmBox?.querySelector('.confirm-kit-prompt');
+    const confirmDescription = confirmBox?.querySelector('.confirm-top div span');
+    const kitSection = byId('kit-section');
+
+    const vehicleReady = !!selection.yearId;
+    const vehicleLabel = getVehicleLabel();
+
+    if (panelTitle) {
+        panelTitle.textContent = vehicleReady
+            ? 'Escolha o kit do seu carro'
+            : 'Selecione seu carro e escolha o kit';
+    }
+
+    if (helperLine) {
+        helperLine.innerHTML = vehicleReady
+            ? `Molde identificado para <strong>${vehicleLabel}</strong>. Agora escolha o kit logo abaixo.`
+            : `Aqui o lead não precisa “entender demais” a página: ele escolhe <strong>marca</strong>, <strong>modelo</strong>, <strong>ano</strong> e já vê os kits no mesmo bloco.`;
+    }
+
+    if (confirmPrompt) {
+        confirmPrompt.innerHTML = vehicleReady
+            ? `<i class="fas fa-check-circle"></i> pronto para comprar`
+            : `<i class="fas fa-circle-info"></i> selecione o veículo`;
+    }
+
+    if (confirmDescription) {
+        confirmDescription.textContent = vehicleReady
+            ? 'Seu carro foi reconhecido. Agora escolha o kit logo abaixo.'
+            : 'Selecione marca, modelo e ano para liberar os kits.';
+    }
+
+    getKitCards().forEach((card) => {
+        card.classList.remove('kit-card-picked');
+
+        if (vehicleReady) {
+            card.classList.add('kit-card-ready');
+            card.classList.remove('kit-card-locked');
+        } else {
+            card.classList.remove('kit-card-ready');
+            card.classList.add('kit-card-locked');
+        }
+    });
+
+    getKitButtons().forEach((button) => {
+        const card = button.closest('.kit-card');
+        const kitName = getKitNameFromCard(card);
+
+        if (vehicleReady) {
+            setKitButtonLabel(button, `Comprar ${kitName.toLowerCase()}`);
+            button.style.opacity = '1';
+            button.style.cursor = 'pointer';
+        } else {
+            setKitButtonLabel(button, 'Selecionar carro acima');
+            button.style.opacity = '1';
+            button.style.cursor = 'pointer';
+        }
+    });
+
+    if (kitSection) {
+        kitSection.style.scrollMarginTop = '130px';
+    }
+}
+
+function pulseKitSection() {
+    const kitSection = byId('kit-section');
+    if (!kitSection) return;
+
+    pulseOutline(kitSection, '#1a9e4a');
+
+    const rect = kitSection.getBoundingClientRect();
+    const isVisible = rect.top >= 0 && rect.top <= (window.innerHeight - 160);
+
+    if (!isVisible && window.innerWidth < 980) {
+        setTimeout(() => {
+            scrollToElement(kitSection);
+        }, 180);
+    }
+}
+
+function markPickedKit(kitName) {
+    getKitCards().forEach((card) => {
+        const name = getKitNameFromCard(card).toLowerCase();
+        const isPicked = name.includes(kitName.toLowerCase());
+
+        card.classList.toggle('kit-card-picked', isPicked);
+    });
+}
+
 function resetModelUi() {
     const trigger = byId('model-trigger');
     const searchInput = byId('model-search');
 
     if (trigger) trigger.disabled = !selection.brandId;
-    setText('model-selected-text', 'Selecione o Modelo');
+    setText('model-selected-text', selection.brandId ? 'Selecione o Modelo' : 'Selecione primeiro a Marca');
     if (searchInput) searchInput.value = '';
     byId('model-popover')?.classList.remove('show');
-    renderModels([]);
+
+    const results = byId('model-results');
+    if (results) results.innerHTML = '';
 }
 
 function resetYearUi(message = 'Selecione o Ano') {
@@ -133,8 +354,10 @@ function resetSelectionFrom(step) {
     selection.kitName = '';
     selection.price = '';
     selection.image = '';
+
     persistSelection();
     updateStickyCta();
+    updateStorePresentation();
 }
 
 function renderModelError() {
@@ -152,67 +375,6 @@ function renderYearError() {
     if (!year) return;
     year.disabled = false;
     year.innerHTML = '<option value="">Erro ao carregar anos</option>';
-}
-
-const PRIORITY_BRANDS = [
-    'Volkswagen',
-    'Chevrolet',
-    'Fiat',
-    'Toyota',
-    'Hyundai',
-    'Honda',
-    'Ford',
-    'Renault',
-    'Jeep',
-    'Nissan',
-    'Peugeot',
-    'Citroën',
-    'Citroen',
-    'BYD',
-    'Kia',
-    'Mitsubishi',
-    'Audi',
-    'BMW',
-    'Mercedes-Benz',
-    'Volvo',
-    'Chery',
-    'CAOA Chery'
-];
-
-function normalizeBrandName(name) {
-    return String(name || '')
-        .normalize('NFD')
-        .replace(/[̀-ͯ]/g, '')
-        .trim()
-        .toLowerCase();
-}
-
-function sortBrandsByPriority(brands) {
-    const priorityIndex = new Map(
-        PRIORITY_BRANDS.map((name, index) => [normalizeBrandName(name), index])
-    );
-
-    return [...brands].sort((a, b) => {
-        const aIndex = priorityIndex.get(normalizeBrandName(a.nome));
-        const bIndex = priorityIndex.get(normalizeBrandName(b.nome));
-
-        const aIsPriority = Number.isInteger(aIndex);
-        const bIsPriority = Number.isInteger(bIndex);
-
-        if (aIsPriority && bIsPriority) return aIndex - bIndex;
-        if (aIsPriority) return -1;
-        if (bIsPriority) return 1;
-
-        return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
-    });
-}
-
-function sortYears(list) {
-    return [...list].sort((a, b) => {
-        const aYear = parseInt(String(a.nome).match(/^\d{4}/)?.[0] || '0', 10);
-        const bYear = parseInt(String(b.nome).match(/^\d{4}/)?.[0] || '0', 10);
-        return bYear - aYear;
-    });
 }
 
 function renderModels(list) {
@@ -267,6 +429,7 @@ function selectModel(id, name) {
     clearVehicleConfirmation();
     persistSelection();
     updateStickyCta();
+    updateStorePresentation();
     loadYears(id);
 }
 
@@ -399,6 +562,7 @@ async function handleBrandChange(event) {
         renderModels(allModels);
         setText('model-selected-text', 'Selecione o Modelo');
         persistSelection();
+        updateStorePresentation();
     } catch (error) {
         if (error.name === 'AbortError') return;
         setText('model-selected-text', 'Erro ao carregar modelos');
@@ -409,6 +573,7 @@ async function handleBrandChange(event) {
 
 function handleModelSearch(event) {
     const term = event.target.value.trim().toLowerCase();
+
     if (!allModels.length) {
         renderModels([]);
         return;
@@ -475,15 +640,24 @@ function handleYearChange(event) {
     selection.yearName = event.target.options[event.target.selectedIndex].text;
 
     const full = getVehicleLabel();
+    const confirmBox = byId('confirm-box');
 
     setText('conf-vehicle-text', full);
     showElement('confirm-box');
+
+    if (confirmBox) {
+        confirmBox.classList.remove('confirm-box-live');
+        void confirmBox.offsetWidth;
+        confirmBox.classList.add('confirm-box-live');
+    }
+
     persistSelection();
     updateStickyCta();
+    updateStorePresentation();
 
     setTimeout(() => {
-        scrollToElement(byId('kit-section'));
-    }, 350);
+        pulseKitSection();
+    }, 200);
 }
 
 window.safeTrackAddToCart = function safeTrackAddToCart(contentName, value) {
@@ -503,6 +677,12 @@ window.safeTrackAddToCart = function safeTrackAddToCart(contentName, value) {
 window.selectKit = function selectKit(kitName, price) {
     if (!selection.yearId) {
         const vehicleSelector = byId('vehicle-selector');
+        const helperLine = document.querySelector('.helper-line');
+
+        if (helperLine) {
+            helperLine.innerHTML = `Antes de escolher o kit, selecione <strong>marca</strong>, <strong>modelo</strong> e <strong>ano</strong> do veículo.`;
+        }
+
         scrollToElement(vehicleSelector || byId('comprar'));
         pulseOutline(vehicleSelector, '#16a34a');
         return;
@@ -515,7 +695,10 @@ window.selectKit = function selectKit(kitName, price) {
     selection.kitName = kitName;
     selection.price = price;
     selection.image = imgPath;
+
     persistSelection();
+    updateStorePresentation();
+    markPickedKit(kitName);
 
     try {
         localStorage.setItem('checkout_selection', JSON.stringify(selection));
@@ -523,7 +706,7 @@ window.selectKit = function selectKit(kitName, price) {
         console.warn('Não foi possível salvar checkout_selection.', error);
     }
 
-    const btns = document.querySelectorAll('.kit-buy-btn');
+    const btns = getKitButtons();
     btns.forEach((btn) => {
         btn.disabled = true;
         btn.style.opacity = '0.75';
@@ -537,7 +720,9 @@ window.selectKit = function selectKit(kitName, price) {
         imagem: imgPath
     });
 
-    window.location.href = `dados-pagamento.html?${params.toString()}`;
+    setTimeout(() => {
+        window.location.href = `dados-pagamento.html?${params.toString()}`;
+    }, 120);
 };
 
 window.closeDrawer = function closeDrawer() {
@@ -558,7 +743,7 @@ function stickyBuyClick() {
         return;
     }
 
-    scrollToElement(byId('kit-section'));
+    pulseKitSection();
 }
 window.stickyBuyClick = stickyBuyClick;
 
@@ -588,12 +773,14 @@ function bindEvents() {
 }
 
 function boot() {
+    injectStoreUxStyles();
     bindEvents();
     initCarousel();
     initFipe();
     updateStickyCta();
     resetYearUi('Selecione primeiro a Marca');
     setText('model-selected-text', 'Selecione primeiro a Marca');
+    updateStorePresentation();
 }
 
 if (document.readyState === 'loading') {
