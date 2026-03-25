@@ -24,7 +24,6 @@ function initCarousel() {
     const slides = document.querySelectorAll('.hero-slide-img');
     if (!container || slides.length === 0) return;
 
-    // Evita intervalo duplicado se chamado mais de uma vez
     if (carouselInterval) clearInterval(carouselInterval);
 
     let currentSlide = 0;
@@ -38,7 +37,7 @@ function initCarousel() {
 }
 
 // ═══════════════════════════════════════
-// FIPE API — com loading visual
+// FIPE API
 // ═══════════════════════════════════════
 async function initFipe() {
     const selBrand = document.getElementById('sel-brand');
@@ -161,7 +160,7 @@ function selectModel(id, name) {
 }
 
 // ═══════════════════════════════════════
-// CARREGAR ANOS — com filtro de códigos inválidos (ex: 32000 Elétrico)
+// CARREGAR ANOS
 // ═══════════════════════════════════════
 async function loadYears(modelId) {
     const selYear = document.getElementById('sel-year');
@@ -184,8 +183,6 @@ async function loadYears(modelId) {
         selYear.innerHTML = '<option value="">Selecione o Ano</option>';
 
         years.forEach(y => {
-            // Filtra códigos inválidos como 32000 (código interno FIPE para elétrico sem ano real)
-            // Mantém entradas cujo nome começa com 4 dígitos (ex: "2024 Elétrico" é válido)
             const codigoNumerico = parseInt(y.codigo);
             if (codigoNumerico > 9999 && !y.nome.match(/^\d{4}/)) return;
 
@@ -227,11 +224,10 @@ document.getElementById('sel-year')?.addEventListener('change', (e) => {
 });
 
 // ═══════════════════════════════════════
-// CONTROLE DO DRAWER
+// SELEÇÃO DE KIT — vai DIRETO ao checkout, sem drawer
 // ═══════════════════════════════════════
 window.selectKit = function (kitName, price) {
     if (!selection.yearId) {
-        // Feedback inline — rola para o seletor e destaca brevemente
         const vehicleSelector = document.getElementById('vehicle-selector');
         if (vehicleSelector) {
             vehicleSelector.scrollIntoView({ behavior: 'smooth' });
@@ -241,7 +237,8 @@ window.selectKit = function (kitName, price) {
         return;
     }
 
-    const imgPath = kitName.toLowerCase().includes("porta malas")
+    // FIX: imagem correta por kit
+    const imgPath = kitName.toLowerCase().includes("completo")
         ? "./assets/kit-complete-BFARBGDS.jpg"
         : "./assets/kit-basic-Tk9H7iJ2.jpg";
 
@@ -249,79 +246,50 @@ window.selectKit = function (kitName, price) {
     selection.price = price;
     selection.image = imgPath;
 
-    // Salva imediatamente ao selecionar o kit
     localStorage.setItem("checkout_selection", JSON.stringify(selection));
 
-    const kitNameEl = document.getElementById('drawer-kit-name');
-    const priceEl = document.getElementById('drawer-price');
-    const imgEl = document.getElementById('drawer-kit-img');
+    // Feedback visual no botão antes de redirecionar
+    const btns = document.querySelectorAll('.kit-buy-btn');
+    btns.forEach(b => b.disabled = true);
 
-    if (kitNameEl) kitNameEl.textContent = kitName;
-    if (priceEl) priceEl.innerText = `R$ ${parseFloat(price).toFixed(2).replace('.', ',')}`;
-    if (imgEl) imgEl.src = imgPath;
-
-    openDrawer();
-};
-
-function openDrawer() {
-    const drawer = document.getElementById('checkout-drawer');
-    const sticky = document.getElementById('sticky-footer');
-    if (drawer) {
-        drawer.classList.remove('drawer-hidden');
-        drawer.classList.add('drawer-open');
-    }
-    if (sticky) sticky.style.display = "none";
-    document.body.style.overflow = 'hidden';
-}
-
-window.closeDrawer = function () {
-    const drawer = document.getElementById('checkout-drawer');
-    const sticky = document.getElementById('sticky-footer');
-    if (drawer) {
-        drawer.classList.remove('drawer-open');
-        drawer.classList.add('drawer-hidden');
-    }
-    if (sticky) sticky.style.display = "block";
-    document.body.style.overflow = '';
-};
-
-// ═══════════════════════════════════════
-// REDIRECIONAMENTO
-// ═══════════════════════════════════════
-window.drawerConfirmPayment = () => {
-    const btn = document.getElementById('drawer-pay-btn');
-
-    if (!selection.kitName || !selection.price) {
-        // Sem kit selecionado — fecha drawer e rola para seção de kits
-        closeDrawer();
-        setTimeout(() => {
-            const kits = document.getElementById('kit-section');
-            if (kits) kits.scrollIntoView({ behavior: 'smooth' });
-        }, 300);
-        return;
-    }
-
-    // Garante preço como número decimal limpo antes de passar na URL
-    const priceNumeric = parseFloat(String(selection.price).replace(',', '.')).toFixed(2);
-
+    const priceNumeric = parseFloat(String(price).replace(',', '.')).toFixed(2);
     const vehicle = `${selection.brandName} ${selection.modelName} (${selection.yearName})`;
 
-    localStorage.setItem("checkout_selection", JSON.stringify(selection));
-
-    if (btn) {
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Encaminhando...';
-        btn.disabled = true;
-    }
-
     const params = new URLSearchParams({
-        kit: selection.kitName,
+        kit: kitName,
         preco: priceNumeric,
         veiculo: vehicle,
-        imagem: selection.image || ''
+        imagem: imgPath
     });
 
     window.location.href = `dados-pagamento.html?${params.toString()}`;
 };
+
+// Mantém funções do drawer para não quebrar referências no HTML
+// mas o fluxo principal não passa mais por elas
+window.closeDrawer = function () {
+    const drawer = document.getElementById('checkout-drawer');
+    if (drawer) {
+        drawer.classList.remove('drawer-open');
+        drawer.classList.add('drawer-hidden');
+    }
+    document.body.style.overflow = '';
+};
+
+window.drawerConfirmPayment = () => { };
+
+// ═══════════════════════════════════════
+// STICKY — clique vai para seletor ou kits
+// ═══════════════════════════════════════
+function stickyBuyClick() {
+    const vehicleSelected = window.selection && window.selection.yearId;
+    if (!vehicleSelected) {
+        document.getElementById('comprar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        document.getElementById('kit-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+window.stickyBuyClick = stickyBuyClick;
 
 // ═══════════════════════════════════════
 // INIT
