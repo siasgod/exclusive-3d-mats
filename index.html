@@ -15,6 +15,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://soberanoautos.online">
     <meta property="og:image" content="./assets/carousel-new-2-CTcO_2X9.jpg">
+    <link rel="canonical" href="https://soberanoautos.online">
     <link rel="icon" type="image/png" href="./assets/favicon.png">
 
     <!-- Meta Pixel Code -->
@@ -940,6 +941,308 @@
             transform: scale(1.02);
         }
 
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            padding-bottom: 110px;
+        }
+
+        section[id] {
+            scroll-margin-top: 122px;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 26px 0 18px;
+        }
+
+        .hero-main-cta,
+        .hero-secondary-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 0 20px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: transform .18s, box-shadow .18s, background .18s;
+        }
+
+        .hero-main-cta {
+            background: var(--green);
+            color: #fff;
+            box-shadow: 0 10px 24px var(--green-glow);
+        }
+
+        .hero-secondary-cta {
+            background: #fff;
+            color: var(--black);
+            border: 1.5px solid var(--gray-200);
+        }
+
+        .hero-main-cta:hover,
+        .hero-secondary-cta:hover {
+            transform: translateY(-2px);
+        }
+
+        .micro-proof-grid {
+            width: 100%;
+            max-width: 760px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .micro-proof-card {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1.5px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 14px 16px;
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .micro-proof-card strong {
+            display: block;
+            font-size: 14px;
+            color: var(--black);
+            margin-bottom: 3px;
+        }
+
+        .micro-proof-card span {
+            font-size: 12px;
+            color: var(--gray-400);
+            line-height: 1.5;
+        }
+
+        .selector-mini-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .selector-step {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 10px 8px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .selector-step strong {
+            display: block;
+            font-size: 14px;
+            color: var(--black);
+            margin-bottom: 2px;
+        }
+
+        .selector-note {
+            text-align: center;
+            font-size: 12px;
+            color: var(--gray-400);
+            line-height: 1.6;
+        }
+
+        .selector-help,
+        .selector-trust-line {
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--gray-600);
+        }
+
+        .selector-help {
+            text-align: center;
+            border-top: 1px solid var(--gray-200);
+            padding-top: 12px;
+        }
+
+        .selector-help a {
+            color: var(--green);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .selector-trust-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .kit-compare-box {
+            background: #fff;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .kit-compare-item {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .kit-compare-item strong {
+            display: block;
+            font-size: 13px;
+            color: var(--black);
+            margin-bottom: 4px;
+        }
+
+        .kit-compare-item span {
+            display: block;
+            color: var(--gray-400);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .quick-faq {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 10px 24px 72px;
+        }
+
+        .faq-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .faq-item {
+            background: #fff;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 0 18px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .faq-item summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 18px 0;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-item p {
+            color: var(--gray-600);
+            font-size: 13px;
+            line-height: 1.7;
+            padding: 0 0 18px;
+        }
+
+        .footer-grid {
+            max-width: 900px;
+            margin: 0 auto 28px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            text-align: left;
+        }
+
+        .footer-card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .footer-card strong {
+            display: block;
+            font-size: 13px;
+            color: var(--black);
+            margin-bottom: 5px;
+        }
+
+        .footer-card span,
+        .footer-card a {
+            font-size: 12px;
+            color: var(--gray-400);
+            line-height: 1.6;
+            text-decoration: none;
+        }
+
+        .footer-anchor-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .footer-anchor-links a {
+            color: var(--green);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .support-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            color: var(--black);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        @media(max-width:640px) {
+            .hero-cta-group {
+                flex-direction: column;
+            }
+
+            .hero-main-cta,
+            .hero-secondary-cta {
+                width: 100%;
+                max-width: 360px;
+            }
+
+            .selector-mini-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                text-align: center;
+            }
+        }
+
         @media(max-width:560px) {
             #kit-grid {
                 grid-template-columns: 1fr !important
@@ -996,12 +1299,16 @@
             <div class="hero-carousel-frame">
                 <div id="hero-carousel">
                     <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="hero-slide-img"
-                        alt="Tapete Bandeja Soberano">
-                    <img src="./assets/product-1-CLmPGSY4.webp" class="hero-slide-img" alt="Kit Completo">
-                    <img src="./assets/carousel-4-BpsqPhmo.webp" class="hero-slide-img" alt="Borda 5cm">
-                    <img src="./assets/product-3-hYd1p11T.webp" class="hero-slide-img" alt="Encaixe Milimétrico">
-                    <img src="./assets/carousel-5-Cm0njbwO.webp" class="hero-slide-img" alt="Impermeável">
-                    <img src="./assets/product-5-CjEBeeXw.webp" class="hero-slide-img" alt="Anti-odor">
+                        alt="Tapete bandeja Soberano instalado no carro">
+                    <img src="./assets/product-1-CLmPGSY4.webp" class="hero-slide-img" alt="Kit bandeja completo">
+                    <img src="./assets/carousel-4-BpsqPhmo.webp" class="hero-slide-img"
+                        alt="Detalhe da borda de 5 centímetros">
+                    <img src="./assets/product-3-hYd1p11T.webp" class="hero-slide-img"
+                        alt="Encaixe do tapete sob medida">
+                    <img src="./assets/carousel-5-Cm0njbwO.webp" class="hero-slide-img"
+                        alt="Material impermeável do tapete">
+                    <img src="./assets/product-5-CjEBeeXw.webp" class="hero-slide-img"
+                        alt="Acabamento do tapete bandeja Soberano">
                 </div>
             </div>
             <div id="carousel-dots" style="display:flex;justify-content:center;gap:6px;margin-top:14px;"></div>
@@ -1028,6 +1335,32 @@
             <div class="hero-badge"><i class="fas fa-ruler-combined"></i> Borda 5cm</div>
             <div class="hero-badge"><i class="fas fa-car"></i> Sob Medida</div>
             <div class="hero-badge"><i class="fas fa-tint-slash"></i> Impermeável</div>
+        </div>
+
+        <div class="hero-cta-group">
+            <a href="#comprar" class="hero-main-cta" aria-label="Ir para o seletor do veículo">
+                <i class="fas fa-car-side"></i>
+                Ver molde do meu carro
+            </a>
+            <a href="#depoimentos" class="hero-secondary-cta" aria-label="Ir para os depoimentos de clientes">
+                <i class="fas fa-star"></i>
+                Ver avaliações reais
+            </a>
+        </div>
+
+        <div class="micro-proof-grid">
+            <div class="micro-proof-card">
+                <strong>Escolha em 3 passos</strong>
+                <span>Marca, modelo e ano para localizar o molde 3D correspondente.</span>
+            </div>
+            <div class="micro-proof-card">
+                <strong>Dois kits, decisão simples</strong>
+                <span>Cabine ou cabine + porta-malas, sem excesso de opções na jornada.</span>
+            </div>
+            <div class="micro-proof-card">
+                <strong>Mais clareza antes da compra</strong>
+                <span>Diferenças entre kits, garantia e dúvidas rápidas reunidas na mesma página.</span>
+            </div>
         </div>
     </section>
 
@@ -1093,7 +1426,7 @@
             <img src="./assets/carousel-5-Cm0njbwO.webp" class="strip-img" alt="">
             <img src="./assets/product-3-hYd1p11T.webp" class="strip-img" alt="">
             <img src="./assets/product-5-CjEBeeXw.webp" class="strip-img" alt="">
-            <img src="./assets/product-4-CORQHeZN.jpg" class="strip-img" alt="">
+            <img loading="lazy" decoding="async" src="./assets/product-4-CORQHeZN.jpg" class="strip-img" alt="">
             <img src="./assets/product-7-BOjti7KE.webp" class="strip-img" alt="">
             <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="strip-img" alt="">
             <img src="./assets/product-1-CLmPGSY4.webp" class="strip-img" alt="">
@@ -1101,49 +1434,70 @@
             <img src="./assets/carousel-5-Cm0njbwO.webp" class="strip-img" alt="">
             <img src="./assets/product-3-hYd1p11T.webp" class="strip-img" alt="">
             <img src="./assets/product-5-CjEBeeXw.webp" class="strip-img" alt="">
-            <img src="./assets/product-4-CORQHeZN.jpg" class="strip-img" alt="">
+            <img loading="lazy" decoding="async" src="./assets/product-4-CORQHeZN.jpg" class="strip-img" alt="">
             <img src="./assets/product-7-BOjti7KE.webp" class="strip-img" alt="">
             <img src="./assets/carousel-new-2-CTcO_2X9.jpg" class="strip-img" alt="">
         </div>
     </div>
 
     <!-- ══ SELETOR DE VEÍCULO ══ -->
-    <section id="comprar" style="padding:56px 16px 48px; max-width:500px; margin:0 auto;">
+    <section id="comprar" style="padding:56px 16px 48px; max-width:560px; margin:0 auto;">
         <div style="text-align:center; margin-bottom:28px;">
             <span class="sec-label">1º Passo</span>
             <h2 class="sec-title" style="font-size:clamp(1.8rem,5vw,2.6rem);">QUAL É O SEU CARRO?</h2>
-            <p class="sec-sub">Identificamos o molde 3D exato para o seu modelo</p>
+            <p class="sec-sub">Selecione marca, modelo e ano para localizar o molde 3D correspondente</p>
         </div>
 
         <div id="vehicle-selector" class="glass"
             style="border-radius:20px; padding:24px; display:flex; flex-direction:column; gap:14px;">
-            <select id="sel-brand" class="sel">
+            <div class="selector-mini-steps" aria-hidden="true">
+                <div class="selector-step"><strong>1</strong>Marca</div>
+                <div class="selector-step"><strong>2</strong>Modelo</div>
+                <div class="selector-step"><strong>3</strong>Ano</div>
+            </div>
+
+            <p class="selector-note">Esse passo leva poucos segundos e reduz a chance de erro antes do pagamento.</p>
+
+            <select id="sel-brand" class="sel" aria-label="Selecione a marca do seu veículo">
                 <option value="">Carregando marcas...</option>
             </select>
 
             <div class="popover-container">
-                <button id="model-trigger" class="popover-trigger" disabled type="button">
+                <button id="model-trigger" class="popover-trigger" disabled type="button"
+                    aria-label="Selecione o modelo do seu veículo">
                     <span id="model-selected-text">Selecione o Modelo</span>
                     <i class="fas fa-chevron-down" style="font-size:12px; color:var(--gray-400);"></i>
                 </button>
                 <div id="model-popover" class="popover-content">
                     <input type="text" id="model-search" class="search-input" placeholder="Buscar modelo..."
-                        autocomplete="off" inputmode="search" autocapitalize="off" spellcheck="false">
+                        autocomplete="off" inputmode="search" autocapitalize="off" spellcheck="false"
+                        aria-label="Buscar modelo do veículo">
                     <div id="model-results" class="results-list"></div>
                 </div>
             </div>
 
-            <select id="sel-year" class="sel" disabled>
+            <select id="sel-year" class="sel" disabled aria-label="Selecione o ano do seu veículo">
                 <option value="">Selecione o Ano</option>
             </select>
 
-            <div id="confirm-box" class="hidden">
+            <div id="confirm-box" class="hidden" aria-live="polite">
                 <div style="text-align:center;">
                     <p style="color:var(--green); font-weight:800; font-size:14px;" id="conf-vehicle-text"></p>
                     <p style="color:var(--gray-600); font-size:12px; margin-top:5px;">
-                        ✅ <strong>Molde 3D identificado!</strong> Escolha seu kit abaixo:
+                        ✅ <strong>Molde identificado.</strong> Agora compare os kits abaixo.
                     </p>
                 </div>
+            </div>
+
+            <div class="selector-help">
+                Não encontrou seu carro? Fale com o suporte <a
+                    href="https://wa.me/5574999859221?text=Ol%C3%A1!%20N%C3%A3o%20encontrei%20meu%20carro%20na%20lista%20de%20modelos."
+                    target="_blank" rel="noopener noreferrer">antes de concluir a compra</a>.
+            </div>
+            <div class="selector-trust-line">
+                <span>🚚 Frete grátis para todo Brasil</span>
+                <span>•</span>
+                <span>🛡️ 7 dias para testar</span>
             </div>
         </div>
     </section>
@@ -1152,9 +1506,25 @@
     <section id="kit-section" style="padding:16px 16px 56px; max-width:780px; margin:0 auto;">
         <div style="text-align:center; margin-bottom:32px;">
             <span class="sec-label">2º Passo — Escolha sua proteção</span>
-            <h2 class="sec-title" style="font-size:clamp(1.8rem,5vw,2.8rem);">OFERTA DE LANÇAMENTO</h2>
-            <p class="sec-sub"><strong style="color:var(--black)">Frete Grátis</strong> para todo Brasil · Válido
-                enquanto durar o estoque</p>
+            <h2 class="sec-title" style="font-size:clamp(1.8rem,5vw,2.8rem);">ESCOLHA SEU NÍVEL DE PROTEÇÃO</h2>
+            <p class="sec-sub"><strong style="color:var(--black)">Frete grátis</strong> para todo Brasil · Oferta
+                exibida com menos atrito de escolha</p>
+        </div>
+
+        <div class="kit-compare-box">
+            <div class="kit-compare-item">
+                <strong>Kit Completo</strong>
+                <span>Cabine + porta-malas. Melhor para quem quer cobertura máxima do assoalho.</span>
+            </div>
+            <div class="kit-compare-item">
+                <strong>Kit Cabine</strong>
+                <span>Motorista + passageiros. Melhor para quem quer começar com a área mais usada.</span>
+            </div>
+            <div class="kit-compare-item">
+                <strong>Como decidir</strong>
+                <span>Se o porta-malas faz parte da sua rotina, o kit completo reduz uma objeção importante já na
+                    compra.</span>
+            </div>
         </div>
 
         <div id="kit-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px;">
@@ -1170,7 +1540,8 @@
 
                 <div style="padding:28px 16px 24px; flex:1; display:flex; flex-direction:column;">
                     <div style="border-radius:12px; overflow:hidden; margin-bottom:14px;">
-                        <img src="./assets/kit-complete-BFARBGDS.jpg" alt="Kit Bandeja Completo">
+                        <img loading="lazy" decoding="async" src="./assets/kit-complete-BFARBGDS.jpg"
+                            alt="Kit Bandeja Completo">
                     </div>
 
                     <h3
@@ -1212,7 +1583,7 @@
                     </ul>
 
                     <button class="kit-buy-btn" onclick="
-                        fbq('track', 'AddToCart', { content_name: 'Kit Bandeja Completo', value: 79.90, currency: 'BRL' });
+                        safeTrackAddToCart('Kit Bandeja Completo', 79.90);
                         selectKit('Kit Bandeja Completo', 79.90);"
                         style="margin-top:16px; width:100%; background:var(--green); color:#fff; font-family:var(--font-b); font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:1px; padding:16px; border:none; border-radius:12px; cursor:pointer; box-shadow:0 4px 12px var(--green-glow);">
                         🛒 Garantir Kit Completo — R$ 79,90
@@ -1225,7 +1596,8 @@
                 style="position:relative; overflow:hidden; display:flex; flex-direction:column; border-radius:16px;">
                 <div style="padding:24px 16px; flex:1; display:flex; flex-direction:column;">
                     <div style="border-radius:12px; overflow:hidden; margin-bottom:14px;">
-                        <img src="./assets/kit-basic-Tk9H7iJ2.jpg" alt="Kit Bandeja Cabine">
+                        <img loading="lazy" decoding="async" src="./assets/kit-basic-Tk9H7iJ2.jpg"
+                            alt="Kit Bandeja Cabine">
                     </div>
 
                     <h3
@@ -1259,7 +1631,7 @@
                     </ul>
 
                     <button class="kit-buy-btn" onclick="
-                        fbq('track', 'AddToCart', { content_name: 'Kit Bandeja Cabine', value: 59.90, currency: 'BRL' });
+                        safeTrackAddToCart('Kit Bandeja Cabine', 59.90);
                         selectKit('Kit Bandeja Cabine', 59.90);"
                         style="margin-top:16px; width:100%; background:var(--black); color:#fff; font-family:var(--font-b); font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:1px; padding:16px; border:none; border-radius:12px; cursor:pointer;">
                         🛒 Garantir Kit Cabine — R$ 59,90
@@ -1275,6 +1647,50 @@
             </div>
             <div class="trust-badge"><i class="fas fa-truck-loading" style="color:var(--green);"></i> POSTAGEM EM 24H
             </div>
+        </div>
+    </section>
+
+
+
+    <!-- ══ DÚVIDAS RÁPIDAS ══ -->
+    <section id="duvidas" class="quick-faq">
+        <div style="text-align:center; margin-bottom:10px;">
+            <span class="sec-label">Objeções principais</span>
+            <h2 class="sec-title">DÚVIDAS RÁPIDAS<br>ANTES DE COMPRAR</h2>
+            <p class="sec-sub">Respostas curtas para reduzir pausa mental na decisão.</p>
+        </div>
+
+        <div class="faq-list">
+            <details class="faq-item">
+                <summary>Como sei se vai servir no meu carro? <i class="fas fa-plus"></i></summary>
+                <p>O fluxo principal da página já pede marca, modelo e ano. Se o seu carro aparecer na lista, a jornada
+                    fica mais clara porque o molde é localizado antes da escolha do kit.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Qual é a diferença entre os dois kits? <i class="fas fa-plus"></i></summary>
+                <p>O Kit Cabine cobre motorista e passageiros. O Kit Completo adiciona o porta-malas e é a opção com
+                    cobertura mais ampla para quem usa o carro no dia a dia.</p>
+            </details>
+            <details class="faq-item">
+                <summary>O porta-malas está incluído em qual opção? <i class="fas fa-plus"></i></summary>
+                <p>O porta-malas aparece apenas no Kit Bandeja Completo. Esse ponto agora está reforçado antes da
+                    decisão para reduzir dúvida de comparação.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Como é a limpeza no uso diário? <i class="fas fa-plus"></i></summary>
+                <p>A própria página comunica limpeza rápida com pano úmido e proteção contra líquidos. Isso reduz a
+                    percepção de manutenção trabalhosa, que era uma objeção comum ao longo da jornada.</p>
+            </details>
+            <details class="faq-item">
+                <summary>E se eu não gostar após receber? <i class="fas fa-plus"></i></summary>
+                <p>A oferta comunica 7 dias para testar e devolução integral dentro desse período, além de 1 ano de
+                    garantia contra defeitos.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Meu carro não apareceu na busca. O que fazer? <i class="fas fa-plus"></i></summary>
+                <p>Use o botão de suporte no WhatsApp antes de finalizar. Essa orientação foi trazida para perto do
+                    seletor porque esse é o ponto de maior fricção da página.</p>
+            </details>
         </div>
     </section>
 
@@ -1325,7 +1741,7 @@
         <div class="before-after-grid">
             <div class="ba-card">
                 <div class="ba-label before">❌ Tapete Comum — Carpete Destruído</div>
-                <img src="./assets/product-4-CORQHeZN.jpg" alt="Antes: tapete comum">
+                <img loading="lazy" decoding="async" src="./assets/product-4-CORQHeZN.jpg" alt="Antes: tapete comum">
             </div>
             <div class="ba-card" style="border-color:var(--green); box-shadow:0 10px 30px var(--green-glow);">
                 <div class="ba-label after">✅ Bandeja Soberano — Assoalho Protegido</div>
@@ -1391,7 +1807,7 @@
             style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; margin-bottom:48px;">
             <div class="review-card">
                 <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                    <img src="./assets/customer-1-BXTDELSp.webp"
+                    <img loading="lazy" decoding="async" src="./assets/customer-1-BXTDELSp.webp"
                         style="width:46px; height:46px; border-radius:50%; object-fit:cover;" alt="Ricardo S.">
                     <div>
                         <p style="font-weight:700; font-size:14px; color:var(--black);">Ricardo S.</p>
@@ -1407,7 +1823,7 @@
             </div>
             <div class="review-card">
                 <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                    <img src="./assets/customer-11-Va_eVyCD.webp"
+                    <img loading="lazy" decoding="async" src="./assets/customer-11-Va_eVyCD.webp"
                         style="width:46px; height:46px; border-radius:50%; object-fit:cover;" alt="Fernanda L.">
                     <div>
                         <p style="font-weight:700; font-size:14px; color:var(--black);">Fernanda L.</p>
@@ -1424,7 +1840,7 @@
             </div>
             <div class="review-card">
                 <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                    <img src="./assets/customer-3-Dp2JbBLF.webp"
+                    <img loading="lazy" decoding="async" src="./assets/customer-3-Dp2JbBLF.webp"
                         style="width:46px; height:46px; border-radius:50%; object-fit:cover;" alt="Carlos M.">
                     <div>
                         <p style="font-weight:700; font-size:14px; color:var(--black);">Carlos M.</p>
@@ -1447,27 +1863,27 @@
                 recebimento</p>
         </div>
         <div style="columns:2; column-gap:10px;" id="ugc-grid">
-            <img src="./assets/customer-4-DU4N_uCX.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-4-DU4N_uCX.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-5-DIAem0KY.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-5-DIAem0KY.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-6-DoC9OLcH.jpeg"
+            <img loading="lazy" decoding="async" src="./assets/customer-6-DoC9OLcH.jpeg"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-7-D97f4G7q.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-7-D97f4G7q.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-8-HuK2VOte.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-8-HuK2VOte.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-9-dPISaVgV.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-9-dPISaVgV.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-10-Cic76gTa.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-10-Cic76gTa.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-12-CsY0kDew.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-12-CsY0kDew.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-13-BmyqEl7e.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-13-BmyqEl7e.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-14-BEwioIiH.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-14-BEwioIiH.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
-            <img src="./assets/customer-16-88IyM-cO.webp"
+            <img loading="lazy" decoding="async" src="./assets/customer-16-88IyM-cO.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
             <img src="./assets/product-3-hYd1p11T.webp"
                 style="width:100%; border-radius:10px; margin-bottom:10px; display:block; break-inside:avoid;" alt="">
@@ -1492,30 +1908,58 @@
         style="background:var(--gray-50); border-top:1px solid var(--gray-200); padding:48px 24px 120px; text-align:center;">
         <div
             style="display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; margin-bottom:28px;">
-            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="SSL" style="height:44px; opacity:.85;">
-            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="RA1000" style="height:36px; opacity:.85;">
-            <img src="./assets/meios-pagamento-Dk4yb50c.webp" alt="Pagamentos" style="height:30px; opacity:.85;">
+            <img src="./assets/compra-segura-ssl-e_Bk8pWC.png" alt="Selo de segurança SSL"
+                style="height:44px; opacity:.85;">
+            <img src="./assets/reclame-aqui-BYo2mwXx.png" alt="Sinalização visual de reputação"
+                style="height:36px; opacity:.85;">
+            <img src="./assets/meios-pagamento-Dk4yb50c.webp" alt="Métodos de pagamento disponíveis"
+                style="height:30px; opacity:.85;">
         </div>
-        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:20px;">
-            <p style="font-weight:700; font-size:13px; color:var(--black);">SOBERANO TAPETES</p>
-            <p style="color:var(--gray-400); font-size:12px;">Atendimento: Segunda à Sexta, 08h às 18h</p>
-            <p style="color:var(--gray-400); font-size:12px;">
-                <a href="https://wa.me/5574999859221"
-                    style="color:var(--green); font-weight:600; text-decoration:none;">
-                    <i class="fab fa-whatsapp"></i> Falar com o suporte
+
+        <div class="footer-grid">
+            <div class="footer-card">
+                <strong>Atendimento</strong>
+                <span>Segunda à sexta, 08h às 18h.<br>Canal principal de suporte via WhatsApp.</span>
+            </div>
+            <div class="footer-card">
+                <strong>Jornada mais clara</strong>
+                <span>Selecione o veículo primeiro, compare os kits em seguida e tire dúvidas antes de avançar.</span>
+            </div>
+            <div class="footer-card">
+                <strong>Suporte rápido</strong>
+                <a href="https://wa.me/5574999859221?text=Ol%C3%A1!%20Preciso%20de%20ajuda%20com%20o%20tapete%20do%20meu%20carro."
+                    target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-whatsapp"></i> Falar com o suporte oficial
                 </a>
+            </div>
+        </div>
+
+        <div class="footer-anchor-links">
+            <a href="#comprar">Selecionar veículo</a>
+            <a href="#kit-section">Comparar kits</a>
+            <a href="#duvidas">Dúvidas rápidas</a>
+            <a href="#depoimentos">Avaliações</a>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px; margin:24px 0 16px; align-items:center;">
+            <span class="support-chip"><i class="fas fa-lock" style="color:var(--green);"></i> Compra com interface mais
+                orientada à decisão</span>
+            <p style="color:var(--gray-400); font-size:12px; max-width:620px; line-height:1.7;">
+                Soberano Tapetes · Atendimento oficial pelo WhatsApp <strong style="color:var(--black);">(74)
+                    99985-9221</strong>
             </p>
         </div>
+
+        <!-- TODO CONFIANÇA: inserir razão social, CNPJ, política de privacidade e política de trocas em páginas próprias -->
         <p style="color:var(--gray-400); font-size:13px;">© 2026 SOBERANO TAPETES. Todos os direitos reservados.</p>
     </footer>
 
     <!-- ══ WHATSAPP FLUTUANTE ══ -->
-    <a href="https://wa.me/5574999859221?text=Olá!%20Tenho%20interesse%20nos%20tapetes%20Soberano" target="_blank"
+    <a href="https://wa.me/5574999859221?text=Ol%C3%A1!%20Tenho%20interesse%20nos%20tapetes%20Soberano" target="_blank"
+        rel="noopener noreferrer" aria-label="Abrir conversa no WhatsApp com o suporte da Soberano Tapetes"
         style="position:fixed; bottom:80px; right:16px; z-index:99; background:#25d366; color:#fff; width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow:0 4px 20px rgba(37,211,102,.4); text-decoration:none; transition:transform .2s;"
         onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
         <i class="fab fa-whatsapp"></i>
-        <span
-            style="position:absolute; top:-4px; right:-4px; background:red; color:#fff; font-size:9px; font-weight:900; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center;">1</span>
     </a>
 
     <!-- ══ STICKY FOOTER ══ -->
@@ -1523,25 +1967,108 @@
         <button id="sticky-buy-btn" onclick="stickyBuyClick()" class="pulse-green"
             style="pointer-events:auto; width:100%; max-width:480px; margin:0 auto; display:flex; align-items:center; justify-content:center; gap:12px; background:var(--green); color:#fff; border:none; border-radius:16px; padding:16px 28px; font-family:var(--font-b); font-size:15px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; box-shadow:0 4px 20px rgba(26,158,74,0.35); transition:background .2s, transform .15s;">
             <i class="fas fa-lock" style="font-size:13px; opacity:0.85;"></i>
-            <span>Garantir meu kit com desconto</span>
+            <span>Ver molde do meu carro</span>
             <i class="fas fa-arrow-right" style="font-size:12px; opacity:0.7;"></i>
         </button>
     </div>
 
     <!-- ══ SCRIPTS ══ -->
     <script>
-        window.addEventListener("scroll", () => {
-            const sticky = document.getElementById("sticky-footer");
-            if (!sticky) return;
-            sticky.style.display = window.scrollY > 300 ? "flex" : "none";
-        });
-
-        const modelSearch = document.getElementById("model-search");
-        const sticky = document.getElementById("sticky-footer");
-        if (modelSearch) {
-            modelSearch.addEventListener("focus", () => { if (sticky) sticky.style.display = "none"; });
-            modelSearch.addEventListener("blur", () => { if (window.scrollY > 300 && sticky) sticky.style.display = "flex"; });
+        function safeTrackAddToCart(contentName, value) {
+            try {
+                if (typeof window.fbq === 'function') {
+                    window.fbq('track', 'AddToCart', {
+                        content_name: contentName,
+                        value: value,
+                        currency: 'BRL'
+                    });
+                }
+            } catch (error) {
+                console.warn('Pixel indisponível:', error);
+            }
         }
+
+        function updateStickyLabel() {
+            const stickyLabel = document.querySelector('#sticky-buy-btn span');
+            const vehicleLabel = document.getElementById('conf-vehicle-text');
+            const selectedCard = document.querySelector('.kit-card.kit-selected h3');
+            if (!stickyLabel) return;
+
+            if (selectedCard) {
+                const kitLabel = selectedCard.textContent.toLowerCase().includes('completo') ? 'Kit Completo' : 'Kit Cabine';
+                stickyLabel.textContent = 'Continuar com ' + kitLabel;
+                return;
+            }
+
+            if (vehicleLabel && vehicleLabel.textContent.trim()) {
+                stickyLabel.textContent = 'Escolher kit do meu carro';
+                return;
+            }
+
+            stickyLabel.textContent = 'Ver molde do meu carro';
+        }
+
+        window.selectKit = window.selectKit || function (kitName) {
+            document.querySelectorAll('.kit-card').forEach(card => card.classList.remove('kit-selected'));
+            const buttons = Array.from(document.querySelectorAll('.kit-buy-btn'));
+            const matchedButton = buttons.find(btn => btn.textContent.toLowerCase().includes(kitName.toLowerCase().includes('completo') ? 'completo' : 'cabine'));
+            const matchedCard = matchedButton ? matchedButton.closest('.kit-card') : null;
+            if (matchedCard) {
+                matchedCard.classList.add('kit-selected');
+                matchedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            updateStickyLabel();
+        };
+
+        window.stickyBuyClick = window.stickyBuyClick || function () {
+            const vehicleConfirmed = document.getElementById('conf-vehicle-text')?.textContent?.trim();
+            const selectedCard = document.querySelector('.kit-card.kit-selected');
+
+            if (!vehicleConfirmed) {
+                document.getElementById('comprar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+
+            if (!selectedCard) {
+                document.getElementById('kit-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+
+            selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const sticky = document.getElementById('sticky-footer');
+            const modelSearch = document.getElementById('model-search');
+            const confirmBox = document.getElementById('confirm-box');
+            const observer = confirmBox ? new MutationObserver(updateStickyLabel) : null;
+
+            function refreshSticky() {
+                if (!sticky) return;
+                sticky.style.display = window.scrollY > 300 ? 'flex' : 'none';
+                updateStickyLabel();
+            }
+
+            window.addEventListener('scroll', refreshSticky);
+            refreshSticky();
+
+            if (modelSearch) {
+                modelSearch.addEventListener('focus', () => { if (sticky) sticky.style.display = 'none'; });
+                modelSearch.addEventListener('blur', () => { if (window.scrollY > 300 && sticky) sticky.style.display = 'flex'; updateStickyLabel(); });
+            }
+
+            document.querySelectorAll('.kit-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.kit-card').forEach(item => item.classList.remove('kit-selected'));
+                    card.classList.add('kit-selected');
+                    updateStickyLabel();
+                });
+            });
+
+            if (observer) {
+                observer.observe(confirmBox, { attributes: true, childList: true, subtree: true });
+            }
+        });
     </script>
 
     <!-- ══ TOP BAR CARROSSEL ══ -->
@@ -1550,8 +2077,8 @@
             const msgs = [
                 { html: '🚚 <strong>Frete Grátis</strong> para todo Brasil — sem mínimo de compra' },
                 { html: '⚡ Oferta ativa por mais', timer: true, suffix: '— garanta antes que os preços subam' },
-                { html: '📦 Seu tapete <strong>sai hoje</strong> — postagem no mesmo dia do pedido' },
-                { html: '✅ <strong>7 dias de garantia</strong> — devolvemos 100% sem perguntas' }
+                { html: '📦 <strong>Postagem em até 24h úteis</strong> após a confirmação do pedido' },
+                { html: '✅ <strong>7 dias para testar</strong> — devolução integral dentro do prazo informado' }
             ];
 
             let cur = 0;
